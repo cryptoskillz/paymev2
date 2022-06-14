@@ -5,11 +5,12 @@ let checkElement
 var table // datatable
 
 //create your data schema here for table rendering.
-let dataSchema = '{ "id": "", "name": "", "createdAt": "" }'
+let dataSchema = '{ "id": "","paymentAddress":"", "name": "","amount":"0","paid":"0", "createdAt": "" }'
 dataSchema = JSON.parse(dataSchema);
 //add this to the settings page
-let settingsSchema = '{"compnanyname":""}'
+let settingsSchema = '{"btcaddress":"","xpub":"","compnanyname":""}'
 settingsSchema = JSON.parse(settingsSchema);
+
 //TODO: replace this with plain js
 (function($) {
     "use strict"; // Start of use strictß
@@ -79,31 +80,29 @@ let getFormData = () => {
     for (var i = 0; i < fields.length; ++i) {
         if ((fields[i] != 'id') && (fields[i] != "createdAt")) {
             //console.log("inp-"+fields[i]);
-            let theValue = document.getElementById('inp-'+fields[i]).value;
-            if (theValue == "")
-            {
-                document.getElementById('error-'+fields[i]).classList.remove('d-none');
+            let theValue = document.getElementById('inp-' + fields[i]).value;
+            if (theValue == "") {
+                document.getElementById('error-' + fields[i]).classList.remove('d-none');
                 sumbmitIt = 0;
-            }
-            else
-            {
+            } else {
+
                 if (theJson == "{")
-                    theJson = theJson+`"${fields[i]}":"${theValue}"`
+                    theJson = theJson + `"${fields[i]}":"${theValue}"`
                 else
-                    theJson = theJson+`,"${fields[i]}":"${theValue}"`
+                    theJson = theJson + `,"${fields[i]}":"${theValue}"`
             }
-            
+
         }
     }
-    theJson = theJson+"}"
+    theJson = theJson + "}"
     if (sumbmitIt == 1)
-        return(theJson)
+        return (theJson)
     else
-        return(false)
+        return (false)
 
 }
 
-let buildForm = (dataitem="") => {
+let buildForm = (dataitem = "") => {
     let theJson;
     //check if a json object was passed and if not then use the default schema
     if (dataitem == "")
@@ -116,12 +115,31 @@ let buildForm = (dataitem="") => {
     let fields = Object.keys(theJson)
     //loop through  the keys
     let inpHtml = "";
+
+    let xpubHtml = "";
     for (var i = 0; i < fields.length; ++i) {
         //console.log(fields[i])
         if ((fields[i] != 'id') && (fields[i] != "createdAt")) {
+            //check for a payment adresss
+            if (fields[i] == "paymentAddress") {
+                let settings = getSettings()
+                settings = JSON.parse(settings)
+                tmpd[i] = settings.btcaddress;
+                if ((settings.xpub != undefined) && (settings.xpub != "") && (settings.xpub != null)) {
+                    xpubHtml = ` <label><a href="javascript:generateFromXpub('${settings.xpub}')">Generate a new address from your xPub</a></label>`
+                } else {
+                    xpubHtml = "";
+                }
+            }
+            else
+            {
+                xpubHtml = "";
+            }
+
             inpHtml = inpHtml + `<div class="form-group" >
                                 <label>${fields[i]}</label>
                                 <input type="text" class="form-control form-control-user" id="inp-${fields[i]}" aria-describedby="emailHelp" placeholder="Enter ${fields[i]}" value="${tmpd[i]}">
+                                ${xpubHtml}
                                 <span class="text-danger d-none" id="error-${fields[i]}">${fields[i]} cannot be blank</span>  
                             </div>`
         }
@@ -136,6 +154,22 @@ let buildForm = (dataitem="") => {
 END OF TABLE PROCESSING FUNCTIONS
 */
 
+let generateFromXpub = (xpub) => {
+    let xhrDone = (res) => {
+        //console.log(res)
+        if (res.indexOf('error.html') > -1) {
+            showAlert("Xpub generation error", 2)
+        } else {
+            res = JSON.parse(res)
+            if ((res.address != undefined) && (res.address != "") && (res.address != null)) {
+                document.getElementById('inp-paymentAddress').value = res.address
+            }
+        }
+    }
+    //call the xpub endpoint
+    xhrcall(1, `api/xpub/?x=${xpub}`, "", "json", "", xhrDone, token)
+}
+
 /*
 START OF LOCAL CACHE FUNCTIONS
 */
@@ -144,14 +178,11 @@ let clearCache = (clearUser = 0) => {
     window.localStorage.currentdataitem = ""
     window.localStorage.data = ""
     window.localStorage.settings = ""
+
     if (clearUser == 1) {
         window.localStorage.token = ""
         window.localStorage.user = ""
     }
-}
-//project data
-let getUser = () => {
-    return (JSON.parse(window.localStorage.user))
 }
 
 
@@ -277,20 +308,38 @@ let getCurrentDataItem = (debug = 0) => {
 
 }
 
-/*
-let getCurrentDataItemId = (debug = 0) => {
-    if (debug == 1)
-        console.log(window.localStorage.project);
-    let project = window.localStorage.project
-    if ((project == "") || (project == null)) {
-        return ("")
-    } else {
-        project = JSON.parse(project)
-        return (project.id)
+let storeSettings = (theData, debug = 0) => {
+    //show debug info
+    if (debug == 1) {
+        console.log(theData)
     }
+    window.localStorage.settings = theData;
 
 }
-*/
+
+let getSettings = (debug = 0) => {
+    //show debug info
+    if (debug == 1) {
+        console.log(theData)
+    }
+    return (window.localStorage.settings)
+
+}
+
+let getUser = (parseIt = 0, debug = 0) => {
+    //show debug info
+    if (debug == 1) {
+        console.log(theData)
+    }
+    let tmp = window.localStorage.user;
+    if (parseIt == 1)
+        tmp = JSON.parse(tmp)
+    return (tmp)
+
+}
+
+
+
 
 /*
 END OF LOCAL CACHE FUNCTIONS
@@ -328,7 +377,7 @@ if (typeof(checkElement) != 'undefined' && checkElement != null) {
             }
 
         }
-        let theItem = getCacheData(deleteId);
+        let theItem = getData(deleteId);
         let bodyobj = {
             deleteid: deleteId,
             name: theItem.name
