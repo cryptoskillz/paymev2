@@ -1,0 +1,64 @@
+---
+layout: layout.njk
+---
+{% set theJs %}
+    {% include 'dashboard.js' %}
+{% endset %}
+<!-- Page Heading -->
+<h1 class="h3 mb-2 text-gray-800">Dashboard</h1>
+<p class="mb-4" >{{dashboardstrap}}</p>
+
+<!-- Content Row -->
+<div class="row">
+
+    <!-- Earnings (Monthly) Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            <a href="/{{env.DATAMAIN}}/" id="projects-cy">{{env.DATAMAIN | capitalize }}</a></div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="dashboardcounter"></div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 mb-4" id="paymentlinkcard">
+        <div class="card border-left-success shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Payment Link</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="generic-payment-link"></div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow mb-4 d-none" id="settingscard">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Settings</h6>
+        </div>
+        <div class="card-body">
+            <p>Before you can use Payme you will have to add a BTC address so you can receive payments.
+            </br>You can also add a xPub (extended public key) to generate unique addresses for payment.  
+            Click to go to your <a href="/settings/">settings</a>.</p>
+        </div>
+    </div>
+
+</div>
+{% if env.ENVIRONMENT == 'local' %}
+    <script type="text/javascript">{{theJs | safe}}</script>
+{% else %}
+    <script type="text/javascript">{{theJs | jsmin | safe}}</script>
+{% endif %}
