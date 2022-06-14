@@ -12,7 +12,7 @@ let payLoad;
 let contentType;
 //set data main to whatever is in env for consistency
 const datamain = "data";
-let dataSchema = { id: "", paymentAddress:"",name: "", amount: "", paid: "", createdAt: "" }
+let dataSchema = { id: "",name: "", createdAt: "" }
 
 //JWT model
 const jwt = require('@tsndr/cloudflare-worker-jwt');
@@ -74,12 +74,6 @@ export async function onRequestPut(context) {
         if (theItem != null) {
             if (payLoad.name != undefined)
                 theItem.name = payLoad.name;
-            if (payLoad.paymentAddress != undefined)
-                theItem.paymentAddress = payLoad.paymentAddress;
-            if (payLoad.amount != undefined)
-                theItem.amount = payLoad.amount;
-            if (payLoad.paid != undefined)
-                theItem.paid = payLoad.paid;
             //console.log(datamain + payLoad.id)
             //delete the old one
             //await KV.delete(datamain + payLoad.oldname + "]" + payLoad.id);
@@ -179,10 +173,7 @@ export async function onRequestPost(context) {
         let theData = dataSchema;
         theData.id = id;
         theData.name  = payLoad.name;
-        theData.amount = payLoad.amount;
-        theData.paid = payLoad.paid;
         theData.createdAt = fDate;
-        theData.paymentAddress = payLoad.paymentAddress
         //console.log(theData)
         //console.log(datamain + payLoad.name + "]" + id)
         await KV.put(datamain+"-"+user.user.secret+ "]" + id, JSON.stringify(theData));

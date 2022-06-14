@@ -3,7 +3,7 @@
 
 */
 //settings schema
-let settingsSchema = '{"btcaddress":"","xpub":"","companyname":""}'
+let settingsSchema = '{"companyname":""}'
 var uuid = require('uuid');
 export async function onRequestPost(context) {
     const {

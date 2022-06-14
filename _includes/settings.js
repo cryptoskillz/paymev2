@@ -16,8 +16,6 @@ whenDocumentReady(isReady = () => {
         }
         //check there is data to submit
         let bodyJson = {
-            btcaddress: document.getElementById('inp-btcaddress').value,
-            xpub: document.getElementById('inp-xpub').value,
             companyname: document.getElementById('inp-companyname').value
         }
         bodyJson = JSON.stringify(bodyJson);
@@ -30,9 +28,6 @@ whenDocumentReady(isReady = () => {
         //if (update == 1)
         storeSettings(res)  
         res = JSON.parse(res)
-        console.log(res.btcaddress)
-        document.getElementById('inp-btcaddress').value = res.btcaddress
-        document.getElementById('inp-xpub').value = res.xpub
         document.getElementById('inp-companyname').value = res.companyname
     }
     //get the settings
@@ -43,7 +38,6 @@ whenDocumentReady(isReady = () => {
     }
     else
     {
-        
         xhrcall(1, "api/settings/", "", "json", "", settingsDone, token)
     }
 });

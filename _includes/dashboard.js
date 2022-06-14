@@ -9,13 +9,6 @@ whenDocumentReady(isReady = () => {
 
     let updateDashboard = (theSettings) => {
         theSettings = JSON.parse(theSettings);
-        //console.log(theSettings)
-        //if theSettings have not been added then show the prompt
-        if (theSettings.btcaddress == "") {
-            document.getElementById('paymentlinkcard').classList.add('d-none')
-            document.getElementById('settingscard').classList.remove('d-none')
-        }
-        document.getElementById('generic-payment-link').innerHTML = `<a  href="${paymentWorkerUrl}?s=${theUser.secret}" target="_blank">View</a>`
         //show the page
         document.getElementById('showBody').classList.remove('d-none')
         //add the amount of data enteries they have added

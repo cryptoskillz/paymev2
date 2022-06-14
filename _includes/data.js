@@ -69,22 +69,13 @@ whenDocumentReady(isReady = () => {
             let tmpName = res.data[i].name.replace(" ", "-");
             //note you may only want one level of items, if so delete this method
             //disabled the code still has to  be written\`<a  href="${paymentWorkerUrl}?s=${theItem.secret}" target="_blank">${paymentWorkerUrl}?s=${theItem.secret}</a>`
-            let checkbutton = "";
-            if (res.data[i].paid == "0")
-                checkbutton = `<a href="javascript:checkPayment('${user.secret}','${res.data[i].id}')" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"> <i class="fas fa-globe fa-sm text-white-50"></i> Check</a>`
-            else
-                checkbutton = `<a href="https://mempool.space/address/${res.data[i].paymentAddress}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" target="_blank"> <i class="fas fa-globe fa-sm text-white-50"></i> View</a>`
- 
-
-            let itemsbutton = `<a href="${paymentWorkerUrl}?s=${user.secret}&i=${res.data[i].id}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" target="_blank">
-    <i class="fas fa-globe fa-sm text-white-50"></i> Link</a>`
             let editbutton = `<a href="javascript:loadURL('/${dataMainMethod}/edit/','${res.data[i].id}')" id="ep-${tmpName}-${i}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
     <i class="fas fa-file fa-sm text-white-50"></i> Edit</a>`
             let deletebutton = `<a href="javascript:deleteTableItem('${res.data[i].id}','${res.data[i].id}','api/${dataMainMethod}/')" id="dp-${tmpName}-${i}" class=" d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
     <i class="fas fa-trash fa-sm text-white-50"></i> Delete</a>`
             //add the record
             var rowNode = table
-                .row.add([res.data[i].id, res.data[i].name, res.data[i].paymentAddress, res.data[i].amount, `<span id="payid-${res.data[i].id}">${res.data[i].paid}</span>`, res.data[i].createdAt, `${editbutton} ${deletebutton} ${itemsbutton} ${checkbutton}`])
+                .row.add([res.data[i].id, res.data[i].name, res.data[i].createdAt, `${editbutton} ${deletebutton}`])
                 .draw()
                 .node().id = res.data[i].id;
         }

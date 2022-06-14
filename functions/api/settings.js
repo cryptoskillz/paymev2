@@ -3,7 +3,7 @@ let payLoad;
 //hold the contenttypes
 let contentType;
 //settings schema
-let settingsSchema = '{"btcaddress":"","xpub":"","companyname":""}'
+let settingsSchema = '{"companyname":""}'
 //JWT model
 const jwt = require('@tsndr/cloudflare-worker-jwt');
 
@@ -73,10 +73,6 @@ export async function onRequestPut(context) {
             //check that they sent up the data
             //note : we could make this simplier by just parsing the payload array.
             if (theItem != null) {
-                if (payLoad.btcaddress != undefined)
-                    theItem.btcaddress = payLoad.btcaddress;
-                if (payLoad.xpub != undefined)
-                    theItem.xpub = payLoad.xpub;
                 if (payLoad.companyname != undefined)
                     theItem.companyname = payLoad.companyname;
                 //console.log(datamain + details.payload.username + payLoad.id)
