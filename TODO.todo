@@ -1,0 +1,50 @@
+ ✔ when you click the pages button store the id and the name of the level 1 page @done (22-10-20 23:19)
+ ✔ set the schema for level 2 add and we store the id in this schema @done (22-10-21 00:33)
+ ☐ content edit page
+ ✔ addthe first page loads a blank data object in application data storage @done (22-10-20 23:52)
+ ✔ hide the data id in level 2 edit @done (22-10-20 23:52)
+ ☐ duplicate items on page post itis just checking for uid we may want it to be on the actual content 
+ ✔ update site api .js when it is working with post @done (22-10-21 00:33)
+ ✔ show correct pages for the site @done (22-10-21 11:47)
+ ✔ pass up the id to the page api call so the get works @done (22-10-21 13:21)
+ ✔ dont make page return blank, mayeb this is an issue? @done (22-10-21 14:14)
+ ✔ check the single entry for page @done (22-10-21 14:14)
+ ☐ do we require the get single item in the page api?
+ ✔ clear cacheon level 2 @done (22-10-21 14:19)
+
+CONTENT PAGE
+
+ ✔ store the json project in the data 2 object @done (22-10-21 22:54)
+ ✔ load the json from the kv store @done (22-10-21 22:54)
+ ✔ have a default json object @done (22-10-21 17:35)
+ ✔ have a create / update button @done (22-10-21 17:46)
+ ✔ add the page name to the header @done (22-10-21 17:42)
+ ✔ make the back button go to the correct place @done (22-10-21 17:34)
+ ☐ add quill as the content editor (the logic is in the experitment folder)
+ ✔ get the content from contentdata item @done (22-10-21 22:54)
+
+
+SITE PAGE
+
+ ✔ add the deploy hook to the level 1 (site) @done (22-10-22 15:57)
+ ☐ add the correct icons to the index view
+
+PAGE PAGE
+
+ ☐ add the correct icons to the index view
+ ☐ use seperate page index to build the schema so it shows different from the schema
+
+
+API
+
+
+ ☐ add an api endpoint to return the sites
+ ☐ add an api endpoint to return the page details
+ ☐ add a way to trigger a build
+ ✔ output all the pages in one endpoint @done (22-10-22 02:01)
+ ☐ add the site details to this page
+
+
+LEVEL 1
+
+ ☐ remove the warnings (name) when the field has been filled in (this will apply to all forms.)

@@ -11,7 +11,7 @@ Change variables:
 Open _data/env.js
 	Change "TITLE" to your customers title
 	Change "COPYRIGHT" to your company / product name 
-	Change "DATAMAIN" if you want to call the your data view something else IE projects.
+	Change "LEVEL1NAME" if you want to call the your data view something else IE projects.
 	chnage "DASHBOARDSTRAP" if you want to change the strapline
 Change env vars
 

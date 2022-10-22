@@ -1,0 +1,30 @@
+ ☐ add the number editor element
+ ☐ add the boolan editor element
+ ☐ add the hash generator function
+ ☐ add to a cloudlare pages 11.ty project
+   ☐ use the 11ty starter template
+   ☐ use the login part
+   ☐ sites are level 1
+   ☐ pages are level 2 
+   ☐ level 2 goes into the editor (this)
+ ☐ add the kc value store in cloudflare workers
+ ☐ add the edit URL 
+ ☐ add the api endpoint
+ ☐ password protect the edit page
+ ☐ set the elements in the quill editor
+ ☐ format the quill data correctly so that it will be JSON compliant
+ ☐ download json function
+ ✔ add the bootstrap js as this should make the dropdown buttons work @done (22-10-09 15:23)
+ ☐ add go code for the buttons
+ ☐ add the copy functionality for the buttons
+ ☐ add standard json elements for quick starts on the editor
+ ☐ when you add an element it has to add an event listenter to it.  There maybe a better way to integrate with the JSONeditor.
+
+
+ ? (requires more thought)
+
+ Is the dataobject required, does it serve a purpose?
+ Do we want to implement some kind of preview functionality or is it better to 100% detach from the presenation layer?
+ Do we want tp add history or does this just complicate things for no good reason ?
+ Do we want to add support for images or more specificially inline images in a content box?
+ Do we want to add the label name above the content editable area?

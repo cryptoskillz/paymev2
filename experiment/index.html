@@ -1,0 +1,104 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+    <!-- when using the mode "code", it's important to specify charset utf-8 -->
+    <meta charset="utf-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsoneditor/9.9.2/jsoneditor.min.js" integrity="sha512-MP2pEPP3BGw032ovuAsX6yTu7O4J6L3YTXuyq3IpR+LuwRun9BBjOeeIKgO3bRiNlI88x3oCVb9I1/1+xmvFIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsoneditor/9.9.2/jsoneditor.min.css" integrity="sha512-brXxIa/fpMfluh8HUWyrNssKy/H0oRzA0HhmipgfVwbXPamMUTZn1jEsvoGGwJYCRpSx4idujdul4vFwWgPROA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Main Quill library -->
+    <script src="//cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script src="//cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <script src="assets/js/app.js"></script>
+    <!-- Theme included stylesheets -->
+    <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <link href="//cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
+    <!-- style -->
+    <link href="assets/css/style.css" rel="stylesheet">
+    <!-- bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+    <!---
+https://cdnjs.cloudflare.com/ajax/libs/jsoneditor/9.9.2/img/jsoneditor-icons.svg
+-->
+</head>
+
+<body>
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand ml-1" href="#">
+            <!--<img src="/docs/4.0/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="">-->
+            Yet another CMS *YAWN!*
+        </a>
+    </nav>
+    <div class="container">
+        <div class="row ml-1">
+        </div>
+        <div class="row p-2">
+            <div class="col">
+                <div id="jsoneditor" style="width: 100%; height: 500px;"></div>
+            </div>
+            <div class="col">
+                <div class="d-none editorElement" id="editorText">
+                    <!--<label for="editor-container"  class="form-label" id="editor-container-label">Text</label>-->
+                    <div id="editor-container" style="height: 458px"></div>
+                </div>
+                <div class="d-none editorElement" id="editorBoolean">
+                    <!--<label for="editor-boolean"  class="form-label" id="editor-container-boolean">Boolean</label>-->
+                    Boolean
+                </div>
+                <div class="d-none editorElement" id="editorNumber">
+                    <div class="mb-3">
+                        <!--<label for="editor-number"  class="form-label" id="editor-number-label">Number</label>-->
+                        <input class="form-control" type="number" id="editor-number" name="editor-number" placeholder="Enter a number">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row p-2">
+            <div class="col">
+                <form>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">data object</label>
+                        <input type="text" class="form-control" id="pageHash" value="a1234tydhiwe99" disabled>
+                    </div>
+                    <div class="input-group mb-3">
+                        <label for="ApiUrl" class="form-label">API endpoint</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" aria-label="Text input with segmented dropdown button" placeholder="unique api endpoint..." value="https://cryptoskillz/cmsappi/a1234tydhiwe99">
+                            <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="visually-hidden">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="#">Go</a></li>
+                                <li><a class="dropdown-item" href="#">Copy URL</a></li>
+                                <li><a class="dropdown-item" href="#">Download Json</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <label for="EditURL" class="form-label">Edit URL</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" aria-label="Text input with segmented dropdown button" placeholder="edit url" value="https://cryptoskillz/cms/a1234tydhiwe99">
+                            <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="visually-hidden">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="#">Go</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col">
+            </div>
+        </div>
+    </div>
+    <div class="w-100"></div>
+    <div class="col"></div>
+    <div class="col"></div>
+    </div>
+    </div>
+</body>
+
+</html>

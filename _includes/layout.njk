@@ -31,9 +31,9 @@
     //env var from the env var
     var apiUrl ="{{env.APIURL}}"
     //dats main method default is main
-    var dataMainMethod ="{{env.DATAMAIN}}"
+    var level1name = "{{env.LEVEL1NAME}}"
+    var level2name = "{{env.LEVEL2NAME}}"
     var dataItemsMainMethod ="{{env.ITEMSDATAMAIN}}"
-    var paymentWorkerUrl = "{{env.PAYWORKERURL}}"
 </script>
 
 </head>
@@ -71,7 +71,7 @@
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Interface
+                DATA
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
@@ -79,14 +79,14 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog"></i>
-                    <span>{{env.DATAMAIN}}</span>
+                    <span>{{env.LEVEL1NAME}}s</span>
                 </a>
                 
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">{{env.DATAMAIN | capitalize}}:</h6>
+                        <h6 class="collapse-header">{{env.LEVEL1NAME | capitalize}}:</h6>
                         <div id="backpageprojectmenu"></div>
-                        <a class="collapse-item" href="/{{env.DATAMAIN}}/">View</a>
+                        <a class="collapse-item" href="/{{env.LEVEL1NAME}}s/">View</a>
                     </div>
                 </div>
                

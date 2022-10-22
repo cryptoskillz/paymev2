@@ -5,7 +5,7 @@ let checkElement
 var table // datatable
 
 //create your data schema here for table rendering.
-let dataSchema = '{ "id": "","paymentAddress":"", "name": "","amount":"0","paid":"0", "createdAt": "" }'
+let dataSchema = '{ "id": "", "name": "","buildUrl":"", "createdAt": "" }'
 dataSchema = JSON.parse(dataSchema);
 //add this to the settings page
 let settingsSchema = '{"btcaddress":"","xpub":"","compnanyname":""}'
@@ -78,7 +78,7 @@ let getFormData = () => {
     let theJson = "{";
     let sumbmitIt = 1;
     for (var i = 0; i < fields.length; ++i) {
-        if ((fields[i] != 'id') && (fields[i] != "createdAt")) {
+        if ((fields[i] != 'id') && (fields[i] != "createdAt") && (fields[i] != "dataid")) {
             //console.log("inp-"+fields[i]);
             let theValue = document.getElementById('inp-' + fields[i]).value;
             if (theValue == "") {
@@ -120,26 +120,9 @@ let buildForm = (dataitem = "") => {
     for (var i = 0; i < fields.length; ++i) {
         //console.log(fields[i])
         if ((fields[i] != 'id') && (fields[i] != "createdAt")) {
-            //check for a payment adresss
-            if (fields[i] == "paymentAddress") {
-                let settings = getSettings()
-                settings = JSON.parse(settings)
-                tmpd[i] = settings.btcaddress;
-                if ((settings.xpub != undefined) && (settings.xpub != "") && (settings.xpub != null)) {
-                    xpubHtml = ` <label><a href="javascript:generateFromXpub('${settings.xpub}')">Generate a new address from your xPub</a></label>`
-                } else {
-                    xpubHtml = "";
-                }
-            }
-            else
-            {
-                xpubHtml = "";
-            }
-
             inpHtml = inpHtml + `<div class="form-group" >
                                 <label>${fields[i]}</label>
                                 <input type="text" class="form-control form-control-user" id="inp-${fields[i]}" aria-describedby="emailHelp" placeholder="Enter ${fields[i]}" value="${tmpd[i]}">
-                                ${xpubHtml}
                                 <span class="text-danger d-none" id="error-${fields[i]}">${fields[i]} cannot be blank</span>  
                             </div>`
         }
@@ -154,21 +137,6 @@ let buildForm = (dataitem = "") => {
 END OF TABLE PROCESSING FUNCTIONS
 */
 
-let generateFromXpub = (xpub) => {
-    let xhrDone = (res) => {
-        //console.log(res)
-        if (res.indexOf('error.html') > -1) {
-            showAlert("Xpub generation error", 2)
-        } else {
-            res = JSON.parse(res)
-            if ((res.address != undefined) && (res.address != "") && (res.address != null)) {
-                document.getElementById('inp-paymentAddress').value = res.address
-            }
-        }
-    }
-    //call the xpub endpoint
-    xhrcall(1, `api/xpub/?x=${xpub}`, "", "json", "", xhrDone, token)
-}
 
 /*
 START OF LOCAL CACHE FUNCTIONS
@@ -188,8 +156,17 @@ let clearCache = (clearUser = 0) => {
 
 //projects
 
-let removeDataItem = (theId, debug = 0) => {
-    let theItems = window.localStorage.data
+let removeDataItem = (theLevel = 1, theId, debug = 0) => {
+    let theItems;
+    switch (theLevel) {
+        case 1:
+            theItems = window.localStorage.level1data
+            break;
+        case 2:
+            theItems = window.localStorage.level2data
+            break;
+
+    }
     theItems = JSON.parse(theItems);
     for (var i = 0; i < theItems.data.length; ++i) {
         if (theItems.data[i].id == theId) {
@@ -199,7 +176,16 @@ let removeDataItem = (theId, debug = 0) => {
             //delete theItems.data[i];
             theItems.data.splice(i, 1);
             //update the data
-            window.localStorage.data = JSON.stringify(theItems);
+            switch (theLevel) {
+                case 1:
+                    window.localStorage.level1data = JSON.stringify(theItems);
+                    break;
+                case 2:
+                    window.localStorage.level2data = JSON.stringify(theItems);
+                    break;
+
+            }
+
             return (true);
 
         }
@@ -211,9 +197,18 @@ let removeDataItem = (theId, debug = 0) => {
 /*
 this function added the newly created item to the local application cache
 */
-let addDataItem = (theData, debug = 0) => {
+let addDataItem = (theLevel = 1, theData, debug = 0) => {
     //parse the response
-    let theItems = window.localStorage.data
+    let theItems;
+    switch (theLevel) {
+        case 1:
+            theItems = window.localStorage.level1data
+            break;
+        case 2:
+            theItems = window.localStorage.level2data
+            break;
+
+    }
     theItems = JSON.parse(theItems);
     //parse the data
     theData = JSON.parse(theData);
@@ -225,24 +220,33 @@ let addDataItem = (theData, debug = 0) => {
     //add it to projects
     let tmp = JSON.parse(theData.data)
     theItems.data.push(tmp);
-    window.localStorage.data = JSON.stringify(theItems)
+    switch (theLevel) {
+        case 1:
+            window.localStorage.level1data = JSON.stringify(theItems)
+            break;
+        case 2:
+            window.localStorage.level2data = JSON.stringify(theItems)
+            break;
+
+    }
     showAlert(theData.message, 1)
 }
 
-let storeData = (theData, debug = 0) => {
-    //show debug info
-    if (debug == 1) {
-        console.log(theData)
+
+let updateData = (theLevel = 1, theData = "", debug = 0) => {
+    let theItems;
+    switch (theLevel) {
+        case 1:
+            theItems = window.localStorage.level1data
+            break;
+        case 2:
+            theItems = window.localStorage.level2data
+            break;
+
     }
-    window.localStorage.data = theData;
-
-}
-
-let updateData = (theData = "", debug = 0) => {
-    let theItems = window.localStorage.data;
     if (theItems == undefined) {
         if (debug == 1)
-            consolel.log("no items");
+            console.log("no items");
         return (false)
     } else {
         theItems = JSON.parse(theItems)
@@ -263,15 +267,50 @@ let updateData = (theData = "", debug = 0) => {
                 theItems.data[i] = theData;
                 //update the data
                 window.localStorage.currentdataitem = JSON.stringify(theData);
-                window.localStorage.data = JSON.stringify(theItems);
-                //return (theItems.data[i]);
+                switch (theLevel) {
+                    case 1:
+                        window.localStorage.level1data = JSON.stringify(theItems);
+                        break;
+                    case 2:
+                        window.localStorage.level2data = JSON.stringify(theItems);
+                        break;
+
+                }
             }
         }
     }
 }
 
-let getData = (theId = "", debug = 0) => {
-    let theItems = window.localStorage.data;
+let storeData = (theLevel = 1, theData, debug = 0) => {
+    //show debug info
+    if (debug == 1) {
+        console.log(theData)
+    }
+    switch (theLevel) {
+        case 1:
+            window.localStorage.level1data = theData;
+            break;
+        case 2:
+            window.localStorage.level2data = theData;
+            break;
+
+    }
+}
+
+
+let getData = (theLevel = 1, theId = "", debug = 0) => {
+
+    let theItems;
+    switch (theLevel) {
+        case 1:
+            theItems = window.localStorage.level1data
+            break;
+        case 2:
+            theItems = window.localStorage.level2data
+            break;
+
+
+    }
     if ((theItems == undefined) || (theItems == "") || (theItems == null)) {
         if (debug == 1)
             consolel.log("no items");
@@ -306,6 +345,12 @@ let getCurrentDataItem = (debug = 0) => {
     let currentdataitem = JSON.parse(window.localStorage.currentdataitem)
     return (currentdataitem)
 
+}
+
+let storeCurrentDataItem = (currentItem,debug = 0) => {
+    if (debug == 1)
+        console.log(window.localStorage.currentdataitem);
+    window.localStorage.currentdataitem = currentItem;
 }
 
 let storeSettings = (theData, debug = 0) => {
@@ -364,15 +409,13 @@ if (typeof(checkElement) != 'undefined' && checkElement != null) {
             //parse the response
             showAlert('Item has been deleted', 1)
             table.row('#' + tableRowId).remove().draw()
-            console.log(deleteMethod)
-            console.log('api/' + dataMainMethod + '/')
-
-            if (deleteMethod == 'api/' + dataMainMethod + '/') {
-                removeDataItem(deleteId)
+            //console.log(deleteMethod)
+            if (deleteMethod == 'api/' + level1name + '/') {
+                removeDataItem(1, deleteId)
 
             }
-            if (deleteMethod == 'api/' + dataItemsMainMethod + '/') {
-                removeDataItems(deleteId, 0)
+            if (deleteMethod == 'api/' + level2name + '/') {
+                removeDataItem(2, deleteId, 0)
 
             }
 
@@ -525,7 +568,10 @@ let xhrcall = (type = 1, method, bodyObj = "", setHeader = "", redirectUrl = "",
     if (typeof(checkElement) != 'undefined' && checkElement != null) {
         document.getElementById("spinner").classList.remove("d-none");
     }
-    let url = apiUrl + method;
+    let url = method;
+    let result = method.includes("http");
+    if (result == false)
+        url = apiUrl + method;
     //store the type
     let xhrtype = '';
     switch (type) {

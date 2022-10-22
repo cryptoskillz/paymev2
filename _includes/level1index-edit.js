@@ -18,7 +18,7 @@ whenDocumentReady(isReady = () => {
         let xhrDone = (res) => {
             res = JSON.parse(res)
             let data = JSON.parse(res.data)
-            updateData(data,1)
+            updateData(1,data,1)
             showAlert(res.message, 1)
             document.getElementById('data-header').innerHTML = `Edit ${data.name}`;
 
@@ -33,7 +33,7 @@ whenDocumentReady(isReady = () => {
             bodyJson = JSON.stringify(bodyJson);
             //console.log(bodyJson)
             //call it
-            xhrcall(4, `api/${dataMainMethod}/`, bodyJson, "json", "", xhrDone, token)
+            xhrcall(4, `api/${level1name}/`, bodyJson, "json", "", xhrDone, token)
         }
     })
 })

@@ -1,16 +1,16 @@
 ---
 layout: layout.njk
-permalink: /data/edit/
+permalink: /{{env.LEVEL1NAME}}/edit/
 ---
 {% set theJs %}
-    {% include 'data-edit.js' %}
+    {% include 'level1index-edit.js' %}
 {% endset %}
 <!-- Page Heading -->
 
 
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800" id="data-header"></h1>
-        <a href="/{{env.DATAMAIN}}/" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+        <a href="/{{env.LEVEL1NAME}}s/" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
         <i class="fas fa-backward fa-sm text-white-50"></i> Back</a>
     </div>
 <p class="mb-4">

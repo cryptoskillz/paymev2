@@ -1,19 +1,22 @@
 ---
 layout: layout.njk
-permalink: /data/
+permalink: /{{env.LEVEL1NAME}}s/
 ---
+<!--
+This is the top level nav page and it has a js file of the same name in the _includes directory. It uses dataname to generate the nav
+-->
 {% set theJs %}
-    {% include 'data.js' %}
+    {% include 'level1index.js' %}
 {% endset %}
 <!-- Page Heading -->
  <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">{{env.DATAMAIN | capitalize }}</h1>
-    <a href="/{{env.DATAMAIN}}/new/" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" id="btn-create-cy">
+    <h1 class="h3 mb-0 text-gray-800">{{env.LEVEL1NAME | capitalize }}s</h1>
+    <a href="/{{env.LEVEL1NAME}}/new/" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" id="btn-create-cy">
     <i class="fas fa-download fa-sm text-white-50"></i> Create New</a>
 </div>
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Currect {{env.DATAMAIN | capitalize }}</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Current {{env.LEVEL1NAME | capitalize }}s</h6>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -21,7 +24,7 @@ permalink: /data/
                 <thead>
                     <tr>
                         <th>Id</th>
-                        <th>Customer Name</th>
+                        <th>{{env.LEVEL1NAME | capitalize}} Name</th>
                         <th>Date Created</th>
                         <th>Actions</th>
                     </tr>
@@ -29,7 +32,7 @@ permalink: /data/
                 <tfoot>
                     <tr>
                         <th>Id</th>
-                        <th>Customer Name</th>
+                        <th>{{env.LEVEL1NAME | capitalize}} Name</th>
                         <th>Date Created</th>
                         <th>Actions</th>
                     </tr>

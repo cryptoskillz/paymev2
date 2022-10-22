@@ -12,7 +12,7 @@ let payLoad;
 let contentType;
 //set data main to whatever is in env for consistency
 const datamain = "data";
-let dataSchema = { id: "",name: "", createdAt: "" }
+let dataSchema = { id: "",name: "",buildUrl:"", createdAt: "" }
 
 //JWT model
 const jwt = require('@tsndr/cloudflare-worker-jwt');
@@ -74,6 +74,8 @@ export async function onRequestPut(context) {
         if (theItem != null) {
             if (payLoad.name != undefined)
                 theItem.name = payLoad.name;
+            if (payLoad.buildUrl != undefined)
+                theItem.buildUrl = payLoad.buildUrl;           
             //console.log(datamain + payLoad.id)
             //delete the old one
             //await KV.delete(datamain + payLoad.oldname + "]" + payLoad.id);
@@ -88,37 +90,7 @@ export async function onRequestPut(context) {
 
 }
 
-export async function onRequestDelete(context) {
 
-    /*
-    todo
-
-    */
-    const {
-        request, // same as existing Worker API
-        env, // same as existing Worker API
-        params, // if filename includes [id] or [[path]]
-        waitUntil, // same as ctx.waitUntil in existing Worker API
-        next, // used for middleware or to fetch assets
-        data, // arbitrary space for passing data between middlewares
-    } = context;
-
-    //return new Response({message:"delete"}, { status: 200 });
-    contentType = request.headers.get('content-type');
-    if (contentType != null) {
-        //get the login credentials
-        payLoad = await request.json();
-        //console.log(payLoad)
-        let details = await decodeJwt(request.headers, env.SECRET)
-        const KV = context.env.kvdata;
-        let user = await KV.get("user" + details.payload.username);
-        user = JSON.parse(user)
-        //console.log(payLoad)
-        //console.log(datamain  "]" + payLoad.deleteid)
-        await KV.delete(datamain+"-"+user.user.secret+ "]" + payLoad.deleteid);
-        return new Response(JSON.stringify({ message: "item deleted" }), { status: 200 });
-    }
-}
 export async function onRequestPost(context) {
     const {
         request, // same as existing Worker API
@@ -138,73 +110,47 @@ export async function onRequestPost(context) {
     }
     //decode jwt
     let details = await decodeJwt(request.headers, env.SECRET)
-        const KV = context.env.kvdata;
-        //get user
+    const KV = context.env.kvdata;
+    //get user
     let user = await KV.get("user" + details.payload.username);
     user = JSON.parse(user)
+
     let theCheck = await KV.list({ prefix: datamain+"-"+user.user.secret  });
+    //console.log(theCheck)
     let exists = 0;
     let id = uuid.v4();
     if (theCheck.keys.length > 0) {
         for (var i = 0; i < theCheck.keys.length; ++i) {
             let tmp = theCheck.keys[i].name.split(']')
-            //console.log(datamain + id)
-            //console.log(tmp[0])
-            if (tmp[0] == datamain + id)
+            console.log("new id :"+id)
+            console.log("list id :"+tmp[1])
+            
+            if (id == tmp[1])
+            {
+                console.log('exists ')
                 exists = 1;
+            }
+            else
+            {
+                console.log('does not exist')
+            }
         }
     }
 
     if (exists == 1)
         return new Response(JSON.stringify({ error: "data name already exists" }), { status: 400 });
     else {
-        //alternate key method
-        //let projects = await KV.list({ prefix: "projects" + details.username + "*" });
-        //console.log(projects.keys.length)
-        //let projectsData = {data: []}
-        //let id = projects.keys.length+1
 
-        
-        let schemaJson = {
-            "fields": "",
-            "originalfields": ""
-        }
         let fDate = getDate()
         let theData = dataSchema;
         theData.id = id;
         theData.name  = payLoad.name;
+        theData.buildUrl  = payLoad.buildUrl;
         theData.createdAt = fDate;
         //console.log(theData)
         //console.log(datamain + payLoad.name + "]" + id)
-        await KV.put(datamain+"-"+user.user.secret+ "]" + id, JSON.stringify(theData));
-        //update the payment queue
-        let queueData = await KV.get("paymentqueue");
-        let paymentQueueArray = [];
-        //console.log(queueData)
-        if (queueData == null)
-        {
-            let tmp = {"kv":""}
-            tmp.kv =`${datamain}-${user.user.secret}]${id}`
-            paymentQueueArray.push(tmp)
-            console.log(paymentQueueArray)
-            await KV.put("paymentqueue", JSON.stringify(paymentQueueArray));
-        }
-        else
-        {
-            let tmp = {"kv":""}
-            tmp.kv =`${datamain}-${user.user.secret}]${id}`
-            queueData = JSON.parse(queueData)
-            queueData.push(tmp)
-            /*
-            debug
-            for (var i = 0; i < queueData.length; ++i) {
-                console.log(queueData[i].kv)
-            }
-            */
-
-            await KV.put("paymentqueue",JSON.stringify(queueData));
-        }
-
+        await KV.put(datamain+"-"+user.user.secret + "]"+id , JSON.stringify(theData));
+    
         return new Response(JSON.stringify({ message: "Item added", data: JSON.stringify(theData) }), { status: 200 });
 
     }
@@ -249,4 +195,36 @@ export async function onRequestGet(context) {
         }
     }
     return new Response(JSON.stringify(theDataArray), { status: 200 });
+}
+
+export async function onRequestDelete(context) {
+
+    /*
+    todo
+
+    */
+    const {
+        request, // same as existing Worker API
+        env, // same as existing Worker API
+        params, // if filename includes [id] or [[path]]
+        waitUntil, // same as ctx.waitUntil in existing Worker API
+        next, // used for middleware or to fetch assets
+        data, // arbitrary space for passing data between middlewares
+    } = context;
+
+    //return new Response({message:"delete"}, { status: 200 });
+    contentType = request.headers.get('content-type');
+    if (contentType != null) {
+        //get the login credentials
+        payLoad = await request.json();
+        //console.log(payLoad)
+        let details = await decodeJwt(request.headers, env.SECRET)
+        const KV = context.env.kvdata;
+        let user = await KV.get("user" + details.payload.username);
+        user = JSON.parse(user)
+        //console.log(payLoad)
+        //console.log(datamain  "]" + payLoad.deleteid)
+        await KV.delete(datamain+"-"+user.user.secret+ "]" + payLoad.deleteid);
+        return new Response(JSON.stringify({ message: "item deleted" }), { status: 200 });
+    }
 }
