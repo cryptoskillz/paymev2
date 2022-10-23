@@ -8,9 +8,7 @@ const superagent = require('superagent');
 //async function to get the posts
 getData = async () => {
     let method = "test-endpoint/"
-    console.log(`${process.env.API}${method}`)
-    var res = await superagent.get(`${process.env.STRAPIAPI}backpage-projects/`).query({});
-    //console.log(res.body)
+    var res = await superagent.get(`${process.env.API}${method}`).query({});
     return (res.body)
 }
 
