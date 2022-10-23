@@ -1,11 +1,14 @@
-//remove the comments when you have wired up the API
+/*
+    Note we dont actually call any API as we dont actually build any static pages with 11.ty this is here incase we want to extend it in the 
+    future. 
+*/
 require('dotenv').config();
 const superagent = require('superagent');
 
 //async function to get the posts
 getData = async () => {
     let method = "test-endpoint/"
-    console.log(`${process.env.STRAPIAPI}${method}`)
+    console.log(`${process.env.API}${method}`)
     var res = await superagent.get(`${process.env.STRAPIAPI}backpage-projects/`).query({});
     //console.log(res.body)
     return (res.body)
