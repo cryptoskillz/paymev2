@@ -24,7 +24,9 @@ run  the following 2 commands
 
 open _data/env.js and change the vars to whatever you want.
 
-### open .env
+### create .env
+
+rename _.env to .env to allow dotenv to see the local environment variables 
 
 Change the secret to something else, this is the Key that JWT uses. 
 The API is set to the local host.
