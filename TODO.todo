@@ -1,3 +1,5 @@
+GENERAL 
+
  ✔ when you click the pages button store the id and the name of the level 1 page @done (22-10-20 23:19)
  ✔ set the schema for level 2 add and we store the id in this schema @done (22-10-21 00:33)
  ☐ content edit page
@@ -11,6 +13,7 @@
  ✔ check the single entry for page @done (22-10-21 14:14)
  ☐ do we require the get single item in the page api?
  ✔ clear cacheon level 2 @done (22-10-21 14:19)
+ ☐ check that the application local storage is working on production it seems to have a delay in loading this does not show up locally.
 
 CONTENT PAGE
 
@@ -28,11 +31,19 @@ SITE PAGE
 
  ✔ add the deploy hook to the level 1 (site) @done (22-10-22 15:57)
  ☐ add the correct icons to the index view
+ ☐ when you add the first site add it to the local cache 
+ ☐ publish page has to end the spinner cf gives a blank response that we have to trap.
+
 
 PAGE PAGE
 
  ☐ add the correct icons to the index view
  ☐ use seperate page index to build the schema so it shows different from the schema
+ ☐ when you add the first site add it to the local cache 
+ ☐ page edit should not show the content object
+ ☐ does page edit / new want a build Url (there is an argument that we should build indvidual pages as well as full sites)
+ ☐ ^ should not be required, regardless
+ ☐ when you add the first page add it to the local cache 
 
 
 API
@@ -48,3 +59,16 @@ API
 LEVEL 1
 
  ☐ remove the warnings (name) when the field has been filled in (this will apply to all forms.)
+
+ ☐ update the readme
+
+LOGIN / CREATE ACCOUNT
+
+ ☐ remove the create account part (could have it enabled on a flag)
+ ☐ add an admin username / password as an env var (or kv datastore) to allow logins
+
+DASHBOARD
+
+ ☐ plausarise the counter 
+
+
