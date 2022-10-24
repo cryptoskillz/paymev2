@@ -15,7 +15,7 @@ let whenDocumentReady = (f) => {
 
 whenDocumentReady(isReady = () => {
     //build the elements
-    document.getElementById('formInputs').innerHTML = buildForm();
+    document.getElementById('formInputs').innerHTML = buildForm("",2);
     //show the form
     document.getElementById('showBody').classList.remove('d-none')
     //create button click
@@ -36,8 +36,8 @@ whenDocumentReady(isReady = () => {
         bodyJson = JSON.parse(bodyJson);
         bodyJson.level1id = window.localStorage.level1selectedid;
         bodyJson = JSON.stringify(bodyJson);
-        console.log('body json')
-        console.log(bodyJson);
+        //console.log('body json')
+        //console.log(bodyJson);
         //check there is data to submit
         if (bodyJson != false) {
             //call it

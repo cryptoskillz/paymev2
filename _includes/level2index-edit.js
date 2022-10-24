@@ -1,4 +1,3 @@
-
 //add a ready function
 
 let whenDocumentReady = (f) => {
@@ -8,18 +7,18 @@ let whenDocumentReady = (f) => {
 whenDocumentReady(isReady = () => {
     //get the schema
     let dataitem = getCurrentDataItem();
-     let bodyJson ;
+    let bodyJson;
     //build the elements
-    document.getElementById('formInputs').innerHTML = buildForm(dataitem);
+    document.getElementById('formInputs').innerHTML = buildForm(dataitem,2);
     //show the form
     document.getElementById('showBody').classList.remove('d-none')
     //create button click
-    document.getElementById('btn-edit').addEventListener('click', function() {        //api call done
+    document.getElementById('btn-edit').addEventListener('click', function() { //api call done
         let xhrDone = (res) => {
             res = JSON.parse(res)
             let data = JSON.parse(res.data)
             //console.log(data)
-            updateData(2,data,0)
+            updateData(2, data, 0)
             showAlert(res.message, 1)
             document.getElementById('data-header').innerHTML = `Edit ${data.name}`;
 

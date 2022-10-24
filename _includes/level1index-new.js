@@ -15,7 +15,7 @@ let whenDocumentReady = (f) => {
 
 whenDocumentReady(isReady = () => {
     //build the elements
-    document.getElementById('formInputs').innerHTML = buildForm();
+    document.getElementById('formInputs').innerHTML = buildForm("",1);
     //show the form
     document.getElementById('showBody').classList.remove('d-none')
     //create button click

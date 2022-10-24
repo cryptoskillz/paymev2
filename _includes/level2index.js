@@ -71,10 +71,10 @@ whenDocumentReady(isReady = () => {
 
             let tmpName = res.data[i].name.replace(" ", "-");
             let contentbutton = `<a href="javascript:loadURL('/${level1name}/${level2name}/content/','${res.data[i].id}','${res.data[i].name}')" id="ep-${tmpName}-${i}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-    <i class="fas fa-file fa-sm text-white-50"></i> Content</a>`
+    <i class="fas fa-keyboard fa-sm text-white-50"></i> Content</a>`
             //note you may only want one level of items, if so delete this method
             let editbutton = `<a href="javascript:loadURL('/${level1name}/${level2name}/edit/','${res.data[i].id}')" id="ep-${tmpName}-${i}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-    <i class="fas fa-file fa-sm text-white-50"></i> Edit</a>`
+    <i class="fas fa-edit fa-sm text-white-50"></i> Edit</a>`
             let deletebutton = `<a href="javascript:deleteTableItem('${res.data[i].id}','${res.data[i].id}','api/${level2name}/')" id="dp-${tmpName}-${i}" class=" d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
     <i class="fas fa-trash fa-sm text-white-50"></i> Delete</a>`
             //add the record

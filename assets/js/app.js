@@ -102,7 +102,7 @@ let getFormData = () => {
 
 }
 
-let buildForm = (dataitem = "") => {
+let buildForm = (dataitem = "",theLevel=1) => {
     let theJson;
     //check if a json object was passed and if not then use the default schema
     if (dataitem == "")
@@ -117,9 +117,19 @@ let buildForm = (dataitem = "") => {
     let inpHtml = "";
 
     let xpubHtml = "";
+   
     for (var i = 0; i < fields.length; ++i) {
+         let addIt =1;
         //console.log(fields[i])
-        if ((fields[i] != 'id') && (fields[i] != "createdAt")) {
+        if ((fields[i] == 'id') || (fields[i] == "createdAt") || (fields[i] == "content")) 
+            addIt = 0;
+        if ((theLevel == 2) && (fields[i] == "buildUrl"))
+        {
+            console.log('in b')
+            addIt = 0;
+        }
+        if (addIt == 1)
+        { 
             inpHtml = inpHtml + `<div class="form-group" >
                                 <label>${fields[i]}</label>
                                 <input type="text" class="form-control form-control-user" id="inp-${fields[i]}" aria-describedby="emailHelp" placeholder="Enter ${fields[i]}" value="${tmpd[i]}">
@@ -612,10 +622,15 @@ let xhrcall = (type = 1, method, bodyObj = "", setHeader = "", redirectUrl = "",
         xhr.send();
     }
     //result
-    //todo (chris) make this eval back to a done function
+    //check for a generic error this is usualy CORRS or something like it.
+    xhr.onerror = function () { 
+       //console.log(xhr.status)
+       //console.log(xhr.response)
+       if (xhr.status == 0)
+        document.getElementById("spinner").classList.add("d-none");
+    }; 
     xhr.onload = function() {
         checkElement = document.getElementById("confirmation-modal-delete-button");
-
         if (typeof(checkElement) != 'undefined' && checkElement != null) {
             document.getElementById("spinner").classList.add("d-none");
         }
@@ -657,6 +672,8 @@ let xhrcall = (type = 1, method, bodyObj = "", setHeader = "", redirectUrl = "",
             }
 
         }
+
+
 
     }
 };
