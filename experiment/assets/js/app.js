@@ -99,9 +99,10 @@ let setEditorElement = (theElement = "") => {
             //console.log(delta)
             //console.log(source)
             let tmp = quill.getContents();
-            console.log(tmp.ops[0])
+            //console.log(tmp.ops[0])
             //console.log(tmp.ops[0].insert)
             currentJsonElement.innerHTML = tmp.ops[0].insert;
+            console.log(editor.get())
         } else {
             currentJsonBoolean = 1;
         }

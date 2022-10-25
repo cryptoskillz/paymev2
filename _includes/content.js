@@ -1,5 +1,4 @@
-let currentJsonElement;
-let currentJsonBoolean = 0;
+let oldJsonContent = ""
 
 let whenDocumentReady = (f) => {
     /in/.test(document.readyState) ? setTimeout('whenDocumentReady(' + f + ')', 9) : f()
@@ -29,14 +28,124 @@ whenDocumentReady(isReady = () => {
     const initialJson = jsonContent
     editor.set(initialJson);
 
+
+
+    //this function shows the correct edit element
+    let setEditorElement = (theElement = "") => {
+        //loop through the elements
+        for (var i = 0; i < jsonValues.length; i++) {
+            //check for a match
+            if (theElement.innerHTML == jsonValues[i].innerHTML) {
+                //why is this a -
+                //console.log(jsonFields[i-1])
+                oldJsonContent = `{${jsonFields[i-1].innerHTML}: '${theElement.innerHTML}'}`;
+
+            }
+
+        }
+        //console.log(oldJsonContent)
+
+        const theElements = document.querySelectorAll('.editorElement');
+        //hide them all, today
+        for (const el of theElements) {
+            el.classList.add('d-none');
+        }
+        //check if an editable element was clicked
+        if (theElement != "") {
+            //show the text editor
+            if (theElement.classList.contains('jsoneditor-string')) {
+                document.getElementById('editorText').classList.remove('d-none');
+                quill.setText(theElement.innerHTML)
+                return;
+            }
+            //show the number editor
+            if (theElement.classList.contains('jsoneditor-number')) {
+                document.getElementById('editorNumber').classList.remove('d-none');
+                document.getElementById('editor-number').value = theElement.innerHTML;
+                return;
+            }
+            //show the boolean editor
+            if (theElement.classList.contains('jsoneditor-boolean')) {
+                document.getElementById('editorBoolean').classList.remove('d-none')
+                return;
+            }
+        }
+
+    }
+
+
+
+
+
     /*
      *  END OF JSON EDITOR CODE
      */
 
+    /*
+     *  START OF QUILL
+     */
+    var quill = new Quill('#editor-container', {
+        modules: {
+            toolbar: [
+                [{ header: [1, 2, false] }],
+                ['bold', 'italic', 'underline'],
+                ['image', 'code-block']
+            ]
+        },
+        placeholder: 'Compose an epic...',
+        theme: 'snow' // or 'bubble'
 
-    document.getElementById('btn-save').addEventListener('click', function() {  
+
+    });
+
+    //text changes
+    quill.on('text-change', function(delta, source) {
+        //loop through the json element
+        for (var key in jsonContent) {
+            //build the old json element
+            let tmpJson = `{${key}: '${jsonContent[key]}'}`;
+            //check if it matches the old json we stored on the click
+            if (tmpJson == oldJsonContent) {
+                //get the contents of the text editor
+                let newContent = quill.getContents();
+                //get the copy
+                let tmpNew = newContent.ops[0].insert;
+                //clean it up
+                tmpNew = tmpNew.trim();
+                //buid the new json element
+                let newJson = `{${key}: '${tmpNew}'}`;
+                //check if anything has changed
+                if (newJson != tmpJson) {
+                    //update the value
+                    jsonContent[key] = tmpNew;
+                    //update the json content
+                    editor.update(jsonContent);
+                    //update the old content
+                    oldJsonContent = newJson;
+                }
+
+            }
+
+        }
+
+    });
+
+    /*
+     *  END OF QUILL
+     */
+
+
+    /*
+     *  START OF EVENT LISTENERS 
+     */
+
+
+    document.getElementById('btn-save').addEventListener('click', function() {
         //get the JSON
         let content = editor.get();
+        let content2 = editor.getText()
+        console.log(content);
+        console.log(content2);
         let bodyJson = {}
         //add the ids
         bodyJson.content = content;
@@ -48,10 +157,10 @@ whenDocumentReady(isReady = () => {
         let xhrDone = (res) => {
             res = JSON.parse(res)
             let data = JSON.parse(res.data)
-            //console.log(data)
-            updateData(2,data,0)
+            console.log(data)
+            updateData(2, data, 0)
             showAlert(res.message, 1)
-            storeCurrentDataItem(theItem.data);
+            storeCurrentDataItem(JSON.stringify(data));
 
         }
 
@@ -59,6 +168,42 @@ whenDocumentReady(isReady = () => {
         xhrcall(4, `api/content/`, bodyobjectjson, "json", "", xhrDone, token)
     })
 
+
+    //click function 
+    let jsonValueClick = function() {
+        console.log('click')
+        setEditorElement(this)
+    };
+
+
+    //store the JSON values
+    let jsonValues = document.getElementsByClassName("jsoneditor-value");
+
+    //add the event listener to the click. 
+    for (var i = 0; i < jsonValues.length; i++) {
+        //note : we may only want to make certain fields editable or not. I don't care. 
+        jsonValues[i].addEventListener('click', jsonValueClick, false);
+
+    }
+
+    //store the JSON fields
+    let jsonFields = document.getElementsByClassName("jsoneditor-field");
+
+    /*
+    //click function 
+    let jsonFieldClick = () => {
+        //hide the editor elements.
+        setEditorElement();
+    }
+
+
+
+    //add the event listener to the click. 
+    for (var i = 0; i < jsonFields.length; i++) {
+        jsonFields[i].addEventListener('click', jsonFieldClick, false);
+    }
+
+    */
 
 
     /*
