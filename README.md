@@ -54,7 +54,6 @@ The first command will build a local version the second command will use product
 
 The API endpoints are all in the functions/API directory
 
-
 ## DEPLOY TO CLOUDFLARE 
 
 create a repo and push the code to it
