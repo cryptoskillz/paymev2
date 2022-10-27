@@ -32,6 +32,7 @@ CONTENT PAGE
  ☐ add back the click elements for the fields so we can edit them in the text editor (maybe this stays in the json editor)
  ✔ remove the image option from the quill editor @done (22-10-27 13:57)
  ☐ when you edit with the JSON editor it has to update the quill and the internal json object
+ ☐ fix the issue that the dom does not see nested json-value classes as it breaks the text editor.  I think I will refactor this whole thing.
 
 
 SITE PAGE
