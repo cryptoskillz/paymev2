@@ -13,7 +13,7 @@ GENERAL
  ✔ clear cacheon level 2 @done (22-10-21 14:19)
  ✔ check that the application local storage is working on production it seems to have a delay in loading this does not show up locally. @done (22-10-24 11:00)
  ✔ update the readme @done (22-10-24 11:13)
- ☐ duplicate items on page post itis just checking for uid we may want it to be on the actual content 
+ ☐ duplicate items on page post it is just checking for uid we may want it to be on the actual content 
  ☐ do we require the get single item in the page api?
 
 
