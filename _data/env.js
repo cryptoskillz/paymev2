@@ -13,5 +13,6 @@ module.exports = {
     LEVEL1NAME: "site",
     LEVEL2NAME: "page",
     ITEMSDATAMAIN: "items",
-    DASHBOARDSTRAP: "Welcome to the content editor."
+    DASHBOARDSTRAP: "Welcome to the content editor.",
+    CANCREATEACCOUNT: process.env.CANCREATEACCOUNT
 }

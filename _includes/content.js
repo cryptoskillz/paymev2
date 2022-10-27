@@ -169,10 +169,22 @@ whenDocumentReady(isReady = () => {
     //click function 
     let jsonValueClick = function() {
         console.log('click')
-        setEditorElement(this)
+
+        setEditorElement(this);
+
+        
     };
 
+       document.getElementById('btn-thetest').addEventListener('click', function() {
+        console.log(editor.getSelection());
+        console.log(editor.getTextSelection())
 
+    })
+
+
+    /*
+
+    disabled for now as its not working correctly
     //store the JSON values
     let jsonValues = document.getElementsByClassName("jsoneditor-value");
 
@@ -182,6 +194,8 @@ whenDocumentReady(isReady = () => {
         jsonValues[i].addEventListener('click', jsonValueClick, false);
 
     }
+
+    */
 
     //store the JSON fields
     let jsonFields = document.getElementsByClassName("jsoneditor-field");

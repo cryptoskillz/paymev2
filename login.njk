@@ -75,9 +75,11 @@ layout: login-layout.njk
                                     <div class="text-center">
                                         <a class="small" href="/forgot-password/">Forgot Password?</a>
                                     </div>
-                                    <div class="text-center">
-                                        <a class="small" href="/create-account/">Create an Account!</a>
-                                    </div>
+                                    {% if env.CANCREATEACCOUNT == 1 %}
+                                        <div class="text-center">
+                                            <a class="small" href="/create-account/">Create an Account!</a>
+                                        </div>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
