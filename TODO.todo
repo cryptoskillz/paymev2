@@ -26,7 +26,12 @@ CONTENT PAGE
  ✔ add the page name to the header @done (22-10-21 17:42)
  ✔ make the back button go to the correct place @done (22-10-21 17:34)
  ✔ get the content from contentdata item @done (22-10-21 22:54)
- ☐ add quill as the content editor (the logic is in the experitment folder)
+ ✔ add quill as the content editor (the logic is in the experitment folder) @done (22-10-26 02:14)
+ ☐ figure out why JSON fields has requires a -1 it should be the same value json values
+ ✔ do we require a different editors for different data types, boolean etc? @done (22-10-27 13:57)
+ ☐ add back the click elements for the fields so we can edit them in the text editor (maybe this stays in the json editor)
+ ✔ remove the image option from the quill editor @done (22-10-27 13:57)
+ ☐ when you edit with the JSON editor it has to update the quill and the internal json object
 
 
 SITE PAGE

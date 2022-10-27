@@ -58,6 +58,8 @@ whenDocumentReady(isReady = () => {
                 quill.setText(theElement.innerHTML)
                 return;
             }
+            /*
+            //note : we may want to add seperate editors for boolean / numbers but we may not as the JSON edoitor handles well.
             //show the number editor
             if (theElement.classList.contains('jsoneditor-number')) {
                 document.getElementById('editorNumber').classList.remove('d-none');
@@ -69,6 +71,7 @@ whenDocumentReady(isReady = () => {
                 document.getElementById('editorBoolean').classList.remove('d-none')
                 return;
             }
+            /*
         }
 
     }
@@ -87,9 +90,14 @@ whenDocumentReady(isReady = () => {
     var quill = new Quill('#editor-container', {
         modules: {
             toolbar: [
-                [{ header: [1, 2, false] }],
+                [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
                 ['bold', 'italic', 'underline'],
-                ['image', 'code-block']
+                [{ 'font': [] }],
+                [{ 'color': [] }, { 'background': [] }], // dropdown with defaults from theme
+                [{ 'align': [] }],
+                [, 'code-block'],
+                [{ 'indent': '-1' }, { 'indent': '+1' }],
+                ['clean'] // remove formatting button
             ]
         },
         placeholder: 'Compose an epic...',
@@ -99,6 +107,9 @@ whenDocumentReady(isReady = () => {
     });
 
     //text changes
+    //note : If speed is an is an issue on larger key value pairs we can speed this process up by
+    //       updating the JSON directly using the index and removing the historical check, this is 
+    //       very much a belts and braces approach at this moment in time.
     quill.on('text-change', function(delta, source) {
         //loop through the json element
         for (var key in jsonContent) {
