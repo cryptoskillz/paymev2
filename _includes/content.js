@@ -58,20 +58,6 @@ whenDocumentReady(isReady = () => {
                 quill.setText(theElement.innerHTML)
                 return;
             }
-            /*
-            //note : we may want to add seperate editors for boolean / numbers but we may not as the JSON edoitor handles well.
-            //show the number editor
-            if (theElement.classList.contains('jsoneditor-number')) {
-                document.getElementById('editorNumber').classList.remove('d-none');
-                document.getElementById('editor-number').value = theElement.innerHTML;
-                return;
-            }
-            //show the boolean editor
-            if (theElement.classList.contains('jsoneditor-boolean')) {
-                document.getElementById('editorBoolean').classList.remove('d-none')
-                return;
-            }
-            /*
         }
 
     }
@@ -200,21 +186,6 @@ whenDocumentReady(isReady = () => {
     //store the JSON fields
     let jsonFields = document.getElementsByClassName("jsoneditor-field");
 
-    /*
-    //click function 
-    let jsonFieldClick = () => {
-        //hide the editor elements.
-        setEditorElement();
-    }
-
-
-
-    //add the event listener to the click. 
-    for (var i = 0; i < jsonFields.length; i++) {
-        jsonFields[i].addEventListener('click', jsonFieldClick, false);
-    }
-
-    */
 
 
     /*
