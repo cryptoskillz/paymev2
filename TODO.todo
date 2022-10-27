@@ -13,7 +13,7 @@ GENERAL
  ✔ clear cacheon level 2 @done (22-10-21 14:19)
  ✔ check that the application local storage is working on production it seems to have a delay in loading this does not show up locally. @done (22-10-24 11:00)
  ✔ update the readme @done (22-10-24 11:13)
- ☐ duplicate items on page post itis just checking for uid we may want it to be on the actual content 
+ ☐ duplicate items on page post it is just checking for uid we may want it to be on the actual content 
  ☐ do we require the get single item in the page api?
 
 
@@ -27,11 +27,12 @@ CONTENT PAGE
  ✔ make the back button go to the correct place @done (22-10-21 17:34)
  ✔ get the content from contentdata item @done (22-10-21 22:54)
  ✔ add quill as the content editor (the logic is in the experitment folder) @done (22-10-26 02:14)
- ☐ figure out why JSON fields has requires a -1 it should be the same value json values
+ ✔ figure out why JSON fields has requires a -1 it should be the same value json values @done (22-10-28 01:14)
  ✔ do we require a different editors for different data types, boolean etc? @done (22-10-27 13:57)
- ☐ add back the click elements for the fields so we can edit them in the text editor (maybe this stays in the json editor)
+ ✔ add back the click elements for the fields so we can edit them in the text editor (maybe this stays in the json editor) @done (22-10-28 01:14)
  ✔ remove the image option from the quill editor @done (22-10-27 13:57)
- ☐ when you edit with the JSON editor it has to update the quill and the internal json object
+ ✔ when you edit with the JSON editor it has to update the quill and the internal json object @done (22-10-28 01:14)
+ ✔ fix the issue that the dom does not see nested json-value classes as it breaks the text editor.  I think I will refactor this whole thing. @done (22-10-28 01:14)
 
 
 SITE PAGE

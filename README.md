@@ -28,8 +28,9 @@ open _data/env.js and change the vars to whatever you want.
 
 rename _.env to .env to allow dotenv to see the local environment variables 
 
-Change the secret to something else, this is the Key that JWT uses. 
-The API is set to the local host.
+API = The API is set to the local host but you should change it to your domain route in most cases
+SECRET = Change the secret to something else, this is the Key that JWT uses. 
+CANCREATEACCOUNT = 1 on 2 off.  This allows you to disable the create account
 
 ### Javascript
 
@@ -53,7 +54,6 @@ The first command will build a local version the second command will use product
 
 The API endpoints are all in the functions/API directory
 
-
 ## DEPLOY TO CLOUDFLARE 
 
 create a repo and push the code to it
@@ -75,6 +75,7 @@ Click on setting and then environment variables and add the following
 
 `	API: the root of your project`
 `	SECRET: A secret phrase for JWT`
+`	CANCREATEACCOUNT: 1 on 2 off.  This allows you to disable the create account`
 
 Click on functions and scroll down to the KV datastore
 click add and add the following details
