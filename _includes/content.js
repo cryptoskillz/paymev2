@@ -1,4 +1,4 @@
-let oldJsonContent = ""
+let oldContent = ""
 
 let whenDocumentReady = (f) => {
     /in/.test(document.readyState) ? setTimeout('whenDocumentReady(' + f + ')', 9) : f()
@@ -12,59 +12,17 @@ whenDocumentReady(isReady = () => {
     document.getElementById("content-header").innerHTML = `edit page ${window.localStorage.level2selecteditem} for site ${window.localStorage.level1selecteditem}`
     let dataitem = getCurrentDataItem();
     //console.log(dataitem);
-    //set the json content
-    let jsonContent = dataitem.content
+
     /*
      *  START OF JSON EDITOR CODE
      */
-
 
     // create the editor
     const container = document.getElementById("jsoneditor")
     const options = {}
     const editor = new JSONEditor(container, options)
-
-    // set json
-    const initialJson = jsonContent
-    editor.set(initialJson);
-
-
-
-    //this function shows the correct edit element
-    let setEditorElement = (theElement = "") => {
-        //loop through the elements
-        for (var i = 0; i < jsonValues.length; i++) {
-            //check for a match
-            if (theElement.innerHTML == jsonValues[i].innerHTML) {
-                //why is this a -
-                //console.log(jsonFields[i-1])
-                oldJsonContent = `{${jsonFields[i-1].innerHTML}: '${theElement.innerHTML}'}`;
-
-            }
-
-        }
-        //console.log(oldJsonContent)
-
-        const theElements = document.querySelectorAll('.editorElement');
-        //hide them all, today
-        for (const el of theElements) {
-            el.classList.add('d-none');
-        }
-        //check if an editable element was clicked
-        if (theElement != "") {
-            //show the text editor
-            if (theElement.classList.contains('jsoneditor-string')) {
-                document.getElementById('editorText').classList.remove('d-none');
-                quill.setText(theElement.innerHTML)
-                return;
-            }
-        }
-
-    }
-
-
-
-
+    // set the editor
+    editor.set(dataitem.content);
 
     /*
      *  END OF JSON EDITOR CODE
@@ -92,39 +50,38 @@ whenDocumentReady(isReady = () => {
 
     });
 
-    //text changes
-    //note : If speed is an is an issue on larger key value pairs we can speed this process up by
-    //       updating the JSON directly using the index and removing the historical check, this is 
-    //       very much a belts and braces approach at this moment in time.
+    //this function shows the correct edit element
+    let setEditorElement = (theElement = "") => {
+        document.getElementById('editorText').classList.remove('d-none');
+        oldContent = theElement.innerHTML;
+        quill.setText(theElement.innerHTML)
+    }
+
+
+    //update the json editor
     quill.on('text-change', function(delta, source) {
-        //loop through the json element
-        for (var key in jsonContent) {
-            //build the old json element
-            let tmpJson = `{${key}: '${jsonContent[key]}'}`;
-            //check if it matches the old json we stored on the click
-            if (tmpJson == oldJsonContent) {
-                //get the contents of the text editor
-                let newContent = quill.getContents();
-                //get the copy
-                let tmpNew = newContent.ops[0].insert;
-                //clean it up
-                tmpNew = tmpNew.trim();
-                //buid the new json element
-                let newJson = `{${key}: '${tmpNew}'}`;
-                //check if anything has changed
-                if (newJson != tmpJson) {
-                    //update the value
-                    jsonContent[key] = tmpNew;
-                    //update the json content
-                    editor.update(jsonContent);
-                    //update the old content
-                    oldJsonContent = newJson;
-                }
-
-            }
-
+        //get the content
+        let newContent = quill.getContents();
+        newContent = newContent.ops[0].insert;
+        //clean it up
+        newContent = newContent.trim();
+        //get the json
+        let jsonContent = editor.get();
+        //check if we have to update (we always should but costs nothing to check)
+        if (oldContent != newContent)
+        {
+            //turn the json into a string
+            jsonContent = JSON.stringify(jsonContent);
+            //replace the content
+            //note if we have the same content in a node this will cause an issue, will fix it later. 
+            jsonContent = jsonContent.replace(oldContent, newContent);
+            //turn it back into Json
+            jsonContent = JSON.parse(jsonContent);
+            //update the editor
+            editor.update(jsonContent);
+            //replace old content
+            oldContent = newContent;
         }
-
     });
 
     /*
@@ -139,10 +96,11 @@ whenDocumentReady(isReady = () => {
 
     document.getElementById('btn-save').addEventListener('click', function() {
         //get the JSON
+
         let content = editor.get();
-        let content2 = editor.getText()
-        console.log(content);
-        console.log(content2);
+        //let content2 = editor.getText()
+        //console.log(content);
+        //console.log(content2);
         let bodyJson = {}
         //add the ids
         bodyJson.content = content;
@@ -154,7 +112,7 @@ whenDocumentReady(isReady = () => {
         let xhrDone = (res) => {
             res = JSON.parse(res)
             let data = JSON.parse(res.data)
-            console.log(data)
+            //console.log(data)
             updateData(2, data, 0)
             showAlert(res.message, 1)
             storeCurrentDataItem(JSON.stringify(data));
@@ -167,40 +125,13 @@ whenDocumentReady(isReady = () => {
 
 
     //click function 
-    let jsonValueClick = function() {
-        console.log('click')
 
-        setEditorElement(this);
-
-        
-    };
-
-       document.getElementById('btn-thetest').addEventListener('click', function() {
-        console.log(editor.getSelection());
-        console.log(editor.getTextSelection())
-
-    })
-
-
-    /*
-
-    disabled for now as its not working correctly
-    //store the JSON values
-    let jsonValues = document.getElementsByClassName("jsoneditor-value");
-
-    //add the event listener to the click. 
-    for (var i = 0; i < jsonValues.length; i++) {
-        //note : we may only want to make certain fields editable or not. I don't care. 
-        jsonValues[i].addEventListener('click', jsonValueClick, false);
-
+    //find the json object. 
+    window.onclick = e => {
+        if (e.target.classList.contains("jsoneditor-string") == true) {
+            setEditorElement(e.target)
+        }
     }
-
-    */
-
-    //store the JSON fields
-    let jsonFields = document.getElementsByClassName("jsoneditor-field");
-
-
 
     /*
      *  END OF EVENT LISTENERS 
