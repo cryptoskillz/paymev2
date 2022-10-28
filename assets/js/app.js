@@ -154,12 +154,18 @@ START OF LOCAL CACHE FUNCTIONS
 
 let clearCache = (clearUser = 0) => {
     window.localStorage.currentdataitem = ""
-    window.localStorage.data = ""
-    window.localStorage.settings = ""
-
+    //window.localStorage.data = ""
+    
+    window.localStorage.level1data =""
+    window.localStorage.level2data = ""
+    window.localStorage.level1selecteditem = ""
+    window.localStorage.level1selecteditem = ""
+    window.localStorage.level1selectedid = ""
+    window.localStorage.level2selectedid = ""
     if (clearUser == 1) {
         window.localStorage.token = ""
         window.localStorage.user = ""
+        window.localStorage.settings = ""
     }
 }
 
@@ -526,6 +532,8 @@ let checkLogin = () => {
             if (user.loggedin != 1) {
                 window.location = '/login'
             } else {
+                //clear the cache 
+                clearCache();
                 //set the jwt and user
                 getToken();
                 checkElement = document.getElementById("user-account-header");
