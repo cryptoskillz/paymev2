@@ -30,6 +30,7 @@
 <script>
     //env var from the env var
     var apiUrl ="{{env.APIURL}}"
+    var adminUrl = "{{env.ADMINURL}}"
     //dats main method default is main
     var level1name = "{{env.LEVEL1NAME}}"
     var level2name = "{{env.LEVEL2NAME}}"
@@ -79,14 +80,14 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog"></i>
-                    <span>{{env.LEVEL1NAME}}s</span>
+                    <span>{{env.LEVEL1NAME}}</span>
                 </a>
                 
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">{{env.LEVEL1NAME | capitalize}}:</h6>
                         <div id="backpageprojectmenu"></div>
-                        <a class="collapse-item" href="/{{env.LEVEL1NAME}}s/">View</a>
+                        <a class="collapse-item" href="/{{env.LEVEL1NAME}}/">View</a>
                     </div>
                 </div>
                

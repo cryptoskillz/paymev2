@@ -15,6 +15,7 @@ export async function onRequest(context) {
             next, // used for middleware or to fetch assets
             data, // arbitrary space for passing data between middlewares
         } = context;
+        console.log('in')
         //set a valid boolean
         let valid = 1;
         //get the post data

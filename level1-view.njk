@@ -1,0 +1,199 @@
+---
+layout: layout.njk
+permalink: /property/view/
+---
+{% set theJs %}
+    {% include 'level1-view.js' %}
+{% endset %}
+<div class="d-none" id="propertydiv">
+	<div class="d-sm-flex align-items-center justify-content-between mb-4">
+		<h1 class="h3 mb-0 text-gray-800">PROPERTY</h1>
+	</div>
+	<div class="card shadow mb-4 " >
+		<div class="table-responsive" id="property-table">
+		  
+		</div>
+	</div>
+	 <div class="d-sm-flex align-items-center justify-content-between mb-4">
+	    <h1 class="h3 mb-0 text-gray-800">RENTAL AGREEMENT</h1>
+	</div>
+	 <div class="card shadow mb-4 " >
+	 	<div class="table-responsive">
+		    <table class="table" id="rental-aggrement-table"> 
+	        	<thead>
+		            <tr>
+		                <th>
+		                    ID
+		                </th>
+		                <th>
+		                    Name
+		                </th>
+		                <th>
+		                    Amount
+		                </th>
+		                <th>
+		                    Deposit
+		                </th>
+		                <th>
+		                    Start Date
+		                </th>
+		                <th>
+		                    End Date
+		                </th>
+		                <th>
+		                    Active
+		                </th>
+		            </tr>
+	        	</thead>
+		        <tbody>
+		            <tr>
+		                <td id="rental-aggrement-table-id">
+		                    
+		                </td>
+		                <td id="rental-aggrement-table-name">
+		                </td>
+		                <td id="rental-aggrement-table-rental_amount">
+		                </td>
+		                <td id="rental-aggrement-table-deposit">
+		                </td>
+		                <td id="rental-aggrement-table-start_date">
+		                </td >
+		                <td id="rental-aggrement-table-end_date">
+		                </td>
+		                <td id="rental-aggrement-table-yes">
+		                    
+		                </td>
+		            </tr>
+		        </tbody>
+		    </table>
+		</div>
+	</div>
+
+	<!-- owners table -->
+	<div class="card shadow mb-4">
+	    <div class="card-header py-3">
+	        <h6 class="m-0 font-weight-bold text-primary">Owners</h6>
+	    </div>
+	    <div class="card-body">
+	        <div class="table-responsive">
+	            <table class="table table-bordered" id="ownerstable" width="100%" cellspacing="0">
+	                <thead>
+	                    <tr>
+	                        <th>Name</th>
+	                        <th>Email</th>
+	                        <th>Token</th>
+	                        <th>Share (%)</th>
+	                    </tr>
+	                </thead>
+	                <tfoot>
+	                    <tr>
+	                        <th>Name</th>
+	                        <th>Email</th>
+	                        <th>Token</th>
+	                        <th>Share (%)</th>
+	                    </tr>
+	                </tfoot>
+	                <tbody>
+	                </tbody>
+	            </table>
+	        </div>
+	    </div>
+	</div>
+
+	<!-- PAID IN TABLE -->
+	<div class="card shadow mb-4">
+	    <div class="card-header py-3">
+	        <h6 class="m-0 font-weight-bold text-primary">PAID IN</h6>
+	    </div>
+	    <div class="card-body">
+	        <div class="table-responsive">
+	            <table class="table table-bordered" id="paidintable" width="100%" cellspacing="0">
+	                <thead>
+	                    <tr>
+	                        <th>Type</th>
+	                        <th>Description</th>
+	                        <th>Amount</th>
+	                        <th>Date</th>
+	                    </tr>
+	                </thead>
+	                <tfoot>
+	                    <tr>	                    	
+	                        <th colspan="3" style="text-align:right">Total:</th>
+	                        <th id="paidintotal"></th>	                        
+	                    </tr>
+	                </tfoot>
+	                <tbody>
+	                </tbody>
+	            </table>
+	        </div>
+	    </div>
+	</div>
+
+	<!-- PAID OUT TABLE -->
+	<div class="card shadow mb-4">
+	    <div class="card-header py-3">
+	        <h6 class="m-0 font-weight-bold text-primary">PAID OUT</h6>
+	    </div>
+	    <div class="card-body">
+	        <div class="table-responsive">
+	            <table class="table table-bordered" id="paidouttable" width="100%" cellspacing="0">
+	                <thead>
+	                    <tr>
+	                        <th>Name</th>
+	                        <th>Email</th>
+	                        <th>Token</th>
+	                        <th>Share</th>
+	                    </tr>
+	                </thead>
+	                <tfoot>
+	                    <tr>
+	                        <th colspan="3" style="text-align:right">Total:</th>
+	                        <th id="paidouttotal"></th>
+	                    </tr>
+	                </tfoot>
+	                <tbody>
+	                </tbody>
+	            </table>
+	        </div>
+	    </div>
+	</div>
+
+	<!-- DISTRIBUTIONS  TABLE -->
+	<div class="card shadow mb-4">
+	    <div class="card-header py-3">
+	        <h6 class="m-0 font-weight-bold text-primary">DISTRIBUTIONS</h6>
+	    </div>
+	    <div class="card-body">
+	        <div class="table-responsive">
+	            <table class="table table-bordered" id="disttable" width="100%" cellspacing="0">
+	                <thead>
+	                    <tr>
+	                        <th>Payment to</th>
+	                        <th>Description</th>
+	                        <th>Date</th>
+	                        <th>Amount</th>
+	                    </tr>
+	                </thead>
+	                <tfoot>
+	                    <tr>
+	                        <th colspan="3" style="text-align:right"> Total Distributions:</th>
+	                        <th id="totaldist"></th>
+	                    </tr>
+	                    <tr>
+	                        <th colspan="3" style="text-align:right"> Total Left:</th>
+	                        <th id="totalleft"></th>
+	                    </tr>
+	                </tfoot>
+	                <tbody>
+	                </tbody>
+	            </table>
+	        </div>
+	    </div>
+	</div>
+		
+</div>
+{% if env.ENVIRONMENT == 'local' %}
+    <script type="text/javascript">{{theJs | safe}}</script>
+{% else %}
+    <script type="text/javascript">{{theJs | jsmin | safe}}</script>
+{% endif %}

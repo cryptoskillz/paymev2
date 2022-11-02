@@ -12,7 +12,7 @@ let payLoad;
 let contentType;
 //set data main to whatever is in env for consistency
 const datamain = "data";
-let dataSchema = { id: "",name: "",buildUrl:"", createdAt: "" }
+let dataSchema = { id: "",name: "", createdAt: "" }
 
 //JWT model
 const jwt = require('@tsndr/cloudflare-worker-jwt');

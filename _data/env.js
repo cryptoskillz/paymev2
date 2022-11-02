@@ -5,13 +5,15 @@ let todaysDate = new Date();
 let _YEAR = todaysDate.getFullYear();
 module.exports = {
     YEAR: _YEAR,
-    TITLE: "YACE ADMIN",
-    APIURL: process.env.API,
+    TITLE: "Building block ADMIN",
+    APIURL: process.env.APIURL,
+    ADMINURL: process.env.ADMINURL,
+
     COPYRIGHT: "CRYPTOSKILLZ " + _YEAR,
     ENVIRONMENT: process.env.ELEVENTY_ENV,
     SECRET: process.env.SECRET,
-    LEVEL1NAME: "site",
-    LEVEL2NAME: "page",
+    LEVEL1NAME: "properties",
+    LEVEL2NAME: "property",
     ITEMSDATAMAIN: "items",
     DASHBOARDSTRAP: "Welcome to the content editor.",
     CANCREATEACCOUNT: process.env.CANCREATEACCOUNT

@@ -5,7 +5,7 @@ let checkElement
 var table // datatable
 
 //create your data schema here for table rendering.
-let dataSchema = '{ "id": "", "name": "","buildUrl":"", "createdAt": "" }'
+let dataSchema = '{ "id": "", "name": "", "createdAt": "" }'
 dataSchema = JSON.parse(dataSchema);
 //add this to the settings page
 let settingsSchema = '{"btcaddress":"","xpub":"","compnanyname":""}'
@@ -329,7 +329,7 @@ let getData = (theLevel = 1, theId = "", debug = 0) => {
     }
     if ((theItems == undefined) || (theItems == "") || (theItems == null)) {
         if (debug == 1)
-            consolel.log("no items");
+            console.log("no items");
         return (false)
     } else {
         theItems = JSON.parse(theItems)

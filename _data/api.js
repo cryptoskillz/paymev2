@@ -8,7 +8,7 @@ const superagent = require('superagent');
 //async function to get the posts
 getData = async () => {
     let method = "test-endpoint/"
-    var res = await superagent.get(`${process.env.API}${method}`).query({});
+    var res = await superagent.get(`${process.env.ADMINURL}${method}`).query({});
     return (res.body)
 }
 
