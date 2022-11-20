@@ -5,5 +5,5 @@ export async function onRequest(context) {
   //console.log(data)
   //console.log(context.env)
   //return Response.json(data)
-  return Response.json(context.env.datbase);
+  return Response.json(context.env.database);
 }
