@@ -3,7 +3,7 @@ export async function onRequest(context) {
   //const ps = context.env.database.prepare('SELECT * from property'); 
   //const result = await ps.first();
   //console.log(data)
-  //console.log(context.env)
+  console.log(context.env)
   //return Response.json(data)
   return Response.json(context.env.database);
 }
