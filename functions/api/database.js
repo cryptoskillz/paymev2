@@ -5,6 +5,6 @@ export async function onRequest(context) {
   //console.log(data)
   console.log(context.env)
   //return Response.json(data)
-  
-  return Response.json(context.env);
+
+  return Response.json(context.env.test3);
 }
