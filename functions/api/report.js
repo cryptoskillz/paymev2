@@ -12,15 +12,20 @@ export async function onRequestGet(context) {
     const { searchParams } = new URL(request.url);
     //get the id
     let id = searchParams.get('id');
+    //check if there is a property id.
     if (id == null)
         return new Response(JSON.stringify({ error: "no property id" }), { status: 400 });
-    //console.log(id);
 
-    //run the queries
 
     //get the property
     const property = context.env.DB.prepare(`SELECT * from property where id = ${id}`);
     const propertyresult = await property.first();
+    //check we have a result
+    if (propertyresult == undefined)
+        return new Response(JSON.stringify({ error: "no property found with that id" }), { status: 400 });
+    
+    console.log(propertyresult);
+
     //get the token for the property
     const token = context.env.DB.prepare(`SELECT * from property_token where propertyId = ${id}`);
     const tokenresult = await token.first();
