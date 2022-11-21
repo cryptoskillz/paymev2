@@ -12,6 +12,9 @@ export async function onRequestGet(context) {
     const { searchParams } = new URL(request.url);
     //get the id
     let id = searchParams.get('id');
+    if (id == null)
+        return new Response(JSON.stringify({ error: "no property id" }), { status: 400 });
+    //console.log(id);
 
     //run the queries
 
