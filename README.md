@@ -1,16 +1,15 @@
-# YACE
+# BUILDING BLOCKS
 
 
 ## ABOUT
 
-YACE is a JSON-based headless CMS for Cloudflare's infrastructure.  it has been built using pages, workers, and KV datastores. 
+BUILDING BLOCKS is open sourced framework to use (any) crypto to manage ownership of a property.
 
-it is a lightweight CMS for technical people.
 
 ## SETUP
 
 
-clone YACE CMS into your directory
+clone BUILDING BLOCKS into your directory
 
 git clone https://github.com/cryptoskillz/YACEcms.git
 
@@ -83,22 +82,4 @@ click add and add the following details
 	`kvdata : <namesapce>`
 
 
-## USING THE CMS
-
-* Create a new user 
-* Login 
-* Click on sites / view and create new
-* Add a new site and a name
-* Add an optional build URL (this is what the cms will Use to trigger a build of your site you can see the Cloudflare example here https://developers.cloudflare.com/pages/platform/deploy-hooks )
-* Click save
-* Click back
-* Click pages
-* Add a new page name
-* Click save
-* Click back
-* Click content
-* Add some content
-* Click save
-* Click back and back again to go back to the sites
-* Click API and you will see the page(s) you created (take this URL and add it to your frontend site as we do here https://orbitlabs.xyz/)
-* Click publish if you have added a build URL and your site will rebuild
+## USING 
