@@ -14,37 +14,43 @@ permalink: /property/view/
 		  
 		</div>
 	</div>
-	 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-	    <h1 class="h3 mb-0 text-gray-800">RENTAL AGREEMENT</h1>
+	 
+	<div class="card shadow mb-4">
+	    <div class="card-header py-3">
+	        <h6 class="m-0 font-weight-bold text-primary">Agreements</h6>
+	    </div>
+	    <div class="card-body">
+	        <div class="table-responsive">
+	            <table class="table table-bordered" id="rental-aggrement-table" width="100%" cellspacing="0">
+	                <thead>
+	                    <tr>
+	                    	<th>ID</th>
+		                	<th>Name</th>
+		                	<th>Amount</th>
+		                	<th>Deposit</th>
+		                	<th>Start Date</th>
+		                	<th>End Date</th>
+		                	<th>Active</th>
+	                    </tr>
+	                </thead>
+	                <tfoot>
+	                    <tr>
+	                    	<th>ID</th>
+		                	<th>Name</th>
+		                	<th>Amount</th>
+		                	<th>Deposit</th>
+		                	<th>Start Date</th>
+		                	<th>End Date</th>
+		                	<th>Active</th>
+	                    </tr>
+	                </tfoot>
+	                <tbody>
+	                </tbody>
+	            </table>
+	        </div>
+	    </div>
 	</div>
-	 <div class="card shadow mb-4 " >
-	 	<div class="table-responsive">
-		    <table class="table table-bordered" id="rental-aggrement-table"  width="100%" cellspacing="0"> 
-	        	<thead>
-		            <tr>
-		                <th>ID</th>
-		                <th>Name</th>
-		                <th>Amount</th>
-		                <th>Deposit</th>
-		                <th>Start Date</th>
-		                <th>End Date</th>
-		                <th>Active</th>
-		            </tr>
-	        	</thead>
-		        <tbody>
-		            <tr>
-		                <th>ID</th>
-		                <th>Name</th>
-		                <th>Amount</th>
-		                <th>Deposit</th>
-		                <th>Start Date</th>
-		                <th>End Date</th>
-		                <th>Active</th>
-		            </tr>		           
-		        </tbody>
-		    </table>
-		</div>
-	</div>
+
 
 	<!-- owners table -->
 	<div class="card shadow mb-4">
@@ -89,6 +95,7 @@ permalink: /property/view/
 	            <table class="table table-bordered" id="paidintable" width="100%" cellspacing="0">
 	                <thead>
 	                    <tr>
+	                    	<th>ID</th>
 	                        <th>Type</th>
 	                        <th>Description</th>
 	                        <th>Amount</th>
@@ -118,15 +125,16 @@ permalink: /property/view/
 	            <table class="table table-bordered" id="paidouttable" width="100%" cellspacing="0">
 	                <thead>
 	                    <tr>
+	                    	<th>ID</th>
 	                        <th>Name</th>
 	                        <th>Email</th>
 	                        <th>Token</th>
-	                        <th>Share</th>
+	                        <th>Date</th>
 	                    </tr>
 	                </thead>
 	                <tfoot>
 	                    <tr>
-	                        <th colspan="3" style="text-align:right">Total:</th>
+	                        <th colspan="4" style="text-align:right">Total:</th>
 	                        <th id="paidouttotal"></th>
 	                    </tr>
 	                </tfoot>
@@ -147,19 +155,20 @@ permalink: /property/view/
 	            <table class="table table-bordered" id="disttable" width="100%" cellspacing="0">
 	                <thead>
 	                    <tr>
+	                    	<th>ID</th>
 	                        <th>Payment to</th>
 	                        <th>Description</th>
-	                        <th>Date</th>
 	                        <th>Amount</th>
+	                        <th>Date</th>
 	                    </tr>
 	                </thead>
 	                <tfoot>
 	                    <tr>
-	                        <th colspan="3" style="text-align:right"> Total Distributions:</th>
+	                        <th colspan="4" style="text-align:right"> Total Distributions:</th>
 	                        <th id="totaldist"></th>
 	                    </tr>
 	                    <tr>
-	                        <th colspan="3" style="text-align:right"> Total Left:</th>
+	                        <th colspan="4" style="text-align:right"> Total Left:</th>
 	                        <th id="totalleft"></th>
 	                    </tr>
 	                </tfoot>

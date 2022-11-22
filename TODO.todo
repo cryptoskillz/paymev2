@@ -9,7 +9,7 @@ LEVEV 1 VIEW
 
  ☐ get the property id from the url paramaters currently it is hard coded
  ☐ add share percentage for owner
- ☐ fix rental agreements table 
+ ✔ fix rental areements table @done (22-11-22 17:03)
  ☐ add paid in
  ☐ add paid out 
  ☐ add distributions
