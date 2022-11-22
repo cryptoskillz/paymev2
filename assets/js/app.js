@@ -5,7 +5,7 @@ let checkElement
 var table // datatable
 
 //create your data schema here for table rendering.
-let dataSchema = '{ "id": "", "name": "", "createdAt": "" }'
+let dataSchema = '{ "id": "", "name": "", "address 1": "", "address 2": "", "createdAt": "" }'
 dataSchema = JSON.parse(dataSchema);
 //add this to the settings page
 let settingsSchema = '{"btcaddress":"","xpub":"","compnanyname":""}'
@@ -13,7 +13,7 @@ settingsSchema = JSON.parse(settingsSchema);
 
 //TODO: replace this with plain js
 (function($) {
-    "use strict"; // Start of use strictß
+    "use strict"; // Start of use strict
 
     // Toggle the side navigation
     $("#sidebarToggle, #sidebarToggleTop").on('click', function(e) {
@@ -169,205 +169,6 @@ let clearCache = (clearUser = 0) => {
     }
 }
 
-
-//projects
-
-let removeDataItem = (theLevel = 1, theId, debug = 0) => {
-    let theItems;
-    switch (theLevel) {
-        case 1:
-            theItems = window.localStorage.level1data
-            break;
-        case 2:
-            theItems = window.localStorage.level2data
-            break;
-
-    }
-    theItems = JSON.parse(theItems);
-    for (var i = 0; i < theItems.data.length; ++i) {
-        if (theItems.data[i].id == theId) {
-            if (debug == 1) {
-                console.log(theItems.data[i])
-            }
-            //delete theItems.data[i];
-            theItems.data.splice(i, 1);
-            //update the data
-            switch (theLevel) {
-                case 1:
-                    window.localStorage.level1data = JSON.stringify(theItems);
-                    break;
-                case 2:
-                    window.localStorage.level2data = JSON.stringify(theItems);
-                    break;
-
-            }
-
-            return (true);
-
-        }
-    }
-    return (false)
-
-}
-
-/*
-this function added the newly created item to the local application cache
-*/
-let addDataItem = (theLevel = 1, theData, debug = 0) => {
-    //parse the response
-    let theItems;
-    switch (theLevel) {
-        case 1:
-            theItems = window.localStorage.level1data
-            break;
-        case 2:
-            theItems = window.localStorage.level2data
-            break;
-
-    }
-    theItems = JSON.parse(theItems);
-    //parse the data
-    theData = JSON.parse(theData);
-    if (debug == 1) {
-        console.log(theData)
-        console.log(theData.data)
-
-    }
-    //add it to projects
-    let tmp = JSON.parse(theData.data)
-    theItems.data.push(tmp);
-    switch (theLevel) {
-        case 1:
-            window.localStorage.level1data = JSON.stringify(theItems)
-            break;
-        case 2:
-            window.localStorage.level2data = JSON.stringify(theItems)
-            break;
-
-    }
-    showAlert(theData.message, 1)
-}
-
-
-let updateData = (theLevel = 1, theData = "", debug = 0) => {
-    let theItems;
-    switch (theLevel) {
-        case 1:
-            theItems = window.localStorage.level1data
-            break;
-        case 2:
-            theItems = window.localStorage.level2data
-            break;
-
-    }
-    if (theItems == undefined) {
-        if (debug == 1)
-            console.log("no items");
-        return (false)
-    } else {
-        theItems = JSON.parse(theItems)
-        if (debug == 1) {
-            console.log(theItems)
-        }
-        for (var i = 0; i < theItems.data.length; ++i) {
-            if (debug == 1) {
-                console.log("checking " + theItems.data[i].id + " : " + theData.id)
-                console.log(theItems.data[i])
-            }
-            if (theItems.data[i].id == theData.id) {
-                if (debug == 1) {
-                    console.log("Found the id " + theData.id)
-                    console.log(theItems.data[i])
-                }
-                //update the project
-                theItems.data[i] = theData;
-                //update the data
-                window.localStorage.currentdataitem = JSON.stringify(theData);
-                switch (theLevel) {
-                    case 1:
-                        window.localStorage.level1data = JSON.stringify(theItems);
-                        break;
-                    case 2:
-                        window.localStorage.level2data = JSON.stringify(theItems);
-                        break;
-
-                }
-            }
-        }
-    }
-}
-
-let storeData = (theLevel = 1, theData, debug = 0) => {
-    //show debug info
-    if (debug == 1) {
-        console.log(theData)
-    }
-    switch (theLevel) {
-        case 1:
-            window.localStorage.level1data = theData;
-            break;
-        case 2:
-            window.localStorage.level2data = theData;
-            break;
-
-    }
-}
-
-
-let getData = (theLevel = 1, theId = "", debug = 0) => {
-
-    let theItems;
-    switch (theLevel) {
-        case 1:
-            theItems = window.localStorage.level1data
-            break;
-        case 2:
-            theItems = window.localStorage.level2data
-            break;
-
-
-    }
-    if ((theItems == undefined) || (theItems == "") || (theItems == null)) {
-        if (debug == 1)
-            console.log("no items");
-        return (false)
-    } else {
-        theItems = JSON.parse(theItems)
-        if (debug == 1) {
-            console.log(theItems)
-        }
-        //console.log(data)
-        if (theId != "") {
-            for (var i = 0; i < theItems.data.length; ++i) {
-                if (theItems.data[i].id == theId) {
-                    if (debug == 1) {
-                        console.log("foundit")
-                        console.log(theItems.data[i])
-                    }
-                    //update the data
-                    window.localStorage.currentdataitem = JSON.stringify(theItems.data[i]);
-                    return (theItems.data[i]);
-                }
-            }
-        } else {
-            return (theItems)
-        }
-    }
-}
-
-let getCurrentDataItem = (debug = 0) => {
-    if (debug == 1)
-        console.log(window.localStorage.currentdataitem);
-    let currentdataitem = JSON.parse(window.localStorage.currentdataitem)
-    return (currentdataitem)
-
-}
-
-let storeCurrentDataItem = (currentItem,debug = 0) => {
-    if (debug == 1)
-        console.log(window.localStorage.currentdataitem);
-    window.localStorage.currentdataitem = currentItem;
-}
 
 let storeSettings = (theData, debug = 0) => {
     //show debug info

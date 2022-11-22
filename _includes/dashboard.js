@@ -12,11 +12,11 @@ whenDocumentReady(isReady = () => {
         //show the page
         document.getElementById('showBody').classList.remove('d-none')
         //add the amount of data enteries they have added
-        let theData = getData();
-        if (theData != false)
-            document.getElementById("dashboardcounter").innerHTML = theData.data.length;
-        else
-            document.getElementById("dashboardcounter").innerHTML = 0;
+        //let theData = getData();
+        //if (theData != false)
+        //    document.getElementById("dashboardcounter").innerHTML = theData.data.length;
+        //else
+        //    document.getElementById("dashboardcounter").innerHTML = 0;
  
     }
     let SettingsDone = (res) => {

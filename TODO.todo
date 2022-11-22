@@ -1,5 +1,6 @@
 GENERAL 
 
+ ✔ clean up the app.js remove the code we not using, local cache etc. @done (22-11-23 00:58)
 
 DASHBOARD
 
@@ -13,4 +14,11 @@ LEVEV 1 VIEW
  ✔ add paid in @done (22-11-22 22:20)
  ✔ add paid out @done (22-11-22 22:20)
  ✔ add distributions @done (22-11-22 22:20)
+ ☐ add delete property
+ ☐ add add cost 
+ ☐ add add payment
+ ☐ add add dist
+ ☐ add owner
+ ☐ add add rental agreemenet
+
 
