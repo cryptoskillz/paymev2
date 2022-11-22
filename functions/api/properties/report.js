@@ -29,7 +29,7 @@ export async function onRequestGet(context) {
     const tokenresult = await token.first();
     //get the owners for the property
     const owners = context.env.DB.prepare(`SELECT * from property_owner where propertyId = ${id}`);
-    const ownersresults = await token.all();
+    const ownersresults = await owners.all();
     //get the owners for the  distributions
     const distributions = context.env.DB.prepare(`SELECT * from property_distribution where propertyId = ${id}`);
     const distributionsresults = await distributions.all();
@@ -56,7 +56,7 @@ export async function onRequestGet(context) {
     result.token = tokenresult;
     result.owners = ownersresults.results;
     result.distributions = distributionsresults.results;
-    result.agreement = agreementresults.results;
+    result.agreements = agreementresults.results;
     result.costs = costsresults.results;
     result.payments = paymentsresults.results;
     //return it

@@ -20,7 +20,7 @@ whenDocumentReady(isReady = () => {
         //get the datatable
         table = $('#dataTable').DataTable();
         for (var i = 0; i < res.length; ++i) {
-            console.log(res[i])
+            //console.log(res[i])
           
             let propertybutton = `<a href="/property/view?id=${res[i].id}" id="ep-${res[i].name}-${i}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
     <i class="fas fa-eye fa-sm text-white-50"></i> View</a>`
