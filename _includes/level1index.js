@@ -14,22 +14,28 @@ whenDocumentReady(isReady = () => {
         //store it in local storage
 
         res = JSON.parse(res)
+
+        //console.log(res)
+        //return;
         //get the datatable
         table = $('#dataTable').DataTable();
         for (var i = 0; i < res.length; ++i) {
             console.log(res[i])
-            let propertybutton = `<a href="/property/view?id=${res[i].id}" id="ep-${res[i].Name}-${i}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+          
+            let propertybutton = `<a href="/property/view?id=${res[i].id}" id="ep-${res[i].name}-${i}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
     <i class="fas fa-eye fa-sm text-white-50"></i> View</a>`
             var rowNode = table
-                .row.add([res[i].id, res[i].Name, res[i].published_at, `${propertybutton}`])
+                .row.add([res[i].id, res[i].name, res[i].published_at, `${propertybutton}`])
                 .draw()
                 .node().id = res[i].id;
+                
         }
         table.columns.adjust();
     }
 
     //build the json
-    let url = adminUrl + "property-details/"
+
+    let url = adminUrl + "properties/list/"
     xhrcall(1, url, "", "json", "", xhrDone, "")
 
 

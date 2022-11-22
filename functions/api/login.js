@@ -15,7 +15,7 @@ export async function onRequest(context) {
             next, // used for middleware or to fetch assets
             data, // arbitrary space for passing data between middlewares
         } = context;
-        console.log('in')
+        
         //set a valid boolean
         let valid = 1;
         //get the post data
@@ -26,20 +26,26 @@ export async function onRequest(context) {
         if (contentType != null) {
             //get the login credentials
             credentials = await request.json();
+            //console.log(credentials);
             //check they are valid (may be overkill)
             if ((credentials.identifier == undefined) || (credentials.password == undefined))
                 return new Response(JSON.stringify({ error: "invalid login" }), { status: 400 });
         } else
             return new Response(JSON.stringify({ error: "invalid login" }), { status: 400 });
         //set up the KV
+        //console.log(context.env)
         const KV = context.env.kvdata;
+        console.log(KV)
         //see if the user exists
+        console.log("user" + credentials.identifier)
         const user = await KV.get("user" + credentials.identifier);
+        console.log(user)
         //user does not exist
         if (user == null)
-            return new Response(JSON.stringify({ error: "invalid login" }), { status: 400 });
+            return new Response(JSON.stringify({ error: "user does not exist" }), { status: 400 });
 
         let tUser = JSON.parse(user);
+        //console.log(tUser);
         if ((tUser.user.email == credentials.identifier) && (tUser.user.password == credentials.password)) {
             //check if it is valid
             if (valid == 1) {

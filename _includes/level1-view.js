@@ -27,16 +27,33 @@ whenDocumentReady(isReady = () => {
         return (table)
     }
 
+/*
     let ownersDone = (res) => {
 
 
+
         res = JSON.parse(res);
+        
+        propertydetails = res;
+        console.log(propertydetails);
+        let table = `<table class="table">`
+        table = addTableRow("Name", propertydetails.name, table);
+        table = table + "</table>";
+        console.log(table)
+        let theTable = document.getElementById("property-table");
+        theTable.innerHTML = table;
+        //show it
+        document.getElementById("propertydiv").classList.remove("d-none");
+
+        return;
+
+
         propertyowners = res;
         //console.log(propertycontracts);
         //console.log(propertycontracts.proptery_owners.length);
 
         //get the datatable
-        let table = `<table class="table">`
+        table = `<table class="table">`
         table = addTableRow("Name", propertydetails.Name, table);
         table = addTableRow("Cost", propertydetails.Property_local_cost, table);
         table = addTableRow("Taxes", propertydetails.Property_taxes, table);
@@ -175,19 +192,30 @@ whenDocumentReady(isReady = () => {
         xhrcall(1, url, "", "json", "", rentalsDone, "")
     }
 
+    */
+
     //get the main property details
     let propertyDone = (res) => {
         res = JSON.parse(res);
-        for (var i = 0; i < res.length; ++i) {
-            if (propId == res[i].id); {
-                propertydetails = res[i];
-                //console.log(propertydetails)
-                url = adminUrl + `property-contracts/${propertydetails.rental_agreement.id}`
-                xhrcall(1, url, "", "json", "", contractsDone, "")
-            }
-        }
+        console.log(res.property);
+        let table = `<table class="table">`
+        table = addTableRow("Name", res.property.name, table);
+        table = addTableRow("Cost", res.property.local_cost, table);
+        table = addTableRow("Taxes", res.property.taxes_cost, table);
+        table = addTableRow("Currency", "฿", table);
+        table = addTableRow("Contract", `<a href="${res.token.address}" target="_blank">
+            ${res.token.address}</a>`, table);
+        table = table + "</table>";
+        table = table + "</table>";
+        console.log(table)
+        let theTable = document.getElementById("property-table");
+        theTable.innerHTML = table;
+        //show it
+        document.getElementById("propertydiv").classList.remove("d-none");
+
+
     }
-    url = adminUrl + "property-details/"
+    url = adminUrl + "properties/report?id=1"
     xhrcall(1, url, "", "json", "", propertyDone, "")
 
 
