@@ -200,6 +200,7 @@ whenDocumentReady(isReady = () => {
             let valid = 1;
             //get the details
             let email = document.getElementById('inp-email');
+            let username = document.getElementById('inp-username');
             let password1 = document.getElementById('inp-password1');
             let password2 = document.getElementById('inp-password2');
             //validate the email
@@ -235,9 +236,10 @@ whenDocumentReady(isReady = () => {
             if (valid == 1) {
                 //build the json
                 let bodyobj = {
-                    username: email.value,
+                    username: username.value,
                     email: email.value,
                     password: password1.value,
+
                 }
                 //string it 
                 var bodyobjectjson = JSON.stringify(bodyobj);
@@ -263,6 +265,7 @@ whenDocumentReady(isReady = () => {
             //get the inputs
             let email = document.getElementById('inp-email');
             let password1 = document.getElementById('inp-password1');
+
 
             //validate the email
             if (validateEmail(email.value)) {

@@ -14,6 +14,32 @@ export async function onRequestPost(context) {
         next, // used for middleware or to fetch assets
         data, // arbitrary space for passing data between middlewares
     } = context;
+
+    //set a valid boolean
+    let valid = 1;
+    const contentType = request.headers.get('content-type')
+    let registerData;
+    if (contentType != null) {
+        registerData = await request.json();
+        const query = context.env.DB.prepare(`SELECT COUNT(*) as total from user where email = '${registerData.email}'`);
+        const queryResult = await query.first();
+        console.log(queryResult.total)
+        if (queryResult.total == 0) {
+            let apiSecret = uuid.v4();
+            const info = await context.env.DB.prepare('INSERT INTO user (username, email,password,apiSecret,confirmed,blocked,isAdmin) VALUES (?1, ?2,?3,?4,?5,?6,?7)')
+                .bind(registerData.username, registerData.email, registerData.password, apiSecret, 0, 0, 0)
+                .run()
+
+            if (info.success == true)
+                return new Response(JSON.stringify({ status: "ok" }), { status: 200 });
+            else
+                return new Response(JSON.stringify({ error: "error registering" }), { status: 400 });
+        } else {
+            return new Response(JSON.stringify({ error: "email already exists" }), { status: 400 });
+        }
+    }
+
+    /*
     //set a valid boolean
     let valid = 1;
     const contentType = request.headers.get('content-type')
@@ -44,4 +70,5 @@ export async function onRequestPost(context) {
     }
     else
         return new Response(JSON.stringify({ error: "register error" }), { status: 400 });
+    */
 }

@@ -6,6 +6,11 @@ DASHBOARD
 
  ✔ fix dashboard properties shows 0 (we can move this to d1) @done (22-11-25 22:38)
 
+ CREATE ACCOUNT
+
+ ☐ auto populate the username from the first part of the email 
+ ☐ have an option to turn on a password rule
+
 LEVEV 1 VIEW
 
  ☐ get the property id from the url paramaters currently it is hard coded
@@ -15,7 +20,12 @@ LEVEV 1 VIEW
  ✔ add paid out @done (22-11-22 22:20)
  ✔ add distributions @done (22-11-22 22:20)
  ☐ add a check for api errors
- 
+ ☐ hide admin arease of the site from non admins
+
+SETTINGS
+
+ ☐ add the settings layout.
+
 API
 
  ✔ port login to d1 @done (22-11-25 21:56)
