@@ -287,11 +287,16 @@ whenDocumentReady(isReady = () => {
                 //login done function
                 let loginDone = (response) => {
                     //get the repsonse
-                    let res = JSON.parse(response)
+                    let res = JSON.parse(response);
+                    //debug
+                    //console.log("res")
+                    //console.log(res)
                     //get the JWT
                     let token = res.jwt
                     //set the user object
-                    let user = { "username": res.user.username, "email": res.user.email, "loggedin": 1, "secret": res.user.secret, "datacount": res.user.datacount }
+                    let user = res.user;
+                    //add a logged in flag
+                    user.loggedin = 1;
                     //clear the caches 
                     clearCache();
                     //set the local storage

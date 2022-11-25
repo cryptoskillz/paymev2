@@ -4,7 +4,7 @@ GENERAL
 
 DASHBOARD
 
- ☐ fix dashboard properties shows 0 (we can move this to d1)
+ ✔ fix dashboard properties shows 0 (we can move this to d1) @done (22-11-25 22:38)
 
 LEVEV 1 VIEW
 
@@ -16,4 +16,13 @@ LEVEV 1 VIEW
  ✔ add distributions @done (22-11-22 22:20)
  ☐ add a check for api errors
  
+API
+
+ ✔ port login to d1 @done (22-11-25 21:56)
+ ☐ port setting to d1 
+ ☐ port register to d1
+ ☐ port forgot password to d1
+ ☐ add the login for none admins
+ ☐ add the propety ids (do we require the foreign ID as it we can just do a call in the property page)
+
 

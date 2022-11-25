@@ -33,7 +33,7 @@ export async function onRequestPost(context) {
             return new Response(JSON.stringify({ error: "invalid login" }), { status: 400 });
 
         //prepare the query
-        const query = context.env.DB.prepare(`SELECT user.name,user.email,user.phone,user.id,userAccess.foreignId,user.apiSecret from user LEFT JOIN userAccess ON user.id = userAccess.userId where user.username = '${credentials.identifier}' and user.password = '${credentials.password}'`);
+        const query = context.env.DB.prepare(`SELECT user.name,user.username,user.email,user.phone,user.id,user.isAdmin,userAccess.foreignId,user.apiSecret from user LEFT JOIN userAccess ON user.id = userAccess.userId where user.username = '${credentials.identifier}' and user.password = '${credentials.password}'`);
         //get the result
         //note : we could make this return first and not all 
         const queryResult = await query.all();
@@ -41,13 +41,22 @@ export async function onRequestPost(context) {
         if (queryResult.results.length > 0) {
             //set the user
             let user = queryResult.results[0];
+            //console.log(user)
+            let foreignIds = ""
+            if (user.isAdmin == 1)
+            {
+                //prepare the query
+                const query2 = context.env.DB.prepare(`SELECT COUNT(*) as total from property`);
+                const queryResult2 = await query2.first();
+                user.foreignCount = queryResult2.total;
+            }
             //sign the token
             const token = await jwt.sign({ password: credentials.password, username: credentials.identifier }, env.SECRET)
             // Verifing token
             const isValid = await jwt.verify(token, env.SECRET)
             //check it is true
             if (isValid == true) {
-                return new Response(JSON.stringify({ "jwt": token, "user": { "username": credentials.identifier, "email": credentials.identifier, "secret": user.Apisecret } }), { status: 200 });
+                return new Response(JSON.stringify({ "jwt": token, "user": { "id":user.id,"name":user.name,"username": user.username, "email": user.email,"phone":user.phone,"isAdmin":user.isAdmin,"foreignIds":foreignIds,"foreignCount":user.foreignCount, "secret": user.apiSecret}}), { status: 200 });
             } else {
                 return new Response(JSON.stringify({ error: "invalid login" }), { status: 400 });
 
