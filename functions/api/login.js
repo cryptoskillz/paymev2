@@ -4,9 +4,11 @@
     check the password is valid as well as the email 
 
 */
-export async function onRequest(context) {
+export async function onRequestPost(context) {
     try {
-        const jwt = require('@tsndr/cloudflare-worker-jwt')
+        //include the toekn
+        const jwt = require('@tsndr/cloudflare-worker-jwt');
+        //init
         const {
             request, // same as existing Worker API
             env, // same as existing Worker API
@@ -15,14 +17,11 @@ export async function onRequest(context) {
             next, // used for middleware or to fetch assets
             data, // arbitrary space for passing data between middlewares
         } = context;
-        
-        //set a valid boolean
-        let valid = 1;
-        //get the post data
-        //note we know it is application / json i am sending it up as but we could check for all the content types to generalise
-        const contentType = request.headers.get('content-type')
+        //get the content type
+        const contentType = request.headers.get('content-type');
+        //set a credentials var
         let credentials;
-        //check we have a content type
+        //check if we have a content type
         if (contentType != null) {
             //get the login credentials
             credentials = await request.json();
@@ -32,46 +31,31 @@ export async function onRequest(context) {
                 return new Response(JSON.stringify({ error: "invalid login" }), { status: 400 });
         } else
             return new Response(JSON.stringify({ error: "invalid login" }), { status: 400 });
-        //set up the KV
-        //console.log(context.env)
-        const KV = context.env.kvdata;
-        console.log(KV)
-        //see if the user exists
-        console.log("user" + credentials.identifier)
-        const user = await KV.get("user" + credentials.identifier);
-        console.log(user)
-        //user does not exist
-        if (user == null)
-            return new Response(JSON.stringify({ error: "user does not exist" }), { status: 400 });
 
-        let tUser = JSON.parse(user);
-        //console.log(tUser);
-        if ((tUser.user.email == credentials.identifier) && (tUser.user.password == credentials.password)) {
-            //check if it is valid
-            if (valid == 1) {
-                //make a JWT token
-                const token = await jwt.sign({ password: credentials.password, username: credentials.identifier }, env.SECRET)
-                // Verifing token
-                const isValid = await jwt.verify(token, env.SECRET)
-                if (isValid == true) {
-                    ///let json = JSON.stringify({ "jwt": token, "user": { "username": credentials.identifier, "email": credentials.identifier, "secret": tUser.user.secret } })
-                    //temp to deal with old accounts will not need going forward
-                    //await KV.put("username" + tUser.user.secret , JSON.stringify({username:credentials.identifier}));
-                    //await KV.put("username" + credentials.identifier, json);
+        //prepare the query
+        const query = context.env.DB.prepare(`SELECT user.name,user.email,user.phone,user.id,userAccess.foreignId,user.apiSecret from user LEFT JOIN userAccess ON user.id = userAccess.userId where user.username = '${credentials.identifier}' and user.password = '${credentials.password}'`);
+        //get the result
+        //note : we could make this return first and not all 
+        const queryResult = await query.all();
+        //check the length
+        if (queryResult.results.length > 0) {
+            //set the user
+            let user = queryResult.results[0];
+            //sign the token
+            const token = await jwt.sign({ password: credentials.password, username: credentials.identifier }, env.SECRET)
+            // Verifing token
+            const isValid = await jwt.verify(token, env.SECRET)
+            //check it is true
+            if (isValid == true) {
+                return new Response(JSON.stringify({ "jwt": token, "user": { "username": credentials.identifier, "email": credentials.identifier, "secret": user.Apisecret } }), { status: 200 });
+            } else {
+                return new Response(JSON.stringify({ error: "invalid login" }), { status: 400 });
 
-                    return new Response(JSON.stringify({ "jwt": token, "user": { "username": credentials.identifier, "email": credentials.identifier, "secret": tUser.user.secret,datacount:tUser.user.datacount } }), { status: 200 });
-                } else {
-                    return new Response(JSON.stringify({ error: "invalid login" }), { status: 400 });
-
-                }
             }
-
         } else {
-            return new Response(JSON.stringify({ error: "invalid login: username or password incorrect" }), { status: 400 });
-
+            return new Response(JSON.stringify({ error: "username  / password issue" }), { status: 400 });
         }
-
-
+    
     } catch (error) {
         console.log(error)
         return new Response(error, { status: 200 });

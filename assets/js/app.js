@@ -5,7 +5,34 @@ let checkElement
 var table // datatable
 
 //create your data schema here for table rendering.
-let dataSchema = '{ "id": "", "name": "", "address 1": "", "address 2": "", "createdAt": "" }'
+
+/*
+"id"    INTEGER,
+    "name"  TEXT,
+    "address_1" TEXT,
+    "address_2" TEXT,
+    "address_3" TEXT,
+    "address_4" TEXT,
+    "address_5" TEXT,
+    "address_6" TEXT,
+    "bathrooms" INTEGER,
+    "bedrooms" INTEGER,
+    "local_currency" REAL,
+    "international_currency" REAL,
+    "crypto_currency" REAL,
+    "image_url" TEXT,
+    "taxes_cost" REAL,
+    "suggested_rental_price" REAL,
+    "international_cost" REAL,
+    "local_cost" REAL,
+    "currently_rented" INTEGER,
+    "published_at" TEXT,
+    "tokenId" id,
+    "rentalId" INTEGER,
+    PRIMARY KEY("id" AUTOINCREMENT)
+
+    */
+let dataSchema = '{ "id": "", "name": "", "address 1": "", "address 2": "", "address 3": "", "address 4": "", "address 5": "", "address 6": "","bathrooms":"","bedrooms":"","local_currency":"","imageurl":"","taxes":"","suggested_rental_price":"","cost":"","tokenId":"","rentalId":"", "createdAt": "" }'
 dataSchema = JSON.parse(dataSchema);
 //add this to the settings page
 let settingsSchema = '{"btcaddress":"","xpub":"","compnanyname":""}'
