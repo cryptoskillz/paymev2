@@ -34,7 +34,7 @@ API
  ✔ port register to d1 @done (22-11-26 01:20)
  ☐ port forgot password to d1
  ☐ add the login for none admins
- ☐ add the propety ids (do we require the foreign ID as it we can just do a call in the property page)
+ ✔ add the propety ids (do we require the foreign ID as it we can just do a call in the property page) @done (22-11-26 02:29)
 
  REPORT
 
@@ -46,5 +46,22 @@ API
  USER
 
  ☐ 
+
+ ADMIN 
+
+ ☐ add manager user add / edit / delete 
+ ☐ add add property
+
+
+ FUNCTIONS API
+
+ ☐ remove build.js
+ ☐ remove content.js
+ ☐ remove page.js
+ ☐ remove properties.js
+ ☐ remove user.js
+ ☐ does login / settings / regsiter.js stay in the root of api it kind of makes sense to move them to a frontend folder as thats what uses them  
+ ☐ add user.js to admin directory
+
 
 
