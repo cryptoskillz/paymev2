@@ -16,7 +16,6 @@ export async function onRequestGet(context) {
     if (id == null)
         return new Response(JSON.stringify({ error: "no property id" }), { status: 400 });
 
-    console.log(context.env)
     //get the property
     const property = context.env.DB.prepare(`SELECT * from property where id = ${id}`);
     const propertyresult = await property.first();
@@ -28,12 +27,12 @@ export async function onRequestGet(context) {
     const token = context.env.DB.prepare(`SELECT * from property_token where propertyId = ${id}`);
     const tokenresult = await token.first();
     //get the owners for the property
-    const owners = context.env.DB.prepare(`SELECT * from property_owner where propertyId = ${id}`);
+
+    const owners = context.env.DB.prepare(`SELECT property_owner.id,property_owner.address,property_owner.amount,user.name,user.email from property_owner LEFT JOIN user ON property_owner.userId = user.id where property_owner.propertyId = ${id}`);
     const ownersresults = await owners.all();
     //get the owners for the  distributions
     const distributions = context.env.DB.prepare(`SELECT * from property_distribution where propertyId = ${id}`);
     const distributionsresults = await distributions.all();
-
 
     //get the agreement
     const agreement = context.env.DB.prepare(`SELECT * from rental_agreement where propertyId = ${id}`);

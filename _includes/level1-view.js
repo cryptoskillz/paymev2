@@ -30,7 +30,8 @@ whenDocumentReady(isReady = () => {
     //get the main property details
     let propertyDone = (res) => {
         res = JSON.parse(res);
-        console.log(res);
+        //debug
+        //console.log(res);
         //console.log(res.agreements.length);
 
         //main property details
@@ -39,8 +40,7 @@ whenDocumentReady(isReady = () => {
         table = addTableRow("Cost", res.property.local_cost, table);
         table = addTableRow("Taxes", res.property.taxes_cost, table);
         table = addTableRow("Currency", "฿", table);
-        table = addTableRow("Contract", `<a href="${res.token.address}" target="_blank">
-            ${res.token.address}</a>`, table);
+        table = addTableRow("Contract", `<a href="${res.token.address}" target="_blank">${res.token.address}</a>`, table);
         table = table + "</table>";
         table = table + "</table>";
         //console.log(table)
@@ -51,10 +51,11 @@ whenDocumentReady(isReady = () => {
         table = $('#rental-aggrement-table').DataTable();
         for (var i = 0; i < res.agreements.length; ++i) {
             let tmp = res.agreements[i];
+            //set the active state
             let isActive = "Yes"
             if (tmp.active == 0)
                 isActive = "No"
-
+            //add a table
             var rowNode = table
                 .row.add([tmp.id, tmp.name, tmp.amount,tmp.deposit,tmp.start_date,tmp.end_date,isActive])
                 .draw()
@@ -65,15 +66,23 @@ whenDocumentReady(isReady = () => {
         //owners
         table = $('#ownerstable').DataTable();
         for (var i = 0; i < res.owners.length; ++i) {
-            let tmp = res.owners[i];
-            let per = tmp.amount / res.token.total_supply;
+            //get the owner
+            let owner = res.owners[i];
+            //set the percentage
+            let per = owner.amount / res.token.total_supply;
             per = per *100
-            let famount = formatCurencyBaht(tmp.amount);
-            let amount = `${famount} (%${per})`
+            per = Math.round(per);
+            //build the address
+            let address = `<a href="${owner.address}" target="_blank">view</a>`
+            //format the currency 
+            let famount = formatCurencyBaht(owner.amount);
+            //set the amount
+            let amount = `${famount} (${per}%)`
+            //add the table row
             var rowNode = table
-                .row.add([tmp.id, tmp.name, tmp.email,tmp.address,amount])
+                .row.add([owner.id, owner.name, owner.email,address,amount])
                 .draw()
-                .node().id = tmp.id;
+                .node().id = owner.id;
         }
         table.columns.adjust();
 

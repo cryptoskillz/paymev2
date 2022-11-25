@@ -39,6 +39,8 @@ API
  REPORT
 
  ☐ have the view for the property owners to pull the name and email from the user table as we do not have it in the property owners anymore. 
+ ☐ round up percentage
+ ☐ make the address a hyper link
 
 
  USER
