@@ -30,7 +30,7 @@ API
 
  ✔ port login to d1 @done (22-11-25 21:56)
  ☐ port setting to d1 
- ☐ port register to d1
+ ✔ port register to d1 @done (22-11-26 01:20)
  ☐ port forgot password to d1
  ☐ add the login for none admins
  ☐ add the propety ids (do we require the foreign ID as it we can just do a call in the property page)
