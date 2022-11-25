@@ -20,7 +20,8 @@ LEVEV 1 VIEW
  ✔ add paid out @done (22-11-22 22:20)
  ✔ add distributions @done (22-11-22 22:20)
  ☐ add a check for api errors
- ☐ hide admin arease of the site from non admins
+ ✔ hide admin create of the site from non admins @done (22-11-26 01:38)
+
 
 SETTINGS
 
@@ -34,5 +35,14 @@ API
  ☐ port forgot password to d1
  ☐ add the login for none admins
  ☐ add the propety ids (do we require the foreign ID as it we can just do a call in the property page)
+
+ REPORT
+
+ ☐ have the view for the property owners to pull the name and email from the user table as we do not have it in the property owners anymore. 
+
+
+ USER
+
+ ☐ 
 
 
