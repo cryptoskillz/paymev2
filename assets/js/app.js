@@ -359,7 +359,12 @@ let checkLogin = () => {
             //check admin stuff
             if (user.isAdmin == 1)
             {
-                document.getElementById("btn-create-cy").style.visibility = "visible"
+                let element =  document.getElementById('btn-create-cy');
+                if (typeof(element) != 'undefined' && element != null)
+                {
+                    element.style.visibility = "visible"
+                }
+                document.getElementById("navadmin").classList.remove("d-none")
             }
             //check the user is logged in some one could spoof this so we could do a valid jwt check here 
             //but i prefer to do it when we ping the api for the data for this user. 
