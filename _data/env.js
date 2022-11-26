@@ -16,5 +16,6 @@ module.exports = {
     LEVEL2NAME: "property",
     ITEMSDATAMAIN: "items",
     DASHBOARDSTRAP: "Welcome to the content editor.",
-    CANCREATEACCOUNT: process.env.CANCREATEACCOUNT
+    CANCREATEACCOUNT: process.env.CANCREATEACCOUNT,
+    COMPLEXPASSWORD: process.env.COMPLEXPASSWORD
 }

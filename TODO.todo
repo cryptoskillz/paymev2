@@ -1,6 +1,7 @@
 GENERAL 
 
  ✔ clean up the app.js remove the code we not using, local cache etc. @done (22-11-23 00:58)
+ ☐ update the readme 
 
 DASHBOARD
 
@@ -8,8 +9,8 @@ DASHBOARD
 
  CREATE ACCOUNT
 
- ☐ auto populate the username from the first part of the email 
- ☐ have an option to turn on a password rule
+ ✔ auto populate the username from the first part of the email @done (22-11-26 22:28)
+ ✔ have an option to turn on a password rule @done (22-11-26 22:28)
 
 LEVEV 1 VIEW
 

@@ -2,7 +2,7 @@
 layout: login-layout.njk
 ---
 {% set theJs %}
-    {% include 'user.js' %}
+    {% include 'admin/account.js' %}
 {% endset %}
     <!-- Outer Row -->
         <div class="row justify-content-center">
@@ -38,57 +38,31 @@ layout: login-layout.njk
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user"
                                                 id="inp-password1" placeholder="Password">
-                                            <span class="text-danger d-none" id="error-password1"></span>
+                                            
 
-
-                                            <!--
-
-                                            todo : fix the styling on this
-
-                                           
-                    						<a href="javascript:showPassword('inp-password1')" class="input-icon eye-icon" id="inp-password1-open"></a>
-                    						<a href="javascript:showPassword('inp-password1')" class="input-icon eye-icon close-eye d-none" id="inp-password1-close"></a> 
-											 
-											-->
+                                            <a class="password-eye" id="show-password1" href="javascript:showPassword('inp-password1',1)">  <i class="far fa-eye"></i>
+                                            </a>
+                                            <a class="password-eye d-none" id="hide-password1" href="javascript:showPassword('inp-password1',1)">  <i class="far fa-eye-slash"></i>
+                                            </a>
+                                            <span class="text-danger d-none" id="error-password1"></span>	
                                         </div>
                                         <div class="form-group">
-                                            <input type="password" class="form-control form-control-user"
-                                                id="inp-password2" placeholder="Confirm password">
+                                            <input type="password" class="form-control form-control-user" id="inp-password2" placeholder="Confirm password">
+                                            
+                                            <a class="password-eye" id="show-password2" href="javascript:showPassword('inp-password2',2)">  
+                                                <i class="far fa-eye"></i>
+                                            </a>
+                                            <a class="password-eye d-none" id="hide-password2" href="javascript:showPassword('inp-password2',2)">  
+                                                <i class="far fa-eye-slash"></i>
+                                            </a>
                                             <span class="text-danger d-none" id="error-password2"></span>
-
-
-                                            <!--
-
-                                            todo : fix the styling on this
-
-                                           
-                                            <a href="javascript:showPassword('inp-password1')" class="input-icon eye-icon" id="inp-password1-open"></a>
-                                            <a href="javascript:showPassword('inp-password1')" class="input-icon eye-icon close-eye d-none" id="inp-password1-close"></a> 
                                              
-                                            -->
+                                          
                                         </div>                                        
-                                        <!--
-                                        <div class="form-group">
-                                            <div class="custom-control custom-checkbox small">
-                                                <input type="checkbox" class="custom-control-input" id="customCheck">
-                                                <label class="custom-control-label" for="customCheck">Remember
-                                                    Me</label>
-                                            </div>
-                                        </div>
-                                        -->
+                            
                                         <button class="btn btn-primary btn-user btn-block" id="btn-create-account">
                                             Create an account
                                         </button>
-
-                            <!--
-                                        <hr>
-                                        <a href="index.html" class="btn btn-google btn-user btn-block">
-                                            <i class="fab fa-google fa-fw"></i> Login with Google
-                                        </a>
-                                        <a href="index.html" class="btn btn-facebook btn-user btn-block">
-                                            <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
-                                        </a>
-                                        -->
                                    
                                     <hr>
                                     <div class="text-center">

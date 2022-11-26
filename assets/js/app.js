@@ -1,7 +1,7 @@
 let redirectUrl = ""; // hold the redcirect URL
 let token;
 let user;
-let checkElement
+//let checkElement
 var table // datatable
 
 //create your data schema here for table rendering.
@@ -129,7 +129,7 @@ let getFormData = () => {
 
 }
 
-let buildForm = (dataitem = "",theLevel=1) => {
+let buildForm = (dataitem = "", theLevel = 1) => {
     let theJson;
     //check if a json object was passed and if not then use the default schema
     if (dataitem == "")
@@ -144,19 +144,17 @@ let buildForm = (dataitem = "",theLevel=1) => {
     let inpHtml = "";
 
     let xpubHtml = "";
-   
+
     for (var i = 0; i < fields.length; ++i) {
-         let addIt =1;
+        let addIt = 1;
         //console.log(fields[i])
-        if ((fields[i] == 'id') || (fields[i] == "createdAt") || (fields[i] == "content")) 
+        if ((fields[i] == 'id') || (fields[i] == "createdAt") || (fields[i] == "content"))
             addIt = 0;
-        if ((theLevel == 2) && (fields[i] == "buildUrl"))
-        {
+        if ((theLevel == 2) && (fields[i] == "buildUrl")) {
             console.log('in b')
             addIt = 0;
         }
-        if (addIt == 1)
-        { 
+        if (addIt == 1) {
             inpHtml = inpHtml + `<div class="form-group" >
                                 <label>${fields[i]}</label>
                                 <input type="text" class="form-control form-control-user" id="inp-${fields[i]}" aria-describedby="emailHelp" placeholder="Enter ${fields[i]}" value="${tmpd[i]}">
@@ -182,8 +180,8 @@ START OF LOCAL CACHE FUNCTIONS
 let clearCache = (clearUser = 0) => {
     window.localStorage.currentdataitem = ""
     //window.localStorage.data = ""
-    
-    window.localStorage.level1data =""
+
+    window.localStorage.level1data = ""
     window.localStorage.level2data = ""
     window.localStorage.level1selecteditem = ""
     window.localStorage.level1selecteditem = ""
@@ -243,9 +241,48 @@ let deleteId = 0;
 let tableRowId = 0;
 let deleteMethod = "";
 
-checkElement = document.getElementById("confirmation-modal-delete-button");
+//check the password
+/*
+note this this the password checker curently it checks to the following rule set.
+To check a password between 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter
 
-if (typeof(checkElement) != 'undefined' && checkElement != null) {
+*/
+let checkPassword = (str) => {
+    if (complexPassword == 0) {
+        return true;
+    } else {
+        var re = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+        return re.test(str);
+    }
+}
+
+//this function checks if an element exits
+let checkElement = (element) => {
+    let checkedElement = document.getElementById(element);
+    //If it isn't "undefined" and it isn't "null", then it exists.
+    if (typeof(checkedElement) != 'undefined' && checkedElement != null) {
+        return (true)
+    } else {
+        return (false)
+    }
+}
+
+let showPassword = (elementName,eyeNumber) => {
+    let theElement = document.getElementById(elementName);
+    if (theElement.type === "password") {
+        theElement.type = "text";
+        document.getElementById('show-password'+eyeNumber).classList.add("d-none");
+        document.getElementById('hide-password'+eyeNumber).classList.remove("d-none");
+    } else {
+        theElement.type = "password";
+        document.getElementById('hide-password'+eyeNumber).classList.add("d-none");
+        document.getElementById('show-password'+eyeNumber).classList.remove("d-none");    }
+}
+
+
+//checkElement = document.getElementById("confirmation-modal-delete-button");
+if (checkElement("confirmation-modal-delete-button") == true) {
+    //if (typeof(checkElement) != 'undefined' && checkElement != null) {
     document.getElementById('confirmation-modal-delete-button').addEventListener('click', function() {
         $('#confirmation-modal').modal('toggle')
         let xhrDone = (res) => {
@@ -357,11 +394,9 @@ let checkLogin = () => {
             user = JSON.parse(window.localStorage.user);
 
             //check admin stuff
-            if (user.isAdmin == 1)
-            {
-                let element =  document.getElementById('btn-create-cy');
-                if (typeof(element) != 'undefined' && element != null)
-                {
+            if (user.isAdmin == 1) {
+                let element = document.getElementById('btn-create-cy');
+                if (typeof(element) != 'undefined' && element != null) {
                     element.style.visibility = "visible"
                 }
                 document.getElementById("navadmin").classList.remove("d-none")
@@ -375,8 +410,10 @@ let checkLogin = () => {
                 clearCache();
                 //set the jwt and user
                 getToken();
-                checkElement = document.getElementById("user-account-header");
-                if (typeof(checkElement) != 'undefined' && checkElement != null) {
+                //checkElement = document.getElementById("user-account-header");
+                if (checkElement("user-account-header") == true) {
+
+                    //if (typeof(checkElement) != 'undefined' && checkElement != null) {
                     if ((user.username != "") && (user.username != undefined))
                         document.getElementById('user-account-header').innerHTML = user.username
                     else
@@ -420,9 +457,9 @@ let xhrcall = (type = 1, method, bodyObj = "", setHeader = "", redirectUrl = "",
       Note if we are not using strai and have a custom URL we can change it here like wise if we want to use 2 we can check the method to select the correct base url
     */
 
-    checkElement = document.getElementById("spinner");
-
-    if (typeof(checkElement) != 'undefined' && checkElement != null) {
+    //checkElement = document.getElementById("spinner");
+    if (checkElement("spinner") == true) {
+        //if (typeof(checkElement) != 'undefined' && checkElement != null) {
         document.getElementById("spinner").classList.remove("d-none");
     }
     let url = method;
@@ -470,15 +507,17 @@ let xhrcall = (type = 1, method, bodyObj = "", setHeader = "", redirectUrl = "",
     }
     //result
     //check for a generic error this is usualy CORRS or something like it.
-    xhr.onerror = function () { 
-       //console.log(xhr.status)
-       //console.log(xhr.response)
-       if (xhr.status == 0)
-        document.getElementById("spinner").classList.add("d-none");
-    }; 
+    xhr.onerror = function() {
+        //console.log(xhr.status)
+        //console.log(xhr.response)
+        if (xhr.status == 0)
+            document.getElementById("spinner").classList.add("d-none");
+    };
     xhr.onload = function() {
-        checkElement = document.getElementById("confirmation-modal-delete-button");
-        if (typeof(checkElement) != 'undefined' && checkElement != null) {
+        if (checkElement("confirmation-modal-delete-button") == true) {
+
+            //checkElement = document.getElementById("confirmation-modal-delete-button");
+            //if (typeof(checkElement) != 'undefined' && checkElement != null) {
             document.getElementById("spinner").classList.add("d-none");
         }
         //check if its an error
@@ -487,6 +526,7 @@ let xhrcall = (type = 1, method, bodyObj = "", setHeader = "", redirectUrl = "",
 
         //check for errors
         if ((xhr.status == 400) || (xhr.status == 403) || (xhr.status == 500)) {
+            document.getElementById("spinner").classList.add("d-none");
             //process the response
             res = JSON.parse(res)
             errorMessage = res.error

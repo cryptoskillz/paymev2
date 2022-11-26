@@ -58,11 +58,13 @@ export async function onRequestPost(context) {
                 user.foreignCount = queryResult2.total;
             }
             //sign the token
-            const token = await jwt.sign({ password: credentials.password, username: credentials.identifier }, env.SECRET)
+            const token = await jwt.sign({ password: credentials.password, username: credentials.identifier,isAdmin:user.isAdmin }, env.SECRET)
             // Verifing token
             const isValid = await jwt.verify(token, env.SECRET)
             //check it is true
             if (isValid == true) {
+                //note: we are sending down the isAdmin status the reason for this is it makese certain front end tasks easier but for any 
+                //      read / writes to the database we will always check the entry we have for them before we allow it to happebn.
                 return new Response(JSON.stringify({ "jwt": token, "user": { "id":user.id,"name":user.name,"username": user.username, "email": user.email,"phone":user.phone,"isAdmin":user.isAdmin,"foreignCount":user.foreignCount, "secret": user.apiSecret}}), { status: 200 });
             } else {
                 return new Response(JSON.stringify({ error: "invalid login" }), { status: 400 });
