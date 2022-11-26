@@ -166,6 +166,12 @@ START OF THE ACCOUNT FUNCTIONS (LOGIN / REGISTER ETC)
 
     //check if the create account button exists
     if (checkElement("btn-create-account") == true) {
+        //check if they are allowed
+        if (canCreateAccount == 0)
+        {
+             window.location = "/login/"
+        }
+
         //add a click event listener
         document.getElementById('btn-create-account').addEventListener('click', function() {
             //set the valid var
@@ -249,6 +255,186 @@ START OF THE ACCOUNT FUNCTIONS (LOGIN / REGISTER ETC)
 /*=================================================================================
 END OF THE ACCOUNT FUNCTIONS (LOGIN / REGISTER ETC)
 ==================================================================================*/
+
+
+//functions to port
+
+
+    //logout
+    let urlParam = getUrlParamater('logout')
+    if (urlParam != "") {
+        clearCache(1);
+        showAlert('You are now logged out', 1, 0)
+    }
+
+    if (checkElement("btn-profile-update") == true) {
+        document.getElementById('btn-profile-update').addEventListener('click', function() {
+            //set the valid var
+            let valid = 1;
+            let username = document.getElementById('inp-username');
+            //reset errors
+            let alert = document.getElementById('accountsAlert')
+            alert.innerHTML = ""
+            alert.classList.add('d-none')
+            document.getElementById('accountsSuccess').classList.add('d-none')
+
+            if (username.value == "") {
+                //error with the password
+                valid = 0;
+                let error = document.getElementById('error-username')
+                error.innerHTML = 'Username cannot be blank'
+                error.classList.remove('d-none')
+            }
+
+            if (valid == 1) {
+                //build the json
+                let bodyobj = {
+                    username: username.value,
+                }
+                //string it 
+                var bodyobjectjson = JSON.stringify(bodyobj);
+                //done function
+                let profileUpdateDone = () => {
+                    let success = document.getElementById('accountsSuccess')
+                    success.innerHTML = "Update done"
+                    success.classList.remove('d-none')
+                    let updateUser = { "username": username.value, "email": user.email, "loggedin": 1 }
+                    window.localStorage.user = JSON.stringify(updateUser);
+                    user = updateUser;
+                    document.getElementById('user-account-header').innerHTML = user.username
+
+                }
+                //call the create account endpoint
+                xhrcall(4, "users/" + user.id, bodyobjectjson, "json", "", profileUpdateDone, token)
+            }
+        })
+    }
+
+    if (checkElement("btn-reset-password") == true) {
+        document.getElementById('btn-reset-password').addEventListener('click', function() {
+            //set the valid var
+            let valid = 1;
+
+            //get the details
+            let password1 = document.getElementById('inp-password1');
+            let password2 = document.getElementById('inp-password2');
+
+            //reset errors
+            let alert = document.getElementById('accountsAlert')
+            alert.innerHTML = ""
+            alert.classList.add('d-none')
+            document.getElementById('accountsSuccess').classList.add('d-none')
+            document.getElementById('accountsAlert').classList.add('d-none')
+            document.getElementById('error-password1').classList.add('d-none')
+            document.getElementById('error-password2').classList.add('d-none')
+
+            //validate the password
+            if (password1.value == "") {
+                //error with the password
+                valid = 0;
+                let error = document.getElementById('error-password1')
+                error.innerHTML = 'Password cannot be blank'
+                error.classList.remove('d-none')
+            } else {
+                //check the passwords match
+                if (password1.value != password2.value) {
+                    //password error
+                    valid = 0;
+                    let error = document.getElementById('error-password2')
+                    error.innerHTML = 'Passwords do not match.'
+                    error.classList.remove('d-none')
+
+                }
+
+            }
+
+            if (valid == 1) {
+                //todo : get the private code
+
+                let privateCode = "12345"
+
+                //build the json
+                let bodyobj = {
+                    code: privateCode,
+                    password: password1.value,
+                    passwordConfirmation: password2.value,
+                }
+                //string it 
+                var bodyobjectjson = JSON.stringify(bodyobj);
+                //done function
+                let resetPasswordDone = () => {
+                    let alert = document.getElementById('accountsAlert')
+                    alert.innerHTML = "Password has been reset"
+                    alert.classList.remove('d-none')
+                }
+                //call the create account endpoint
+                xhrcall(0, "auth/reset-password", bodyobjectjson, "json", "", resetPasswordDone)
+
+
+
+            }
+
+
+        })
+    }
+
+    if (checkElement("btn-forgot-password") == true) {
+
+        document.getElementById('btn-forgot-password').addEventListener('click', function() {
+
+            //set the valid var
+            let valid = 1;
+            //get the details
+            let email = document.getElementById('inp-forgot-email');
+            //reset errors
+            let alert = document.getElementById('accountsAlert')
+            alert.innerHTML = ""
+            alert.classList.add('d-none')
+            document.getElementById('accountsSuccess').classList.add('d-none')
+            document.getElementById('accountsAlert').classList.add('d-none')
+            document.getElementById('error-email').classList.add('d-none')
+            //validate the email
+            if (validateEmail(email.value)) {
+                //its valid we don't really have to do anything but we may extend this so no harm done leaving it.
+                valid = 1;
+            } else {
+                //error with the email
+                valid = 0;
+                //set the error
+                let error = document.getElementById('error-email');
+                error.innerHTML = "Invalid Email Address"
+                error.classList.remove('d-none')
+            }
+
+            if (valid == 1) {
+                //build the json
+                let bodyobj = {
+                    email: email.value,
+                    url: 'http:/localhost:1337/admin/plugins/users-permissions/auth/reset-password',
+                    action: "3",
+                }
+                //string it 
+                var bodyobjectjson = JSON.stringify(bodyobj);
+                //done function
+                let forgotPasswordDone = () => {
+                    let alert = document.getElementById('accountsAlert')
+                    alert.innerHTML = "you will recieve an email (when we code this part)"
+                    alert.classList.remove('d-none');
+                }
+                url = adminUrl + "admin/account"
+                xhrcall(0, url, bodyobjectjson, "json", "", forgotPasswordDone)
+            }
+
+        });
+    }
+
+
+
+
+    //maybe this is better in profile.js
+    if (window.location.pathname == "/profile/") {
+        document.getElementById('inp-username').value = user.username;
+    }
 
 
 })

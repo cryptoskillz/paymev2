@@ -91,6 +91,12 @@ export async function onRequestPost(context) {
             }
         }
 
+        //check if we want to do forgot password flow
+        //todo : this code.
+        if (registerData.action == 3) {
+            return new Response(JSON.stringify({ status: "ok" }), { status: 200 });
+        }
+
     } else {
         return new Response(JSON.stringify({ error: "Server error" }), { status: 400 });
     }
