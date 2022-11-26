@@ -90,6 +90,79 @@ whenDocumentReady(isReady = () => {
     }
 
 
+/*=================================================================================
+START OF THE ACCOUNT FUNCTIONS (LOGIN / REGISTER ETC)
+==================================================================================*/
+
+    //check if the login button exists
+    if (checkElement("btn-login") == true) {
+        //this function handles the login
+        document.getElementById('btn-login').addEventListener('click', function() {
+            /*
+            todo : 
+            */
+            //valid variable
+            let valid = 1;
+            //get the inputs
+            let email = document.getElementById('inp-login-email');
+            let password1 = document.getElementById('inp-login-password1');
+
+
+            //validate the email
+            if (validateEmail(email.value)) {
+                //no error, not necessary but we may extend this in the future
+                valid = 1;
+                //document.getElementById('valid-email-icon').classList.remove('d-none')
+            } else {
+                //error with the email
+                valid = 0;
+                document.getElementById('error-email').classList.remove('d-none')
+            }
+            //validate the password
+            if (password1.value == "") {
+                //password is blank
+                valid = 0;
+                let error = document.getElementById('error-password1')
+                error.innerHTML = 'Password cannot be blank'
+                error.classList.remove('d-none')
+            }
+            //send it.
+            if (valid == 1) {
+                //login done function
+                let loginDone = (response) => {
+                    //get the repsonse
+                    let res = JSON.parse(response);
+                    //debug
+                    //console.log("res")
+                    //console.log(res)
+                    //get the JWT
+                    let token = res.jwt
+                    //set the user object
+                    let user = res.user;
+                    //add a logged in flag
+                    user.loggedin = 1;
+                    //clear the caches 
+                    clearCache();
+                    //set the local storage
+                    window.localStorage.token = token;
+                    window.localStorage.user = JSON.stringify(user);
+                    //direct the redirect URL
+                    window.location.href = "/dashboard/"
+                }
+                //build the json
+                let bodyobj = {
+                    identifier: email.value,
+                    password: password1.value,
+                    action: "2",
+                }
+                //string it
+                var bodyobjectjson = JSON.stringify(bodyobj);
+                //call the login endpoint
+                xhrcall(0, "api/login/", bodyobjectjson, "json", "", loginDone)
+            }
+        })
+    }
+
     //check if the create account button exists
     if (checkElement("btn-create-account") == true) {
         //add a click event listener
@@ -172,7 +245,9 @@ whenDocumentReady(isReady = () => {
             }
         });
     }
-
+/*=================================================================================
+END OF THE ACCOUNT FUNCTIONS (LOGIN / REGISTER ETC)
+==================================================================================*/
 
 
 })

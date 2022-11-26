@@ -2,7 +2,7 @@
 layout: login-layout.njk
 ---
 {% set theJs %}
-    {% include 'admin/users.js' %}
+    {% include 'admin/account.js' %}
 {% endset %}
     <!-- Outer Row -->
         <div class="row justify-content-center">
@@ -26,7 +26,7 @@ layout: login-layout.njk
                                     <div class="alert alert-danger  d-none" role="alert" id="accountsDanger"></div>
             
                                         <div class="form-group">
-                                            <input type="email" class="form-control form-control-user" id="inp-email" aria-describedby="emailHelp" placeholder="Enter Email Address...">
+                                            <input type="email" class="form-control form-control-user" id="inp-login-email" aria-describedby="emailHelp" placeholder="Enter Email Address...">
                                            	<span class="text-danger d-none" id="error-email">Invalid Email Address </span>
 						                    <span class="input-icon verify-icon">
 						                        <img class="d-none" id="valid-email-icon" src="{{env.CDN_URL}}images/check_circle.png" alt="">
@@ -34,7 +34,7 @@ layout: login-layout.njk
                                         </div>
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user"
-                                                id="inp-password1" placeholder="Password">
+                                                id="inp-login-password1" placeholder="Password">
                                             <span class="text-danger d-none" id="error-password1"></span>
 
 
