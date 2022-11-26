@@ -14,9 +14,6 @@ let whenDocumentReady = (f) => {
 }
 
 
-
-
-
 whenDocumentReady(isReady = () => {
 
     //show it.
@@ -73,26 +70,24 @@ whenDocumentReady(isReady = () => {
                 let error = document.getElementById('error-password2')
                 error.innerHTML = 'Passwords do not match.'
                 error.classList.remove('d-none');
-            }
-            else
-            {
+            } else {
                 //no password
                 let error = document.getElementById('error-password1')
                 error.innerHTML = ''
-                error.classList.add('d-none');    
+                error.classList.add('d-none');
                 //no error password 2
                 error = document.getElementById('error-password2')
                 error.innerHTML = ''
-                error.classList.add('d-none');                 
+                error.classList.add('d-none');
             }
         })
 
     }
 
 
-/*=================================================================================
-START OF THE ACCOUNT FUNCTIONS (LOGIN / REGISTER ETC)
-==================================================================================*/
+    /*=================================================================================
+    START OF THE ACCOUNT FUNCTIONS (LOGIN / REGISTER ETC)
+    ==================================================================================*/
 
     //check if the login button exists
     if (checkElement("btn-login") == true) {
@@ -167,9 +162,8 @@ START OF THE ACCOUNT FUNCTIONS (LOGIN / REGISTER ETC)
     //check if the create account button exists
     if (checkElement("btn-create-account") == true) {
         //check if they are allowed
-        if (canCreateAccount == 0)
-        {
-             window.location = "/login/"
+        if (canCreateAccount == 0) {
+            window.location = "/login/"
         }
 
         //add a click event listener
@@ -237,13 +231,10 @@ START OF THE ACCOUNT FUNCTIONS (LOGIN / REGISTER ETC)
                 //done function
                 let registerDone = (response) => {
                     response = JSON.parse(response);
-                    if (response.status == "ok")
-                    {
+                    if (response.status == "ok") {
                         window.location = "/login/"
-                    }
-                    else
-                    {
-                         showAlert("Error creating account please try again", 2)
+                    } else {
+                        showAlert("Error creating account please try again", 2)
                     }
                 }
                 //call the create account endpoint
@@ -252,12 +243,67 @@ START OF THE ACCOUNT FUNCTIONS (LOGIN / REGISTER ETC)
             }
         });
     }
-/*=================================================================================
-END OF THE ACCOUNT FUNCTIONS (LOGIN / REGISTER ETC)
-==================================================================================*/
 
 
-//functions to port
+
+    if (checkElement("btn-forgot-password") == true) {
+
+        document.getElementById('btn-forgot-password').addEventListener('click', function() {
+
+            //set the valid var
+            let valid = 1;
+            //get the details
+            let email = document.getElementById('inp-forgot-email');
+            //reset errors
+            let alert = document.getElementById('accountsAlert')
+            alert.innerHTML = ""
+            alert.classList.add('d-none')
+            document.getElementById('accountsSuccess').classList.add('d-none')
+            document.getElementById('accountsAlert').classList.add('d-none')
+            document.getElementById('error-email').classList.add('d-none')
+            //validate the email
+            if (validateEmail(email.value)) {
+                //its valid we don't really have to do anything but we may extend this so no harm done leaving it.
+                valid = 1;
+            } else {
+                //error with the email
+                valid = 0;
+                //set the error
+                let error = document.getElementById('error-email');
+                error.innerHTML = "Invalid Email Address"
+                error.classList.remove('d-none')
+            }
+
+            if (valid == 1) {
+                //build the json
+                let bodyobj = {
+                    email: email.value,
+                    url: 'http:/localhost:1337/admin/plugins/users-permissions/auth/reset-password',
+                    action: "3",
+                }
+                //string it 
+                var bodyobjectjson = JSON.stringify(bodyobj);
+                //done function
+                let forgotPasswordDone = () => {
+                    let alert = document.getElementById('accountsAlert')
+                    alert.innerHTML = "you will recieve an email (when we code this part)"
+                    alert.classList.remove('d-none');
+                }
+                url = adminUrl + "admin/account"
+                xhrcall(0, url, bodyobjectjson, "json", "", forgotPasswordDone)
+            }
+
+        });
+    }
+
+
+
+    /*=================================================================================
+    END OF THE ACCOUNT FUNCTIONS (LOGIN / REGISTER ETC)
+    ==================================================================================*/
+
+
+    //functions to port
 
 
     //logout
@@ -378,63 +424,9 @@ END OF THE ACCOUNT FUNCTIONS (LOGIN / REGISTER ETC)
         })
     }
 
-    if (checkElement("btn-forgot-password") == true) {
-
-        document.getElementById('btn-forgot-password').addEventListener('click', function() {
-
-            //set the valid var
-            let valid = 1;
-            //get the details
-            let email = document.getElementById('inp-forgot-email');
-            //reset errors
-            let alert = document.getElementById('accountsAlert')
-            alert.innerHTML = ""
-            alert.classList.add('d-none')
-            document.getElementById('accountsSuccess').classList.add('d-none')
-            document.getElementById('accountsAlert').classList.add('d-none')
-            document.getElementById('error-email').classList.add('d-none')
-            //validate the email
-            if (validateEmail(email.value)) {
-                //its valid we don't really have to do anything but we may extend this so no harm done leaving it.
-                valid = 1;
-            } else {
-                //error with the email
-                valid = 0;
-                //set the error
-                let error = document.getElementById('error-email');
-                error.innerHTML = "Invalid Email Address"
-                error.classList.remove('d-none')
-            }
-
-            if (valid == 1) {
-                //build the json
-                let bodyobj = {
-                    email: email.value,
-                    url: 'http:/localhost:1337/admin/plugins/users-permissions/auth/reset-password',
-                    action: "3",
-                }
-                //string it 
-                var bodyobjectjson = JSON.stringify(bodyobj);
-                //done function
-                let forgotPasswordDone = () => {
-                    let alert = document.getElementById('accountsAlert')
-                    alert.innerHTML = "you will recieve an email (when we code this part)"
-                    alert.classList.remove('d-none');
-                }
-                url = adminUrl + "admin/account"
-                xhrcall(0, url, bodyobjectjson, "json", "", forgotPasswordDone)
-            }
-
-        });
-    }
-
-
-
-
-    //maybe this is better in profile.js
+    //maybe this is better in profile.js waht is i?
     if (window.location.pathname == "/profile/") {
         document.getElementById('inp-username').value = user.username;
     }
-
 
 })

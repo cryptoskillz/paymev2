@@ -49,12 +49,20 @@ API
 
  USER
 
- ☐ 
+ ☐ add a admin id to each user so we can control is. 
 
  ADMIN 
 
  ☐ add manager user add / edit / delete 
  ☐ add add property
+
+ ADMIN USER 
+
+ ✔ add a adminId to the user table so we know who manages it.  if it is signed up we will default it to 1 as we can assume the first entry in the databse is the main admin.  We could make this smarter but I don't want to. @done (22-11-27 01:49)
+ ☐ render the users
+ ☐ add delete user
+ ☐ add edit user
+ ☐ add create new user 
 
 
  FUNCTIONS API

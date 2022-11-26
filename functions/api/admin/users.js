@@ -3,9 +3,21 @@
     note: we could move login into here and  possible register
 
 */
+//JWT model
+const jwt = require('@tsndr/cloudflare-worker-jwt');
+
+//decode the jwt token
+let decodeJwt = async (req, secret) => {
+    let bearer = req.get('authorization')
+    bearer = bearer.replace("Bearer ", "");
+    let details = await jwt.decode(bearer, secret)
+    return (details)
+}
+
+
 //set the UUID 
 var uuid = require('uuid');
-export async function onRequestPost(context) {
+export async function onRequestGet(context) {
     const {
         request, // same as existing Worker API
         env, // same as existing Worker API
@@ -15,29 +27,20 @@ export async function onRequestPost(context) {
         data, // arbitrary space for passing data between middlewares
     } = context;
 
-    //set a valid boolean
-    let valid = 1;
-    const contentType = request.headers.get('content-type')
-    let registerData;
-    if (contentType != null) {
-        registerData = await request.json();
-        const query = context.env.DB.prepare(`SELECT COUNT(*) as total from user where email = '${registerData.email}'`);
-        const queryResult = await query.first();
-        console.log(queryResult.total)
-        if (queryResult.total == 0) {
-            let apiSecret = uuid.v4();
-            const info = await context.env.DB.prepare('INSERT INTO user (username, email,password,apiSecret,confirmed,blocked,isAdmin) VALUES (?1, ?2,?3,?4,?5,?6,?7)')
-                .bind(registerData.username, registerData.email, registerData.password, apiSecret, 0, 0, 0)
-                .run()
-
-            if (info.success == true)
-                return new Response(JSON.stringify({ status: "ok" }), { status: 200 });
-            else
-                return new Response(JSON.stringify({ error: "error registering" }), { status: 400 });
-        } else {
-            return new Response(JSON.stringify({ error: "email already exists" }), { status: 400 });
-        }
+    //get the token
+    let theToken = await decodeJwt(request.headers, env.SECRET);
+    if (theToken.payload.isAdmin == 1) {
+        //get the search paramaters
+        const { searchParams } = new URL(request.url);
+        //get the user id
+        let userId = searchParams.get('id');
+        //run the query
+        //we want all the user (excluding ourselves) that we manage, it is unlikley we will have another admin id but we may go multi tenent at some point
+        const query = context.env.DB.prepare(`SELECT * from user where id != '${userId}' and adminId='${userId}'`);
+        const queryResults = await query.all();
+        return new Response(JSON.stringify(queryResults), { status: 200 });
+    } else {
+        return new Response(JSON.stringify({ error: "naughty, you are not an admin" }), { status: 400 });
     }
-
 
 }
