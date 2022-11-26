@@ -4,9 +4,9 @@
 
 */
 
-let createUser = (registerData) => {
+const jwt = require('@tsndr/cloudflare-worker-jwt');
 
-}
+
 //set the UUID 
 var uuid = require('uuid');
 export async function onRequestPost(context) {
@@ -25,6 +25,7 @@ export async function onRequestPost(context) {
     let registerData;
     if (contentType != null) {
         registerData = await request.json();
+        console.log(registerData);
         //check if we want to create a user
         if (registerData.action == 1) {
             const query = context.env.DB.prepare(`SELECT COUNT(*) as total from user where email = '${registerData.email}'`);
@@ -46,12 +47,12 @@ export async function onRequestPost(context) {
 
         //check if we want to login a user
         if (registerData.action == 2) {
-            if ((credentials.identifier == undefined) || (credentials.password == undefined))
+            if ((registerData.email == undefined) || (registerData.password == undefined))
                 return new Response(JSON.stringify({ error: "invalid login" }), { status: 400 });
 
 
             //prepare the query
-            const query = context.env.DB.prepare(`SELECT user.name,user.username,user.email,user.phone,user.id,user.isAdmin,userAccess.foreignId,user.apiSecret from user LEFT JOIN userAccess ON user.id = userAccess.userId where user.email = '${credentials.identifier}' and user.password = '${credentials.password}'`);
+            const query = context.env.DB.prepare(`SELECT user.name,user.username,user.email,user.phone,user.id,user.isAdmin,userAccess.foreignId,user.apiSecret from user LEFT JOIN userAccess ON user.id = userAccess.userId where user.email = '${registerData.email}' and user.password = '${registerData.password}'`);
             //get the result
             //note : we could make this return first and not all 
             const queryResult = await query.all();
@@ -73,7 +74,7 @@ export async function onRequestPost(context) {
                     user.foreignCount = queryResult2.total;
                 }
                 //sign the token
-                const token = await jwt.sign({ password: credentials.password, username: credentials.identifier, isAdmin: user.isAdmin }, env.SECRET)
+                const token = await jwt.sign({ password: user.password, username: user.username, isAdmin: user.isAdmin }, env.SECRET)
                 // Verifing token
                 const isValid = await jwt.verify(token, env.SECRET)
                 //check it is true

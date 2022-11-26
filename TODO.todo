@@ -7,20 +7,23 @@ DASHBOARD
 
  ✔ fix dashboard properties shows 0 (we can move this to d1) @done (22-11-25 22:38)
 
- CREATE ACCOUNT
+ACCOUNT
 
  ✔ auto populate the username from the first part of the email @done (22-11-26 22:28)
  ✔ have an option to turn on a password rule @done (22-11-26 22:28)
+ ☐ refactor forgot password
+ ☐ refactor reset password
+ ☐ user the isadmin in the token to control access to the api endpoints.
 
 LEVEV 1 VIEW
 
- ☐ get the property id from the url paramaters currently it is hard coded
+ ✔ get the property id from the url paramaters currently it is hard coded @done (22-11-26 23:36)
  ✔ add share percentage for owner @done (22-11-22 22:20)
  ✔ fix rental areements table @done (22-11-22 17:03)
  ✔ add paid in @done (22-11-22 22:20)
  ✔ add paid out @done (22-11-22 22:20)
  ✔ add distributions @done (22-11-22 22:20)
- ☐ add a check for api errors
+ ✔ add a check for api errors @done (22-11-26 23:36)
  ✔ hide admin create of the site from non admins @done (22-11-26 01:38)
 
 
@@ -34,7 +37,7 @@ API
  ☐ port setting to d1 
  ✔ port register to d1 @done (22-11-26 01:20)
  ☐ port forgot password to d1
- ☐ add the login for none admins
+ ✔ add the login for none admins @done (22-11-26 23:36)
  ✔ add the propety ids (do we require the foreign ID as it we can just do a call in the property page) @done (22-11-26 02:29)
 
  REPORT
@@ -56,13 +59,13 @@ API
 
  FUNCTIONS API
 
- ☐ remove build.js
- ☐ remove content.js
+ ✔ remove build.js @done (22-11-26 23:35)
+ ✔ remove content.js @done (22-11-26 23:35)
  ☐ remove page.js
- ☐ remove properties.js
- ☐ remove user.js
+ ✔ remove properties.js @done (22-11-26 23:35)
+ ✔ remove user.js @done (22-11-26 23:35)
  ☐ does login / settings / regsiter.js stay in the root of api it kind of makes sense to move them to a frontend folder as thats what uses them  
- ☐ add user.js to admin directory
+ ✔ add user.js to admin directory @done (22-11-26 23:35)
 
 
 

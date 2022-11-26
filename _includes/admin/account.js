@@ -151,14 +151,15 @@ START OF THE ACCOUNT FUNCTIONS (LOGIN / REGISTER ETC)
                 }
                 //build the json
                 let bodyobj = {
-                    identifier: email.value,
+                    email: email.value,
                     password: password1.value,
                     action: "2",
                 }
                 //string it
                 var bodyobjectjson = JSON.stringify(bodyobj);
                 //call the login endpoint
-                xhrcall(0, "api/login/", bodyobjectjson, "json", "", loginDone)
+                url = adminUrl + "admin/account"
+                xhrcall(0, url, bodyobjectjson, "json", "", loginDone)
             }
         })
     }
