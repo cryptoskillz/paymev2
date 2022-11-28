@@ -13,7 +13,7 @@ ACCOUNT
  ✔ have an option to turn on a password rule @done (22-11-26 22:28)
  ☐ refactor forgot password
  ☐ refactor reset password
- ☐ user the isadmin in the token to control access to the api endpoints.
+ ✔ user the isadmin in the token to control access to the api endpoints. @done (22-11-29 01:16)
 
 LEVEV 1 VIEW
 
@@ -50,7 +50,7 @@ API
 
  USER
 
- ☐ add a admin id to each user so we can control is. 
+ ✔ add a admin id to each user so we can control is. @done (22-11-29 01:16)
 
  ADMIN 
 
@@ -60,17 +60,23 @@ API
  ADMIN USER 
 
  ✔ add a adminId to the user table so we know who manages it.  if it is signed up we will default it to 1 as we can assume the first entry in the databse is the main admin.  We could make this smarter but I don't want to. @done (22-11-27 01:49)
- ☐ render the users
- ☐ add delete user
+ ✔ render the users @done (22-11-29 01:12)
+ ✔ add delete user @done (22-11-29 01:12)
  ☐ add edit user
- ☐ add create new user 
+ ✔ add create new user @done (22-11-29 01:12)
+
+ CREATE NEW / EDIT USER
+
+ ☐ add the ability to render different types 
+ ☐ add aliases to the name field so we can clean them up, we can do this a little bit but might have to hand crank it. 
+ ☐ if the field name is password render it out two elements
 
 
  FUNCTIONS API
 
  ✔ remove build.js @done (22-11-26 23:35)
  ✔ remove content.js @done (22-11-26 23:35)
- ☐ remove page.js
+ ✔ remove page.js @done (22-11-29 01:15)
  ✔ remove properties.js @done (22-11-26 23:35)
  ✔ remove user.js @done (22-11-26 23:35)
  ☐ does login / settings / regsiter.js stay in the root of api it kind of makes sense to move them to a frontend folder as thats what uses them  

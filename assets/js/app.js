@@ -129,6 +129,54 @@ let getFormData = () => {
 
 }
 
+/*
+This function handles the input of a create form
+*/
+document.getElementById('btn-create').addEventListener('click', function() {
+    alert('lets go')
+    //api call done
+    /*
+    let xhrDone = (res) => {
+        //addDataItem(1,res, 0);
+        res = JSON.parse(res)
+        showAlert(res.message, 1, 0);
+        document.getElementById('data-header').innerHTML = "";
+        document.getElementById('formdiv').classList.add("d-none");
+        document.getElementById('btn-create').classList.add("d-none");
+
+    }
+    //get the form data
+    let bodyJson = getFormData()
+    console.log(bodyJson)
+    let user = getUser()
+    bodyJson.secret = user.secret;
+    //check there is data to submit
+    console.log(bodyJson)
+    if (bodyJson != false) {
+        //call it
+        xhrcall(0, `api/properties/property/`, bodyJson, "json", "", xhrDone, token)
+    }
+    */
+})
+
+/*
+This funtion handles the building of the form
+*/
+
+let buildFormElement = (theData, theValue = "") => {
+    //captalise the element
+    const theTitle = theData.name.charAt(0).toUpperCase() + theData.name.slice(1);
+    //built the element
+    let inpHtml = `<div class="form-group">
+                        <label>${theTitle}</label>
+                        <input type="text" class="form-control form-control-user" id="inp-${theData.name}" aria-describedby="${theData.name}" placeholder="Enter ${theData.name}" value="${theValue}">
+                        <span class="text-danger d-none" id="error-${theData.name}">${theData.name} cannot be blank</span>  
+                    </div>`
+    //return it
+    return (inpHtml)
+}
+
+/*
 let buildForm = (dataitem = "", theLevel = 1) => {
     let theJson;
     //check if a json object was passed and if not then use the default schema
@@ -165,7 +213,7 @@ let buildForm = (dataitem = "", theLevel = 1) => {
     }
     //console.log(inpHtml)
     return (inpHtml)
-}
+}*/
 
 
 /*
@@ -341,7 +389,7 @@ let updateTableItem = (dId, method, tTableName, tFields, tValues, toggleBtns = 0
             //this is redundant now so we may remove it
             if (toggleBtns == 1) {
                 //check the value
-                if (tValues == 0)   {
+                if (tValues == 0) {
                     //show the on state
                     document.getElementById(`off-${tFields}-${dId}`).classList.add('d-none');
                     document.getElementById(`on-${tFields}-${dId}`).classList.remove('d-none');
