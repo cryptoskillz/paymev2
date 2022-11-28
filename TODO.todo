@@ -25,6 +25,7 @@ LEVEV 1 VIEW
  ✔ add distributions @done (22-11-22 22:20)
  ✔ add a check for api errors @done (22-11-26 23:36)
  ✔ hide admin create of the site from non admins @done (22-11-26 01:38)
+ ☐ remove visibilty hack to the button
 
 
 SETTINGS
@@ -74,6 +75,10 @@ API
  ✔ remove user.js @done (22-11-26 23:35)
  ☐ does login / settings / regsiter.js stay in the root of api it kind of makes sense to move them to a frontend folder as thats what uses them  
  ✔ add user.js to admin directory @done (22-11-26 23:35)
+
+ APP
+
+ ☐ update the updateTableItem function with multipile fields and values (this may be done table.js in the API)
 
 
 

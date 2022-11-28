@@ -240,7 +240,7 @@ START OF TABLE FUNCTIONS
 let deleteId = 0;
 let tableRowId = 0;
 let deleteMethod = "";
-
+let tableName = "";
 //check the password
 /*
 note this this the password checker curently it checks to the following rule set.
@@ -267,16 +267,17 @@ let checkElement = (element) => {
     }
 }
 
-let showPassword = (elementName,eyeNumber) => {
+let showPassword = (elementName, eyeNumber) => {
     let theElement = document.getElementById(elementName);
     if (theElement.type === "password") {
         theElement.type = "text";
-        document.getElementById('show-password'+eyeNumber).classList.add("d-none");
-        document.getElementById('hide-password'+eyeNumber).classList.remove("d-none");
+        document.getElementById('show-password' + eyeNumber).classList.add("d-none");
+        document.getElementById('hide-password' + eyeNumber).classList.remove("d-none");
     } else {
         theElement.type = "password";
-        document.getElementById('hide-password'+eyeNumber).classList.add("d-none");
-        document.getElementById('show-password'+eyeNumber).classList.remove("d-none");    }
+        document.getElementById('hide-password' + eyeNumber).classList.add("d-none");
+        document.getElementById('show-password' + eyeNumber).classList.remove("d-none");
+    }
 }
 
 
@@ -301,24 +302,64 @@ if (checkElement("confirmation-modal-delete-button") == true) {
             }
 
         }
-        let theItem = getData(deleteId);
+
         let bodyobj = {
-            deleteid: deleteId,
-            name: theItem.name
+            id: deleteId,
+            tableName: tableName
         }
         var bodyobjectjson = JSON.stringify(bodyobj);
-        //call the create account endpoint
+        //call the delete table record endpoint
         xhrcall(3, `${deleteMethod}`, bodyobjectjson, "json", "", xhrDone, token)
 
     })
 }
 
 
-let deleteTableItem = (dId, tId, method) => {
+let deleteTableItem = (dId, method, tTableName) => {
     deleteId = dId;
-    tableRowId = tId;
+    tableRowId = dId;
     deleteMethod = method;
+    tableName = tTableName;
     $('#confirmation-modal').modal('toggle')
+}
+
+//todo : make this work with multipile fields and values.
+let updateTableItem = (dId, method, tTableName, tFields, tValues, toggleBtns = 0) => {
+    let bodyobj = {
+        id: dId,
+        tableName: tTableName,
+        fields: tFields,
+        values: tValues,
+    }
+    var bodyobjectjson = JSON.stringify(bodyobj);
+    let xhrDone = (res) => {
+        //console.log(bodyobjectjson)
+        //console.log(`off-${tFields}-${dId}`)
+
+        //check if the element is there before we try an update
+        if (checkElement(`off-${tFields}-${dId}`) == true) {
+            //this is redundant now so we may remove it
+            if (toggleBtns == 1) {
+                //check the value
+                if (tValues == 0)   {
+                    //show the on state
+                    document.getElementById(`off-${tFields}-${dId}`).classList.add('d-none');
+                    document.getElementById(`on-${tFields}-${dId}`).classList.remove('d-none');
+                    document.getElementById(`text-${tFields}-${dId}`).innerHTML = "No";
+
+                } else {
+                    //show the off state
+                    document.getElementById(`off-${tFields}-${dId}`).classList.remove('d-none');
+                    document.getElementById(`on-${tFields}-${dId}`).classList.add('d-none');
+                    document.getElementById(`text-${tFields}-${dId}`).innerHTML = "Yes"
+                }
+
+
+            }
+        }
+    }
+    //call a put to update the fields
+    xhrcall(4, `${method}`, bodyobjectjson, "json", "", xhrDone, token)
 }
 
 
