@@ -90,7 +90,30 @@ export async function onRequestPost(context) {
         next, // used for middleware or to fetch assets
         data, // arbitrary space for passing data between middlewares
     } = context;
-    return new Response(sql, { status: 200 });
+//decode the token
+    let theToken = await decodeJwt(request.headers, env.SECRET);
+    //check they are an admin
+    if (theToken.payload.isAdmin == 1) {
+        //get the content type
+        const contentType = request.headers.get('content-type')
+        let theData;
+        if (contentType != null) {
+            theData = await request.json();
+            //debug
+            console.log("debug")
+            console.log(theData);
+            //console.log(`UPDATE ${theData.tableName} SET isDeleted = 1 WHERE id = ${theData.id}`)
+            //const info = await context.env.DB.prepare(`UPDATE ${theData.tableName} SET isDeleted = ?1 WHERE id = ?2`)
+            //    .bind(1, theData.id)
+            //    .run();
+            return new Response(JSON.stringify({ message: "User has been added" }), { status: 200 });
+
+        }
+        return new Response(JSON.stringify({ error: "server" }), { status: 400 });
+
+    } else {
+        return new Response(JSON.stringify({ error: "naughty, you are not an admin" }), { status: 400 });
+    }
 }
 
 export async function onRequestGet(context) {

@@ -64,6 +64,8 @@ API
  ✔ add delete user @done (22-11-29 01:12)
  ☐ add edit user
  ✔ add create new user @done (22-11-29 01:12)
+ ✔ add your admin to the table @done (22-11-29 03:49)
+ ☐ set the defaults in the schema
 
  CREATE NEW / EDIT USER
 

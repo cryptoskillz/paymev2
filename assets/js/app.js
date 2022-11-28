@@ -1,37 +1,8 @@
 let redirectUrl = ""; // hold the redcirect URL
 let token;
 let user;
-//let checkElement
 var table // datatable
 
-//create your data schema here for table rendering.
-
-/*
-"id"    INTEGER,
-    "name"  TEXT,
-    "address_1" TEXT,
-    "address_2" TEXT,
-    "address_3" TEXT,
-    "address_4" TEXT,
-    "address_5" TEXT,
-    "address_6" TEXT,
-    "bathrooms" INTEGER,
-    "bedrooms" INTEGER,
-    "local_currency" REAL,
-    "international_currency" REAL,
-    "crypto_currency" REAL,
-    "image_url" TEXT,
-    "taxes_cost" REAL,
-    "suggested_rental_price" REAL,
-    "international_cost" REAL,
-    "local_cost" REAL,
-    "currently_rented" INTEGER,
-    "published_at" TEXT,
-    "tokenId" id,
-    "rentalId" INTEGER,
-    PRIMARY KEY("id" AUTOINCREMENT)
-
-    */
 let dataSchema = '{ "id": "", "name": "", "address 1": "", "address 2": "", "address 3": "", "address 4": "", "address 5": "", "address 6": "","bathrooms":"","bedrooms":"","local_currency":"","imageurl":"","taxes":"","suggested_rental_price":"","cost":"","tokenId":"","rentalId":"", "createdAt": "" }'
 dataSchema = JSON.parse(dataSchema);
 //add this to the settings page
@@ -96,68 +67,112 @@ settingsSchema = JSON.parse(settingsSchema);
 
 })(jQuery); // End of use strict
 
+//this function checks if an element exits
+let checkElement = (element) => {
+    let checkedElement = document.getElementById(element);
+    //If it isn't "undefined" and it isn't "null", then it exists.
+    if (typeof(checkedElement) != 'undefined' && checkedElement != null) {
+        return (true)
+    } else {
+        return (false)
+    }
+}
+
 /*
 START OF TABLE PROCESSING FUCNTIONS
 */
 
-let getFormData = () => {
-    let fields = Object.keys(dataSchema);
+let getFormData = (smartValidate = 0) => {
+    //clear the errors
+    let theErrors = document.getElementsByClassName('text-danger')
+    for (var i = 0; i < theErrors.length; ++i) {
+        theErrors[i].classList.add("d-none");
+    }
+    //build the json
     let theJson = "{";
-    let sumbmitIt = 1;
-    for (var i = 0; i < fields.length; ++i) {
-        if ((fields[i] != 'id') && (fields[i] != "createdAt") && (fields[i] != "dataid")) {
-            //console.log("inp-"+fields[i]);
-            let theValue = document.getElementById('inp-' + fields[i]).value;
-            if (theValue == "") {
-                document.getElementById('error-' + fields[i]).classList.remove('d-none');
-                sumbmitIt = 0;
-            } else {
-
-                if (theJson == "{")
-                    theJson = theJson + `"${fields[i]}":"${theValue}"`
-                else
-                    theJson = theJson + `,"${fields[i]}":"${theValue}"`
+    //get the form elements (this is built by the checkElement function )
+    let theElements = document.getElementsByClassName('form-control-user');
+    //loop through the elements
+    let valid = 1;
+    for (var i = 0; i < theElements.length; ++i) {
+        //get the element name
+        let elementName = theElements[i].id;
+        //check if its blank
+        if (theElements[i].value == "") {
+            //set the error id
+            let errorId = elementName.replace("inp", 'error');
+            //remove the error
+            document.getElementById(errorId).classList.remove('d-none');
+            //set valid to false
+            valid = 0;
+        }
+        //check if we want to smart validation 
+        if (smartValidate == 1) {
+            //chekc if the field type is an email
+            if (elementName == "inp-email") {
+                console.log("validate email")
             }
 
+            //check if its an integer field
+
+            //check if its a password field 
+
+
         }
+        //build the json
+        let sqlName = elementName.replace("inp-", "")
+        if (theJson == "{")
+            theJson = theJson + `"${sqlName}":"${theElements[i].value}"`
+        else
+            theJson = theJson + `,"${sqlName}":"${theElements[i].value}"`
     }
-    theJson = theJson + "}"
-    if (sumbmitIt == 1)
+    let theTable = document.getElementById('formTableName').value;
+    //check is isAdmin and the it is one of the tables we want to add attach to the admin
+    if ((user.isAdmin == 1) && (theTable == "user")) {
+        theJson = theJson + `,"table":"${theTable}"`
+        //note we should check there is an admin Id.
+        theJson = theJson + `,"adminId":"${user.id}" }`
+    } else {
+        theJson = theJson + `,"table":"${theTable}" }`
+    }
+    console.log(theJson);
+    if (valid == 1)
         return (theJson)
     else
         return (false)
 
 }
 
+
+
 /*
 This function handles the input of a create form
 */
-document.getElementById('btn-create').addEventListener('click', function() {
-    alert('lets go')
-    //api call done
-    /*
-    let xhrDone = (res) => {
-        //addDataItem(1,res, 0);
-        res = JSON.parse(res)
-        showAlert(res.message, 1, 0);
-        document.getElementById('data-header').innerHTML = "";
-        document.getElementById('formdiv').classList.add("d-none");
-        document.getElementById('btn-create').classList.add("d-none");
+if (checkElement("btn-create") == true) {
+    document.getElementById('btn-create').addEventListener('click', function() {
+        //process the API call
+        let xhrDone = (res) => {
+            //parse the response
+            res = JSON.parse(res);
+            //show the message
+            showAlert(res.message, 1, 0);
+            //clear the header
+            document.getElementById('data-header').innerHTML = "";
+            //hide the create button
+            //note : we could also clear the fields and let them add another if it flows better.
+            document.getElementById('btn-create').classList.add("d-none");
 
-    }
-    //get the form data
-    let bodyJson = getFormData()
-    console.log(bodyJson)
-    let user = getUser()
-    bodyJson.secret = user.secret;
-    //check there is data to submit
-    console.log(bodyJson)
-    if (bodyJson != false) {
-        //call it
-        xhrcall(0, `api/properties/property/`, bodyJson, "json", "", xhrDone, token)
-    }
-    */
-})
+        }
+        //get the form data
+        let bodyJson = getFormData(1);
+        //check we have valid data to submit
+        if (bodyJson != false) {
+            //post the record
+            xhrcall(0, `api/database/table/`, bodyJson, "json", "", xhrDone, token)
+        }
+
+    })
+}
 
 /*
 This funtion handles the building of the form
@@ -175,45 +190,6 @@ let buildFormElement = (theData, theValue = "") => {
     //return it
     return (inpHtml)
 }
-
-/*
-let buildForm = (dataitem = "", theLevel = 1) => {
-    let theJson;
-    //check if a json object was passed and if not then use the default schema
-    if (dataitem == "")
-        theJson = dataSchema
-    else
-        theJson = dataitem
-    //get the objects
-    let tmpd = Object.values(theJson)
-    //get the keys
-    let fields = Object.keys(theJson)
-    //loop through  the keys
-    let inpHtml = "";
-
-    let xpubHtml = "";
-
-    for (var i = 0; i < fields.length; ++i) {
-        let addIt = 1;
-        //console.log(fields[i])
-        if ((fields[i] == 'id') || (fields[i] == "createdAt") || (fields[i] == "content"))
-            addIt = 0;
-        if ((theLevel == 2) && (fields[i] == "buildUrl")) {
-            console.log('in b')
-            addIt = 0;
-        }
-        if (addIt == 1) {
-            inpHtml = inpHtml + `<div class="form-group" >
-                                <label>${fields[i]}</label>
-                                <input type="text" class="form-control form-control-user" id="inp-${fields[i]}" aria-describedby="emailHelp" placeholder="Enter ${fields[i]}" value="${tmpd[i]}">
-                                <span class="text-danger d-none" id="error-${fields[i]}">${fields[i]} cannot be blank</span>  
-                            </div>`
-        }
-
-    }
-    //console.log(inpHtml)
-    return (inpHtml)
-}*/
 
 
 /*
@@ -304,16 +280,7 @@ let checkPassword = (str) => {
     }
 }
 
-//this function checks if an element exits
-let checkElement = (element) => {
-    let checkedElement = document.getElementById(element);
-    //If it isn't "undefined" and it isn't "null", then it exists.
-    if (typeof(checkedElement) != 'undefined' && checkedElement != null) {
-        return (true)
-    } else {
-        return (false)
-    }
-}
+
 
 let showPassword = (elementName, eyeNumber) => {
     let theElement = document.getElementById(elementName);
@@ -499,7 +466,6 @@ let checkLogin = () => {
                 clearCache();
                 //set the jwt and user
                 getToken();
-                //checkElement = document.getElementById("user-account-header");
                 if (checkElement("user-account-header") == true) {
 
                     //if (typeof(checkElement) != 'undefined' && checkElement != null) {

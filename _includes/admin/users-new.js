@@ -12,8 +12,9 @@
          for (var i = 0; i < res.length; ++i) {
              //console.log(res[i].name)
              formHtml = formHtml + buildFormElement(res[i]);
-
          }
+         //set table name
+         document.getElementById('formTableName').value = "user";
          document.getElementById('formInputs').innerHTML = formHtml;
          //show the body div
          document.getElementById('showBody').classList.remove('d-none');
