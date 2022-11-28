@@ -39,6 +39,6 @@
          //table.columns.adjust();
          document.getElementById('showBody').classList.remove('d-none');
      }
-     url = adminUrl + "database/table?tablename=user&fields=id,email,username,phone,isBlocked,isAdmin"
+     url = adminUrl + "database/table?tablename=user&fields=id,email,username,phone,isBlocked,isAdmin&getTableSchema=0"
      xhrcall(1, url, "", "json", "", getTableDone, token)
- })
+ });

@@ -27,9 +27,9 @@ export async function onRequestPut(context) {
         const contentType = request.headers.get('content-type')
         let theData;
         if (contentType != null) {
-            theData = await request.json();   
+            theData = await request.json();
             let theFields = theData.fields;
-            let theValues = theData.values;         
+            let theValues = theData.values;
             //debug
             console.log("debug")
             console.log(theData);
@@ -106,31 +106,66 @@ export async function onRequestGet(context) {
     let theToken = await decodeJwt(request.headers, env.SECRET);
     //check they are an admin
     if (theToken.payload.isAdmin == 1) {
+        let query;
+        let queryResults;
         //get the search paramaters
         const { searchParams } = new URL(request.url);
         //get the table name
         let tableName = searchParams.get('tablename');
         //get the table name
         let fields = searchParams.get('fields');
-        let tmp = fields.split(",");
-        let query;
-        if (tmp.length == 1)
-        {
-            query = context.env.DB.prepare(`SELECT * from ${tableName} where isDeleted = 0`);
-        }
-        else {
-            let fields = "";
-            for (var i = 0; i < tmp.length; ++i) {
-                if (fields == "")
-                    fields = tmp[i];
-                else
-                    fields = fields + "," + tmp[i]
+        //set an array for the results
+        let schemaResults=[];
+        //check if we want the table schema or table results
+        if (searchParams.get('getTableSchema') == 1) {
+            //get the table schema
+            query = context.env.DB.prepare(`PRAGMA table_info(${tableName});`);
+            //get them all
+            queryResults = await query.all();
+            //we may only want a few fields and if so then they front end would have passed them up
+            let tmp = fields.split(",");
+            //check if there are no fields
+            if (tmp.length == 1)
+            {
+                //return the query results (the full schema)
+               return new Response(JSON.stringify(queryResults.results), { status: 200 });
             }
-            let sql = `SELECT ${fields} from ${tableName} where isDeleted = 0`
-            query = context.env.DB.prepare(sql);
-        }
+            else
+            {
+                //loop through the fields that where passed up
+                for (var i = 0; i < tmp.length; ++i) {
+                    //loop through the query results
+                    for (var i2 = 0; i2 < queryResults.results.length; ++i2) {
+                        //check if it is a match
+                        if (queryResults.results[i2].name == tmp[i])
+                            //add it to the array
+                            schemaResults.push(queryResults.results[i2])
+                    }
+                }
 
-        const queryResults = await query.all();
+            }
+            //return the query result
+            return new Response(JSON.stringify(schemaResults), { status: 200 });
+            
+        } else {
+            
+            let tmp = fields.split(",");
+            if (tmp.length == 1) {
+                query = context.env.DB.prepare(`SELECT * from ${tableName} where isDeleted = 0`);
+            } else {
+                let fields = "";
+                for (var i = 0; i < tmp.length; ++i) {
+                    if (fields == "")
+                        fields = tmp[i];
+                    else
+                        fields = fields + "," + tmp[i]
+                }
+                let sql = `SELECT ${fields} from ${tableName} where isDeleted = 0`
+                query = context.env.DB.prepare(sql);
+            }
+
+            queryResults = await query.all();
+        }
         return new Response(JSON.stringify(queryResults.results), { status: 200 });
     } else {
         return new Response(JSON.stringify({ error: "naughty, you are not an admin" }), { status: 400 });
