@@ -1,11 +1,9 @@
 let redirectUrl = ""; // hold the redcirect URL
 let token;
 let user;
-let checkElement
 var table // datatable
 
-//create your data schema here for table rendering.
-let dataSchema = '{ "id": "", "name": "", "createdAt": "" }'
+let dataSchema = '{ "id": "", "name": "", "address 1": "", "address 2": "", "address 3": "", "address 4": "", "address 5": "", "address 6": "","bathrooms":"","bedrooms":"","local_currency":"","imageurl":"","taxes":"","suggested_rental_price":"","cost":"","tokenId":"","rentalId":"", "createdAt": "" }'
 dataSchema = JSON.parse(dataSchema);
 //add this to the settings page
 let settingsSchema = '{"btcaddress":"","xpub":"","compnanyname":""}'
@@ -13,7 +11,7 @@ settingsSchema = JSON.parse(settingsSchema);
 
 //TODO: replace this with plain js
 (function($) {
-    "use strict"; // Start of use strictß
+    "use strict"; // Start of use strict
 
     // Toggle the side navigation
     $("#sidebarToggle, #sidebarToggleTop").on('click', function(e) {
@@ -69,76 +67,174 @@ settingsSchema = JSON.parse(settingsSchema);
 
 })(jQuery); // End of use strict
 
+//this function checks if an element exits
+let checkElement = (element) => {
+    let checkedElement = document.getElementById(element);
+    //If it isn't "undefined" and it isn't "null", then it exists.
+    if (typeof(checkedElement) != 'undefined' && checkedElement != null) {
+        return (true)
+    } else {
+        return (false)
+    }
+}
+
 /*
 START OF TABLE PROCESSING FUCNTIONS
 */
 
-let getFormData = () => {
-    let fields = Object.keys(dataSchema);
-    let theJson = "{";
-    let sumbmitIt = 1;
-    for (var i = 0; i < fields.length; ++i) {
-        if ((fields[i] != 'id') && (fields[i] != "createdAt") && (fields[i] != "dataid")) {
-            //console.log("inp-"+fields[i]);
-            let theValue = document.getElementById('inp-' + fields[i]).value;
-            if (theValue == "") {
-                document.getElementById('error-' + fields[i]).classList.remove('d-none');
-                sumbmitIt = 0;
-            } else {
+let clearFormData = () => {
+    let theElements = document.getElementsByClassName('form-control-user');
+    //loop through the elements
+    for (var i = 0; i < theElements.length; ++i) {
+        theElements[i].value = "";
+    }
+}
 
-                if (theJson == "{")
-                    theJson = theJson + `"${fields[i]}":"${theValue}"`
-                else
-                    theJson = theJson + `,"${fields[i]}":"${theValue}"`
+let getFormData = (smartValidate = 0) => {
+    //clear the errors
+    let theErrors = document.getElementsByClassName('text-danger')
+    for (var i = 0; i < theErrors.length; ++i) {
+        theErrors[i].classList.add("d-none");
+    }
+    //build the json
+    let theJson = "{";
+    //get the form elements (this is built by the checkElement function )
+    let theElements = document.getElementsByClassName('form-control-user');
+    //loop through the elements
+    let valid = 1;
+    for (var i = 0; i < theElements.length; ++i) {
+        //get the element name
+        let elementName = theElements[i].id;
+        //check if its blank
+        if (theElements[i].value == "") {
+            //set the error id
+            let errorId = elementName.replace("inp", 'error');
+            //remove the error
+            document.getElementById(errorId).classList.remove('d-none');
+            //set valid to false
+            valid = 0;
+        }
+        //check if we want to smart validation 
+        if (smartValidate == 1) {
+            //chekc if the field type is an email
+            if (elementName == "inp-email") {
+                console.log("validate email")
             }
 
+            //check if its an integer field
+
+            //check if its a password field 
+
+
         }
+        //build the json
+        let sqlName = elementName.replace("inp-", "")
+        if (theJson == "{")
+            theJson = theJson + `"${sqlName}":"${theElements[i].value}"`
+        else
+            theJson = theJson + `,"${sqlName}":"${theElements[i].value}"`
     }
-    theJson = theJson + "}"
-    if (sumbmitIt == 1)
+    let theTable = document.getElementById('formTableName').value;
+    //check is isAdmin and the it is one of the tables we want to add attach to the admin
+    if ((user.isAdmin == 1) && (theTable == "user")) {
+        theJson = theJson + `,"table":"${theTable}"`
+        //note we should check there is an admin Id.
+        theJson = theJson + `,"adminId":"${user.id}" }`
+    } else {
+        theJson = theJson + `,"table":"${theTable}" }`
+    }
+    //console.log(theJson);
+    if (valid == 1)
         return (theJson)
     else
         return (false)
 
 }
 
-let buildForm = (dataitem = "",theLevel=1) => {
-    let theJson;
-    //check if a json object was passed and if not then use the default schema
-    if (dataitem == "")
-        theJson = dataSchema
-    else
-        theJson = dataitem
-    //get the objects
-    let tmpd = Object.values(theJson)
-    //get the keys
-    let fields = Object.keys(theJson)
-    //loop through  the keys
-    let inpHtml = "";
 
-    let xpubHtml = "";
-   
-    for (var i = 0; i < fields.length; ++i) {
-         let addIt =1;
-        //console.log(fields[i])
-        if ((fields[i] == 'id') || (fields[i] == "createdAt") || (fields[i] == "content")) 
-            addIt = 0;
-        if ((theLevel == 2) && (fields[i] == "buildUrl"))
-        {
-            console.log('in b')
-            addIt = 0;
+
+/*
+This function handles the input of a create form
+*/
+if (checkElement("btn-create") == true) {
+    document.getElementById('btn-create').addEventListener('click', function() {
+        //process the API call
+        let xhrDone = (res) => {
+            //parse the response
+            res = JSON.parse(res);
+            //show the message
+            showAlert(res.message, 1, 0, 1);
+            //clear the header
+            document.getElementById('data-header').innerHTML = "";
+            //clear the elements
+            clearFormData();
         }
-        if (addIt == 1)
-        { 
-            inpHtml = inpHtml + `<div class="form-group" >
-                                <label>${fields[i]}</label>
-                                <input type="text" class="form-control form-control-user" id="inp-${fields[i]}" aria-describedby="emailHelp" placeholder="Enter ${fields[i]}" value="${tmpd[i]}">
-                                <span class="text-danger d-none" id="error-${fields[i]}">${fields[i]} cannot be blank</span>  
-                            </div>`
+        //get the form data
+        let bodyJson = getFormData(1);
+        //check we have valid data to submit
+        if (bodyJson != false) {
+            //post the record
+            xhrcall(0, `api/database/table/`, bodyJson, "json", "", xhrDone, token)
         }
 
+    })
+}
+
+/*
+This function calls the table update
+*/
+if (checkElement("btn-update") == true) {
+    document.getElementById('btn-update').addEventListener('click', function() {
+        //process the API call
+        let xhrDone = (res) => {
+            //parse the response
+            res = JSON.parse(res);
+            //show the message
+            showAlert(res.message, 1, 0, 1);
+            //clear the header
+            document.getElementById('data-header').innerHTML = "";
+        }
+        //get the form data
+        let bodyJson = getFormData(1);
+        //check we have valid data to submit
+        if (bodyJson != false) {
+            //post the record
+            xhrcall(4, `api/database/table/`, bodyJson, "json", "", xhrDone, token)
+        }
+
+    })
+}
+
+/*
+This funtion handles the building of the form
+*/
+
+let buildFormElement = (theData, theValues = "") => {
+    //console.log(theData)
+    //set the value
+    let theValue = "";
+    //check we have some values (create will not have any obvs)
+    if (theValues != "") {
+        //loop through the values
+        for (const key in theValues) {
+            //find a match to the schema name
+            if (key == theData.name) {
+                //store it
+                theValue = theValues[key];
+                //get the hell out of here. 
+                break;
+            }
+        }
     }
-    //console.log(inpHtml)
+    //captalise the element
+    const theTitle = theData.name.charAt(0).toUpperCase() + theData.name.slice(1);
+    //built the element
+    let inpHtml = `<div class="form-group">
+                        <label>${theTitle}</label>
+                        <input type="text" class="form-control form-control-user" id="inp-${theData.name}" aria-describedby="${theData.name}" placeholder="Enter ${theData.name}" value="${theValue}">
+                        <span class="text-danger d-none" id="error-${theData.name}">${theData.name} cannot be blank</span>  
+                    </div>`
+    //return it
     return (inpHtml)
 }
 
@@ -155,8 +251,8 @@ START OF LOCAL CACHE FUNCTIONS
 let clearCache = (clearUser = 0) => {
     window.localStorage.currentdataitem = ""
     //window.localStorage.data = ""
-    
-    window.localStorage.level1data =""
+
+    window.localStorage.level1data = ""
     window.localStorage.level2data = ""
     window.localStorage.level1selecteditem = ""
     window.localStorage.level1selecteditem = ""
@@ -169,205 +265,6 @@ let clearCache = (clearUser = 0) => {
     }
 }
 
-
-//projects
-
-let removeDataItem = (theLevel = 1, theId, debug = 0) => {
-    let theItems;
-    switch (theLevel) {
-        case 1:
-            theItems = window.localStorage.level1data
-            break;
-        case 2:
-            theItems = window.localStorage.level2data
-            break;
-
-    }
-    theItems = JSON.parse(theItems);
-    for (var i = 0; i < theItems.data.length; ++i) {
-        if (theItems.data[i].id == theId) {
-            if (debug == 1) {
-                console.log(theItems.data[i])
-            }
-            //delete theItems.data[i];
-            theItems.data.splice(i, 1);
-            //update the data
-            switch (theLevel) {
-                case 1:
-                    window.localStorage.level1data = JSON.stringify(theItems);
-                    break;
-                case 2:
-                    window.localStorage.level2data = JSON.stringify(theItems);
-                    break;
-
-            }
-
-            return (true);
-
-        }
-    }
-    return (false)
-
-}
-
-/*
-this function added the newly created item to the local application cache
-*/
-let addDataItem = (theLevel = 1, theData, debug = 0) => {
-    //parse the response
-    let theItems;
-    switch (theLevel) {
-        case 1:
-            theItems = window.localStorage.level1data
-            break;
-        case 2:
-            theItems = window.localStorage.level2data
-            break;
-
-    }
-    theItems = JSON.parse(theItems);
-    //parse the data
-    theData = JSON.parse(theData);
-    if (debug == 1) {
-        console.log(theData)
-        console.log(theData.data)
-
-    }
-    //add it to projects
-    let tmp = JSON.parse(theData.data)
-    theItems.data.push(tmp);
-    switch (theLevel) {
-        case 1:
-            window.localStorage.level1data = JSON.stringify(theItems)
-            break;
-        case 2:
-            window.localStorage.level2data = JSON.stringify(theItems)
-            break;
-
-    }
-    showAlert(theData.message, 1)
-}
-
-
-let updateData = (theLevel = 1, theData = "", debug = 0) => {
-    let theItems;
-    switch (theLevel) {
-        case 1:
-            theItems = window.localStorage.level1data
-            break;
-        case 2:
-            theItems = window.localStorage.level2data
-            break;
-
-    }
-    if (theItems == undefined) {
-        if (debug == 1)
-            console.log("no items");
-        return (false)
-    } else {
-        theItems = JSON.parse(theItems)
-        if (debug == 1) {
-            console.log(theItems)
-        }
-        for (var i = 0; i < theItems.data.length; ++i) {
-            if (debug == 1) {
-                console.log("checking " + theItems.data[i].id + " : " + theData.id)
-                console.log(theItems.data[i])
-            }
-            if (theItems.data[i].id == theData.id) {
-                if (debug == 1) {
-                    console.log("Found the id " + theData.id)
-                    console.log(theItems.data[i])
-                }
-                //update the project
-                theItems.data[i] = theData;
-                //update the data
-                window.localStorage.currentdataitem = JSON.stringify(theData);
-                switch (theLevel) {
-                    case 1:
-                        window.localStorage.level1data = JSON.stringify(theItems);
-                        break;
-                    case 2:
-                        window.localStorage.level2data = JSON.stringify(theItems);
-                        break;
-
-                }
-            }
-        }
-    }
-}
-
-let storeData = (theLevel = 1, theData, debug = 0) => {
-    //show debug info
-    if (debug == 1) {
-        console.log(theData)
-    }
-    switch (theLevel) {
-        case 1:
-            window.localStorage.level1data = theData;
-            break;
-        case 2:
-            window.localStorage.level2data = theData;
-            break;
-
-    }
-}
-
-
-let getData = (theLevel = 1, theId = "", debug = 0) => {
-
-    let theItems;
-    switch (theLevel) {
-        case 1:
-            theItems = window.localStorage.level1data
-            break;
-        case 2:
-            theItems = window.localStorage.level2data
-            break;
-
-
-    }
-    if ((theItems == undefined) || (theItems == "") || (theItems == null)) {
-        if (debug == 1)
-            console.log("no items");
-        return (false)
-    } else {
-        theItems = JSON.parse(theItems)
-        if (debug == 1) {
-            console.log(theItems)
-        }
-        //console.log(data)
-        if (theId != "") {
-            for (var i = 0; i < theItems.data.length; ++i) {
-                if (theItems.data[i].id == theId) {
-                    if (debug == 1) {
-                        console.log("foundit")
-                        console.log(theItems.data[i])
-                    }
-                    //update the data
-                    window.localStorage.currentdataitem = JSON.stringify(theItems.data[i]);
-                    return (theItems.data[i]);
-                }
-            }
-        } else {
-            return (theItems)
-        }
-    }
-}
-
-let getCurrentDataItem = (debug = 0) => {
-    if (debug == 1)
-        console.log(window.localStorage.currentdataitem);
-    let currentdataitem = JSON.parse(window.localStorage.currentdataitem)
-    return (currentdataitem)
-
-}
-
-let storeCurrentDataItem = (currentItem,debug = 0) => {
-    if (debug == 1)
-        console.log(window.localStorage.currentdataitem);
-    window.localStorage.currentdataitem = currentItem;
-}
 
 let storeSettings = (theData, debug = 0) => {
     //show debug info
@@ -414,10 +311,41 @@ START OF TABLE FUNCTIONS
 let deleteId = 0;
 let tableRowId = 0;
 let deleteMethod = "";
+let tableName = "";
+//check the password
+/*
+note this this the password checker curently it checks to the following rule set.
+To check a password between 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter
 
-checkElement = document.getElementById("confirmation-modal-delete-button");
+*/
+let checkPassword = (str) => {
+    if (complexPassword == 0) {
+        return true;
+    } else {
+        var re = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+        return re.test(str);
+    }
+}
 
-if (typeof(checkElement) != 'undefined' && checkElement != null) {
+
+
+let showPassword = (elementName, eyeNumber) => {
+    let theElement = document.getElementById(elementName);
+    if (theElement.type === "password") {
+        theElement.type = "text";
+        document.getElementById('show-password' + eyeNumber).classList.add("d-none");
+        document.getElementById('hide-password' + eyeNumber).classList.remove("d-none");
+    } else {
+        theElement.type = "password";
+        document.getElementById('hide-password' + eyeNumber).classList.add("d-none");
+        document.getElementById('show-password' + eyeNumber).classList.remove("d-none");
+    }
+}
+
+
+//checkElement = document.getElementById("confirmation-modal-delete-button");
+if (checkElement("confirmation-modal-delete-button") == true) {
+    //if (typeof(checkElement) != 'undefined' && checkElement != null) {
     document.getElementById('confirmation-modal-delete-button').addEventListener('click', function() {
         $('#confirmation-modal').modal('toggle')
         let xhrDone = (res) => {
@@ -436,24 +364,64 @@ if (typeof(checkElement) != 'undefined' && checkElement != null) {
             }
 
         }
-        let theItem = getData(deleteId);
+
         let bodyobj = {
-            deleteid: deleteId,
-            name: theItem.name
+            id: deleteId,
+            tableName: tableName
         }
         var bodyobjectjson = JSON.stringify(bodyobj);
-        //call the create account endpoint
+        //call the delete table record endpoint
         xhrcall(3, `${deleteMethod}`, bodyobjectjson, "json", "", xhrDone, token)
 
     })
 }
 
 
-let deleteTableItem = (dId, tId, method) => {
+let deleteTableItem = (dId, method, tTableName) => {
     deleteId = dId;
-    tableRowId = tId;
+    tableRowId = dId;
     deleteMethod = method;
+    tableName = tTableName;
     $('#confirmation-modal').modal('toggle')
+}
+
+//todo : make this work with multipile fields and values.
+let updateTableItem = (dId, method, tTableName, tFields, tValues, toggleBtns = 0) => {
+    let bodyobj = {
+        id: dId,
+        tableName: tTableName,
+        fields: tFields,
+        values: tValues,
+    }
+    var bodyobjectjson = JSON.stringify(bodyobj);
+    let xhrDone = (res) => {
+        //console.log(bodyobjectjson)
+        //console.log(`off-${tFields}-${dId}`)
+
+        //check if the element is there before we try an update
+        if (checkElement(`off-${tFields}-${dId}`) == true) {
+            //this is redundant now so we may remove it
+            if (toggleBtns == 1) {
+                //check the value
+                if (tValues == 0) {
+                    //show the on state
+                    document.getElementById(`off-${tFields}-${dId}`).classList.add('d-none');
+                    document.getElementById(`on-${tFields}-${dId}`).classList.remove('d-none');
+                    document.getElementById(`text-${tFields}-${dId}`).innerHTML = "No";
+
+                } else {
+                    //show the off state
+                    document.getElementById(`off-${tFields}-${dId}`).classList.remove('d-none');
+                    document.getElementById(`on-${tFields}-${dId}`).classList.add('d-none');
+                    document.getElementById(`text-${tFields}-${dId}`).innerHTML = "Yes"
+                }
+
+
+            }
+        }
+    }
+    //call a put to update the fields
+    xhrcall(4, `${method}`, bodyobjectjson, "json", "", xhrDone, token)
 }
 
 
@@ -527,6 +495,15 @@ let checkLogin = () => {
         if (tmpUser != undefined) {
             //decode the json
             user = JSON.parse(window.localStorage.user);
+
+            //check admin stuff
+            if (user.isAdmin == 1) {
+                let element = document.getElementById('btn-create-cy');
+                if (typeof(element) != 'undefined' && element != null) {
+                    element.style.visibility = "visible"
+                }
+                document.getElementById("navadmin").classList.remove("d-none")
+            }
             //check the user is logged in some one could spoof this so we could do a valid jwt check here 
             //but i prefer to do it when we ping the api for the data for this user. 
             if (user.loggedin != 1) {
@@ -536,8 +513,9 @@ let checkLogin = () => {
                 clearCache();
                 //set the jwt and user
                 getToken();
-                checkElement = document.getElementById("user-account-header");
-                if (typeof(checkElement) != 'undefined' && checkElement != null) {
+                if (checkElement("user-account-header") == true) {
+
+                    //if (typeof(checkElement) != 'undefined' && checkElement != null) {
                     if ((user.username != "") && (user.username != undefined))
                         document.getElementById('user-account-header').innerHTML = user.username
                     else
@@ -581,9 +559,9 @@ let xhrcall = (type = 1, method, bodyObj = "", setHeader = "", redirectUrl = "",
       Note if we are not using strai and have a custom URL we can change it here like wise if we want to use 2 we can check the method to select the correct base url
     */
 
-    checkElement = document.getElementById("spinner");
-
-    if (typeof(checkElement) != 'undefined' && checkElement != null) {
+    //checkElement = document.getElementById("spinner");
+    if (checkElement("spinner") == true) {
+        //if (typeof(checkElement) != 'undefined' && checkElement != null) {
         document.getElementById("spinner").classList.remove("d-none");
     }
     let url = method;
@@ -631,15 +609,17 @@ let xhrcall = (type = 1, method, bodyObj = "", setHeader = "", redirectUrl = "",
     }
     //result
     //check for a generic error this is usualy CORRS or something like it.
-    xhr.onerror = function () { 
-       //console.log(xhr.status)
-       //console.log(xhr.response)
-       if (xhr.status == 0)
-        document.getElementById("spinner").classList.add("d-none");
-    }; 
+    xhr.onerror = function() {
+        //console.log(xhr.status)
+        //console.log(xhr.response)
+        if (xhr.status == 0)
+            document.getElementById("spinner").classList.add("d-none");
+    };
     xhr.onload = function() {
-        checkElement = document.getElementById("confirmation-modal-delete-button");
-        if (typeof(checkElement) != 'undefined' && checkElement != null) {
+        if (checkElement("confirmation-modal-delete-button") == true) {
+
+            //checkElement = document.getElementById("confirmation-modal-delete-button");
+            //if (typeof(checkElement) != 'undefined' && checkElement != null) {
             document.getElementById("spinner").classList.add("d-none");
         }
         //check if its an error
@@ -648,6 +628,7 @@ let xhrcall = (type = 1, method, bodyObj = "", setHeader = "", redirectUrl = "",
 
         //check for errors
         if ((xhr.status == 400) || (xhr.status == 403) || (xhr.status == 500)) {
+            document.getElementById("spinner").classList.add("d-none");
             //process the response
             res = JSON.parse(res)
             errorMessage = res.error

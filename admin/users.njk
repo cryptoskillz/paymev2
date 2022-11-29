@@ -1,15 +1,14 @@
 ---
 layout: layout.njk
-permalink: /{{env.LEVEL1NAME}}/
+permalink: /admin/users/
 ---
 <!--
 This is the top level nav page and it has a js file of the same name in the _includes directory. It uses dataname to generate the nav
 -->
 {% set theJs %}
-    {% include 'level1index.js' %}
+    {% include 'admin/users.js' %}
 {% endset %}
 <!-- Page Heading -->
-
  <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">{{env.LEVEL1NAME | capitalize }}</h1>
     
@@ -52,4 +51,3 @@ This is the top level nav page and it has a js file of the same name in the _inc
 {% else %}
     <script type="text/javascript">{{theJs | jsmin | safe}}</script>
 {% endif %}
-

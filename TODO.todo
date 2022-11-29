@@ -1,16 +1,104 @@
 GENERAL 
 
+ ✔ clean up the app.js remove the code we not using, local cache etc. @done (22-11-23 00:58)
+ ☐ update the readme 
 
 DASHBOARD
 
- ☐ fix dashboard properties shows 0 (we can move this to d1)
+ ✔ fix dashboard properties shows 0 (we can move this to d1) @done (22-11-25 22:38)
+
+ACCOUNT
+
+ ✔ auto populate the username from the first part of the email @done (22-11-26 22:28)
+ ✔ have an option to turn on a password rule @done (22-11-26 22:28)
+ ☐ refactor forgot password
+ ☐ refactor reset password
+ ✔ user the isadmin in the token to control access to the api endpoints. @done (22-11-29 01:16)
 
 LEVEV 1 VIEW
 
- ☐ get the property id from the url paramaters currently it is hard coded
+ ✔ get the property id from the url paramaters currently it is hard coded @done (22-11-26 23:36)
  ✔ add share percentage for owner @done (22-11-22 22:20)
  ✔ fix rental areements table @done (22-11-22 17:03)
  ✔ add paid in @done (22-11-22 22:20)
  ✔ add paid out @done (22-11-22 22:20)
  ✔ add distributions @done (22-11-22 22:20)
+ ✔ add a check for api errors @done (22-11-26 23:36)
+ ✔ hide admin create of the site from non admins @done (22-11-26 01:38)
+ ☐ remove visibilty hack to the button
+
+
+SETTINGS
+
+ ☐ add the settings layout.
+
+API
+
+ ✔ port login to d1 @done (22-11-25 21:56)
+ ☐ port setting to d1 
+ ✔ port register to d1 @done (22-11-26 01:20)
+ ☐ port forgot password to d1
+ ✔ add the login for none admins @done (22-11-26 23:36)
+ ✔ add the propety ids (do we require the foreign ID as it we can just do a call in the property page) @done (22-11-26 02:29)
+
+ REPORT
+
+ ✔ have the view for the property owners to pull the name and email from the user table as we do not have it in the property owners anymore. @done (22-11-29 23:11)
+ ✔ round up percentage @done (22-11-29 23:11)
+ ✔ make the address a hyper link @done (22-11-29 23:11)
+ ☐ add add property
+ ☐ add add payment
+ ☐ add add cost
+ ☐ add add dist
+ ☐ add add contract
+
+
+
+
+ USER
+
+ ✔ add a admin id to each user so we can control is. @done (22-11-29 01:16)
+
+ ADMIN 
+
+ ✔ add manager user add @done (22-11-29 23:11)
+ ✔ add manager user edit @done (22-11-29 23:11)
+ ✔ add manager user delete @done (22-11-29 23:11)
+
+
+ ADMIN USER 
+
+ ✔ add a adminId to the user table so we know who manages it.  if it is signed up we will default it to 1 as we can assume the first entry in the databse is the main admin.  We could make this smarter but I don't want to. @done (22-11-27 01:49)
+ ✔ render the users @done (22-11-29 01:12)
+ ✔ add delete user @done (22-11-29 01:12)
+ ☐ add edit user
+ ✔ add create new user @done (22-11-29 01:12)
+ ✔ add your admin to the table @done (22-11-29 03:49)
+ ✔ set the defaults in the schema @done (22-11-29 23:10)
+  
+
+
+ CREATE NEW / EDIT USER
+
+ ☐ add the ability to render different types 
+ ☐ add aliases to the name field so we can clean them up, we can do this a little bit but might have to hand crank it. 
+ ☐ if the field name is password render it out two elements
+ ☐ add validation to the form builder
+ ☐ if id disable the field
+
+ FUNCTIONS API
+
+ ✔ remove build.js @done (22-11-26 23:35)
+ ✔ remove content.js @done (22-11-26 23:35)
+ ✔ remove page.js @done (22-11-29 01:15)
+ ✔ remove properties.js @done (22-11-26 23:35)
+ ✔ remove user.js @done (22-11-26 23:35)
+ ☐ does login / settings / regsiter.js stay in the root of api it kind of makes sense to move them to a frontend folder as thats what uses them  
+ ✔ add user.js to admin directory @done (22-11-26 23:35)
+
+ APP
+
+ ☐ update the updateTableItem function with multipile fields and values (this may be done table.js in the API)
+
+
 
