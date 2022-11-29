@@ -28,15 +28,35 @@ export async function onRequestPut(context) {
         let theData;
         if (contentType != null) {
             theData = await request.json();
-            let theFields = theData.fields;
-            let theValues = theData.values;
-            //debug
-            console.log("debug")
-            console.log(theData);
-            console.log(`UPDATE ${theData.tableName} SET ${theFields} = ${theValues} WHERE id = ${theData.id}`)
-            const info = await context.env.DB.prepare(`UPDATE ${theData.tableName} SET ${theFields} = ${theValues}  WHERE id = ${theData.id}`)
-                .run()
-            return new Response(JSON.stringify({ status: "ok" }), { status: 200 });
+
+            //           UPDATE users SET name = ?1 WHERE id = ?2
+            let theQuery = `UPDATE ${theData.table} SET `
+            let theQueryValues = "";
+            let theQueryWhere = "";
+            //loop through the query data
+            for (const key in theData) {
+                //check it is not the table name
+                //note : we could use a more elegant JSON structure and element this check
+                if ((key != "table") && (key != "id")) {
+                    //build the fields
+                    if (theQueryValues == "")
+                        theQueryValues = `${key} = '${theData[key]}' `
+                    else
+                        theQueryValues = theQueryValues + `,${key} = '${theData[key]}' `
+
+                }
+                //check for ad id and add a put.
+                if (key == "id")
+                    theQueryWhere = ` where id = '${theData[key]}'`
+            }
+            //compile the query
+            theQuery = theQuery + theQueryValues + theQueryWhere;
+            console.log(theQuery);
+            const info = await context.env.DB.prepare(theQuery)
+                .run();
+
+
+            return new Response(JSON.stringify({ message: "User has been updated" }), { status: 200 });
         }
         return new Response(JSON.stringify({ error: "server" }), { status: 400 });
     } else {
@@ -80,6 +100,7 @@ export async function onRequestDelete(context) {
     }
 }
 
+//insert record
 export async function onRequestPost(context) {
     //build the paramaters
     const {
@@ -98,11 +119,8 @@ export async function onRequestPost(context) {
         const contentType = request.headers.get('content-type')
         let theData;
         if (contentType != null) {
+            //get the data
             theData = await request.json();
-            //debug
-            //console.log("debug")
-            //console.log(theData);
-
             //check if it is a user table and generate an API id
             let apiSecret = "";
             if (theData.table = "user")
@@ -115,23 +133,22 @@ export async function onRequestPost(context) {
             for (const key in theData) {
                 //check it is not the table name
                 //note : we could use a more elegant JSON structure and element this check
-                if (key != "table")
-                {
+                if (key != "table") {
                     //build the fields
                     if (theQueryFields == "")
                         theQueryFields = `'${key}'`
                     else
-                        theQueryFields = theQueryFields+`,'${key}'`
+                        theQueryFields = theQueryFields + `,'${key}'`
 
                     //build the values
                     if (theQueryValues == "")
                         theQueryValues = `'${theData[key]}'`
                     else
-                        theQueryValues = theQueryValues+`,'${theData[key]}'`
+                        theQueryValues = theQueryValues + `,'${theData[key]}'`
                 }
             }
             //compile the query
-            theQuery = theQuery + theQueryFields + " ) VALUES ( "+ theQueryValues + " ); "
+            theQuery = theQuery + theQueryFields + " ) VALUES ( " + theQueryValues + " ); "
             //run the query
             const info = await context.env.DB.prepare(theQuery)
                 .run();
@@ -145,6 +162,7 @@ export async function onRequestPost(context) {
     }
 }
 
+//get the records
 export async function onRequestGet(context) {
     //build the paramaters
     const {
@@ -162,45 +180,53 @@ export async function onRequestGet(context) {
         let queryResults;
         //get the search paramaters
         const { searchParams } = new URL(request.url);
+        //get the table id
+        let tableId = searchParams.get('id');
         //get the table name
         let tableName = searchParams.get('tablename');
         //get the table name
         let fields = searchParams.get('fields');
         //set an array for the results
         let schemaResults = [];
-        //check if we want the table schema or table results
-        if (searchParams.get('getTableSchema') == 1) {
-            //get the table schema
-            query = context.env.DB.prepare(`PRAGMA table_info(${tableName});`);
-            //get them all
-            queryResults = await query.all();
-            //we may only want a few fields and if so then they front end would have passed them up
-            let tmp = fields.split(",");
-            //check if there are no fields
-            if (tmp.length == 1) {
-                //return the query results (the full schema)
-                return new Response(JSON.stringify(queryResults.results), { status: 200 });
-            } else {
-                //loop through the fields that where passed up
-                for (var i = 0; i < tmp.length; ++i) {
-                    //loop through the query results
-                    for (var i2 = 0; i2 < queryResults.results.length; ++i2) {
-                        //check if it is a match
-                        if (queryResults.results[i2].name == tmp[i])
-                            //add it to the array
-                            schemaResults.push(queryResults.results[i2])
-                    }
-                }
-
-            }
-            //return the query result
-            return new Response(JSON.stringify(schemaResults), { status: 200 });
-
+        //create the data array we are going to send back to the frontend.
+        let queryFin = {};
+        //get the table schema
+        query = context.env.DB.prepare(`PRAGMA table_info(${tableName});`);
+        //get them all
+        queryResults = await query.all();
+        //we may only want a few fields and if so then they front end would have passed them up
+        let tmp = fields.split(",");
+        //check if there are no fields
+        if (tmp.length == 1) {
+            //set the schema
+            queryFin.schema = queryResults.results;
         } else {
+            //loop through the fields that where passed up
+            for (var i = 0; i < tmp.length; ++i) {
+                //loop through the query results
+                for (var i2 = 0; i2 < queryResults.results.length; ++i2) {
+                    //check if it is a match
+                    if (queryResults.results[i2].name == tmp[i])
+                        //add it to the array
+                        schemaResults.push(queryResults.results[i2])
+                }
+            }
+            //add cheks to the return array
+            queryFin.schema = schemaResults;
+        }
+        //check if they also want the data
+        if (searchParams.get('getOnlyTableSchema') == 0) {
+            //build the where statement if they sent up and id
+            let sqlWhere = "";
+            if (tableId != undefined)
+                sqlWhere = `where id = ${tableId}`
 
+            //process the fields
             let tmp = fields.split(",");
+            //not we dont want to show the isDeleted flag if there. 
             if (tmp.length == 1) {
-                query = context.env.DB.prepare(`SELECT * from ${tableName} where isDeleted = 0`);
+                //console.log(`SELECT * from ${tableName} ${sqlWhere}`)
+                query = context.env.DB.prepare(`SELECT * from ${tableName} ${sqlWhere} `);
             } else {
                 let fields = "";
                 for (var i = 0; i < tmp.length; ++i) {
@@ -209,13 +235,19 @@ export async function onRequestGet(context) {
                     else
                         fields = fields + "," + tmp[i]
                 }
-                let sql = `SELECT ${fields} from ${tableName} where isDeleted = 0`
+                //console.log(`SELECT ${fields} from ${tableName} ${sqlWhere}`)
+                let sql = `SELECT ${fields} from ${tableName} ${sqlWhere}`
                 query = context.env.DB.prepare(sql);
             }
 
             queryResults = await query.all();
+            //console.log(queryResults.results)
+            queryFin.data = queryResults.results;
         }
-        return new Response(JSON.stringify(queryResults.results), { status: 200 });
+
+
+
+        return new Response(JSON.stringify(queryFin), { status: 200 });
     } else {
         return new Response(JSON.stringify({ error: "naughty, you are not an admin" }), { status: 400 });
     }

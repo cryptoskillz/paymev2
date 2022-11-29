@@ -83,7 +83,7 @@ START OF TABLE PROCESSING FUCNTIONS
 */
 
 let clearFormData = () => {
-     let theElements = document.getElementsByClassName('form-control-user');
+    let theElements = document.getElementsByClassName('form-control-user');
     //loop through the elements
     for (var i = 0; i < theElements.length; ++i) {
         theElements[i].value = "";
@@ -163,10 +163,9 @@ if (checkElement("btn-create") == true) {
             //parse the response
             res = JSON.parse(res);
             //show the message
-            showAlert(res.message, 1, 0,1);
+            showAlert(res.message, 1, 0, 1);
             //clear the header
             document.getElementById('data-header').innerHTML = "";
-
             //clear the elements
             clearFormData();
         }
@@ -182,10 +181,51 @@ if (checkElement("btn-create") == true) {
 }
 
 /*
+This function calls the table update
+*/
+if (checkElement("btn-update") == true) {
+    document.getElementById('btn-update').addEventListener('click', function() {
+        //process the API call
+        let xhrDone = (res) => {
+            //parse the response
+            res = JSON.parse(res);
+            //show the message
+            showAlert(res.message, 1, 0, 1);
+            //clear the header
+            document.getElementById('data-header').innerHTML = "";
+        }
+        //get the form data
+        let bodyJson = getFormData(1);
+        //check we have valid data to submit
+        if (bodyJson != false) {
+            //post the record
+            xhrcall(4, `api/database/table/`, bodyJson, "json", "", xhrDone, token)
+        }
+
+    })
+}
+
+/*
 This funtion handles the building of the form
 */
 
-let buildFormElement = (theData, theValue = "") => {
+let buildFormElement = (theData, theValues = "") => {
+    //console.log(theData)
+    //set the value
+    let theValue = "";
+    //check we have some values (create will not have any obvs)
+    if (theValues != "") {
+        //loop through the values
+        for (const key in theValues) {
+            //find a match to the schema name
+            if (key == theData.name) {
+                //store it
+                theValue = theValues[key];
+                //get the hell out of here. 
+                break;
+            }
+        }
+    }
     //captalise the element
     const theTitle = theData.name.charAt(0).toUpperCase() + theData.name.slice(1);
     //built the element

@@ -84,6 +84,7 @@ API
  ☐ add aliases to the name field so we can clean them up, we can do this a little bit but might have to hand crank it. 
  ☐ if the field name is password render it out two elements
  ☐ add validation to the form builder
+ ☐ if id disable the field
 
  FUNCTIONS API
 
