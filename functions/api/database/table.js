@@ -1,3 +1,18 @@
+/*
+
+This is a generic table manager it handles updates, inserts and deletes for any table. It also handles field and whole * returns
+
+notes
+
+It always returns a schema (useful for building add record form dynamically)
+It does not delete it uses a field called isdeleted and this is what hides it from frontend, helps if a user is an idiot
+It makes assumpations on our usual data strucutres to save some code if you want it more generic then you will have to remove these assumpations
+
+
+
+*/
+
+
 //JWT model
 const jwt = require('@tsndr/cloudflare-worker-jwt');
 var uuid = require('uuid');
