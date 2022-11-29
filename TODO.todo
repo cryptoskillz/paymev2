@@ -43,9 +43,16 @@ API
 
  REPORT
 
- ☐ have the view for the property owners to pull the name and email from the user table as we do not have it in the property owners anymore. 
- ☐ round up percentage
- ☐ make the address a hyper link
+ ✔ have the view for the property owners to pull the name and email from the user table as we do not have it in the property owners anymore. @done (22-11-29 23:11)
+ ✔ round up percentage @done (22-11-29 23:11)
+ ✔ make the address a hyper link @done (22-11-29 23:11)
+ ☐ add add property
+ ☐ add add payment
+ ☐ add add cost
+ ☐ add add dist
+ ☐ add add contract
+
+
 
 
  USER
@@ -54,8 +61,10 @@ API
 
  ADMIN 
 
- ☐ add manager user add / edit / delete 
- ☐ add add property
+ ✔ add manager user add @done (22-11-29 23:11)
+ ✔ add manager user edit @done (22-11-29 23:11)
+ ✔ add manager user delete @done (22-11-29 23:11)
+
 
  ADMIN USER 
 
@@ -65,14 +74,16 @@ API
  ☐ add edit user
  ✔ add create new user @done (22-11-29 01:12)
  ✔ add your admin to the table @done (22-11-29 03:49)
- ☐ set the defaults in the schema
+ ✔ set the defaults in the schema @done (22-11-29 23:10)
+  
+
 
  CREATE NEW / EDIT USER
 
  ☐ add the ability to render different types 
  ☐ add aliases to the name field so we can clean them up, we can do this a little bit but might have to hand crank it. 
  ☐ if the field name is password render it out two elements
-
+ ☐ add validation to the form builder
 
  FUNCTIONS API
 

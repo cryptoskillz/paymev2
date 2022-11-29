@@ -82,6 +82,14 @@ let checkElement = (element) => {
 START OF TABLE PROCESSING FUCNTIONS
 */
 
+let clearFormData = () => {
+     let theElements = document.getElementsByClassName('form-control-user');
+    //loop through the elements
+    for (var i = 0; i < theElements.length; ++i) {
+        theElements[i].value = "";
+    }
+}
+
 let getFormData = (smartValidate = 0) => {
     //clear the errors
     let theErrors = document.getElementsByClassName('text-danger')
@@ -135,7 +143,7 @@ let getFormData = (smartValidate = 0) => {
     } else {
         theJson = theJson + `,"table":"${theTable}" }`
     }
-    console.log(theJson);
+    //console.log(theJson);
     if (valid == 1)
         return (theJson)
     else
@@ -155,13 +163,12 @@ if (checkElement("btn-create") == true) {
             //parse the response
             res = JSON.parse(res);
             //show the message
-            showAlert(res.message, 1, 0);
+            showAlert(res.message, 1, 0,1);
             //clear the header
             document.getElementById('data-header').innerHTML = "";
-            //hide the create button
-            //note : we could also clear the fields and let them add another if it flows better.
-            document.getElementById('btn-create').classList.add("d-none");
 
+            //clear the elements
+            clearFormData();
         }
         //get the form data
         let bodyJson = getFormData(1);

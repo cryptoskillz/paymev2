@@ -1,6 +1,6 @@
 //JWT model
 const jwt = require('@tsndr/cloudflare-worker-jwt');
-
+var uuid = require('uuid');
 //decode the jwt token
 let decodeJwt = async (req, secret) => {
     let bearer = req.get('authorization')
@@ -90,7 +90,7 @@ export async function onRequestPost(context) {
         next, // used for middleware or to fetch assets
         data, // arbitrary space for passing data between middlewares
     } = context;
-//decode the token
+    //decode the token
     let theToken = await decodeJwt(request.headers, env.SECRET);
     //check they are an admin
     if (theToken.payload.isAdmin == 1) {
@@ -100,12 +100,41 @@ export async function onRequestPost(context) {
         if (contentType != null) {
             theData = await request.json();
             //debug
-            console.log("debug")
-            console.log(theData);
-            //console.log(`UPDATE ${theData.tableName} SET isDeleted = 1 WHERE id = ${theData.id}`)
-            //const info = await context.env.DB.prepare(`UPDATE ${theData.tableName} SET isDeleted = ?1 WHERE id = ?2`)
-            //    .bind(1, theData.id)
-            //    .run();
+            //console.log("debug")
+            //console.log(theData);
+
+            //check if it is a user table and generate an API id
+            let apiSecret = "";
+            if (theData.table = "user")
+                apiSecret = uuid.v4();
+            //build the query
+            let theQuery = `INSERT INTO ${theData.table} (`
+            let theQueryFields = "";
+            let theQueryValues = "";
+            //loop through the query data
+            for (const key in theData) {
+                //check it is not the table name
+                //note : we could use a more elegant JSON structure and element this check
+                if (key != "table")
+                {
+                    //build the fields
+                    if (theQueryFields == "")
+                        theQueryFields = `'${key}'`
+                    else
+                        theQueryFields = theQueryFields+`,'${key}'`
+
+                    //build the values
+                    if (theQueryValues == "")
+                        theQueryValues = `'${theData[key]}'`
+                    else
+                        theQueryValues = theQueryValues+`,'${theData[key]}'`
+                }
+            }
+            //compile the query
+            theQuery = theQuery + theQueryFields + " ) VALUES ( "+ theQueryValues + " ); "
+            //run the query
+            const info = await context.env.DB.prepare(theQuery)
+                .run();
             return new Response(JSON.stringify({ message: "User has been added" }), { status: 200 });
 
         }
@@ -138,7 +167,7 @@ export async function onRequestGet(context) {
         //get the table name
         let fields = searchParams.get('fields');
         //set an array for the results
-        let schemaResults=[];
+        let schemaResults = [];
         //check if we want the table schema or table results
         if (searchParams.get('getTableSchema') == 1) {
             //get the table schema
@@ -148,13 +177,10 @@ export async function onRequestGet(context) {
             //we may only want a few fields and if so then they front end would have passed them up
             let tmp = fields.split(",");
             //check if there are no fields
-            if (tmp.length == 1)
-            {
+            if (tmp.length == 1) {
                 //return the query results (the full schema)
-               return new Response(JSON.stringify(queryResults.results), { status: 200 });
-            }
-            else
-            {
+                return new Response(JSON.stringify(queryResults.results), { status: 200 });
+            } else {
                 //loop through the fields that where passed up
                 for (var i = 0; i < tmp.length; ++i) {
                     //loop through the query results
@@ -169,9 +195,9 @@ export async function onRequestGet(context) {
             }
             //return the query result
             return new Response(JSON.stringify(schemaResults), { status: 200 });
-            
+
         } else {
-            
+
             let tmp = fields.split(",");
             if (tmp.length == 1) {
                 query = context.env.DB.prepare(`SELECT * from ${tableName} where isDeleted = 0`);
