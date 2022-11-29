@@ -21,6 +21,7 @@
          document.getElementById('showBody').classList.remove('d-none');
      }
 
+
      url = adminUrl + "database/table?tablename=user&fields=email,username,password,phone&getOnlyTableSchema=1"
      xhrcall(1, url, "", "json", "", getTableDone, token)
  });
