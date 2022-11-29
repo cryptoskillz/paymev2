@@ -9,7 +9,7 @@
          res = JSON.parse(res);
          //debug
          //console.log(res)
-         let formHtml="";
+         let formHtml = "";
          for (var i = 0; i < res.schema.length; ++i) {
              //console.log(res[i].name)
              formHtml = formHtml + buildFormElement(res.schema[i]);
@@ -20,7 +20,7 @@
          //show the body div
          document.getElementById('showBody').classList.remove('d-none');
      }
-     
+
      url = adminUrl + "database/table?tablename=user&fields=email,username,password,phone&getOnlyTableSchema=1"
      xhrcall(1, url, "", "json", "", getTableDone, token)
  });
