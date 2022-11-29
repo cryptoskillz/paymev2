@@ -136,9 +136,10 @@ export async function onRequestPost(context) {
         if (contentType != null) {
             //get the data
             theData = await request.json();
+            console.log(theData)
             //check if it is a user table and generate an API id
             let apiSecret = "";
-            if (theData.table = "user")
+            if (theData.table == "user")
                 apiSecret = uuid.v4();
             //build the query
             let theQuery = `INSERT INTO ${theData.table} (`
@@ -164,10 +165,11 @@ export async function onRequestPost(context) {
             }
             //compile the query
             theQuery = theQuery + theQueryFields + " ) VALUES ( " + theQueryValues + " ); "
+            console.log(theQuery)
             //run the query
             const info = await context.env.DB.prepare(theQuery)
                 .run();
-            return new Response(JSON.stringify({ message: "User has been added" }), { status: 200 });
+            return new Response(JSON.stringify({ message: `${theData.table} has been added` }), { status: 200 });
 
         }
         return new Response(JSON.stringify({ error: "server" }), { status: 400 });

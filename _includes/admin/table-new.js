@@ -3,7 +3,6 @@
      /in/.test(document.readyState) ? setTimeout('whenDocumentReady(' + f + ')', 9) : f()
  }
 
-
  whenDocumentReady(isReady = () => {
      let getTableDone = (res) => {
          res = JSON.parse(res);
@@ -15,13 +14,14 @@
              formHtml = formHtml + buildFormElement(res.schema[i]);
          }
          //set table name
-         document.getElementById('formTableName').value = "user";
+         document.getElementById('formTableName').value = theTable;
          document.getElementById('formInputs').innerHTML = formHtml;
+         document.getElementById('data-header').innerHTML = `add a new ${theTable}`
          //show the body div
          document.getElementById('showBody').classList.remove('d-none');
      }
 
 
-     url = adminUrl + "database/table?tablename=user&fields=email,username,password,phone&getOnlyTableSchema=1"
+     url = adminUrl + `database/table?tablename=${theTable}&fields=${theFields}&getOnlyTableSchema=1`
      xhrcall(1, url, "", "json", "", getTableDone, token)
  });
