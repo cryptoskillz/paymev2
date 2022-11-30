@@ -22,7 +22,7 @@ whenDocumentReady(isReady = () => {
             let editButton = "";
             if (user.isAdmin == 1) {
 
-                editButton = `<a href="/${tmpTableName}/edit?id=${theData.id}" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-edit fa-sm text-white-50"></i> edit</a>`
+                editButton = `<a href="/${tmpTableName}/edit?id=${theData.id}" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-edit fa-sm text-white-50"></i> Edit</a>`
                 deleteButton = `<a href="javascript:deleteTableItem(${theData.id},'api/database/table/','${tmpTableName}')" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-trash fa-sm text-white-50"></i> Delete</a>`
 
             }
