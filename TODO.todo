@@ -4,7 +4,15 @@ GENERAL
  ☐ update the readme 
  ☐ add a published date to all fields and add to the post in table.js
  ☐ add a isDelted to all fields and add to table.js
- 
+
+CREATE ACCOUNT
+
+ ☐ check it is allowed
+
+ LOGIN
+
+ ☐ check the user is not blocke
+
 
 DASHBOARD
 
@@ -29,7 +37,7 @@ LEVEV 1 VIEW
  ✔ add a check for api errors @done (22-11-26 23:36)
  ✔ hide admin create of the site from non admins @done (22-11-26 01:38)
  ☐ remove visibilty hack to the button
- ☐ add property
+ ✔ add property @done (22-11-30 03:40)
  ☐ delete property
  ☐ update property
 
@@ -78,24 +86,24 @@ API
  ✔ add a adminId to the user table so we know who manages it.  if it is signed up we will default it to 1 as we can assume the first entry in the databse is the main admin.  We could make this smarter but I don't want to. @done (22-11-27 01:49)
  ✔ render the users @done (22-11-29 01:12)
  ✔ add delete user @done (22-11-29 01:12)
- ☐ add edit user
+ ✔ add edit user @done (22-11-30 03:41)
  ✔ add create new user @done (22-11-29 01:12)
  ✔ add your admin to the table @done (22-11-29 03:49)
  ✔ set the defaults in the schema @done (22-11-29 23:10)
   
 
 
- CREATE NEW / EDIT USER
+ CREATE NEW / EDIT TABLE
 
  ☐ add the ability to render different types 
  ☐ add aliases to the name field so we can clean them up, we can do this a little bit but might have to hand crank it. 
  ☐ if the field name is password render it out two elements
  ☐ add validation to the form builder
  ☐ if id disable the field
- ☐ rationalise the add to one js file called table.js
- ☐ ratiomalise the edtit to one js files
+ ✔ rationalise the add to one js file called table.js @done (22-11-30 03:41)
+ ☐ rationalise the edtit to one js files
  ☐ have an include for edit
- ☐ have an include for add
+ ✔ have an include for add @done (22-11-30 03:41)
 
  FUNCTIONS API
 

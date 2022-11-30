@@ -143,9 +143,9 @@ let getFormData = (smartValidate = 0) => {
     } else {
         theJson = theJson + `,"table":"${theTable}" }`
     }
-    //console.log(theJson);
+
     if (valid == 1)
-        return (theJson)
+        return (JSON.parse(theJson))
     else
         return (false)
 
@@ -195,11 +195,17 @@ if (checkElement("btn-update") == true) {
             document.getElementById('data-header').innerHTML = "";
         }
         //get the form data
-        let bodyJson = getFormData(1);
+        let theJson = getFormData(1);
+        let bodyObj = {
+            table: document.getElementById('formTableName').value,
+            tableData: theJson,
+        }
+        console.log(bodyObj)
+        let bodyObjectJson = JSON.stringify(bodyObj);
         //check we have valid data to submit
-        if (bodyJson != false) {
+        if (bodyObjectJson != false) {
             //post the record
-            xhrcall(4, `api/database/table/`, bodyJson, "json", "", xhrDone, token)
+            xhrcall(4, `api/database/table/`, bodyObjectJson, "json", "", xhrDone, token)
         }
 
     })
@@ -312,6 +318,7 @@ let deleteId = 0;
 let tableRowId = 0;
 let deleteMethod = "";
 let tableName = "";
+let deleteTableName = "";
 //check the password
 /*
 note this this the password checker curently it checks to the following rule set.
@@ -326,7 +333,6 @@ let checkPassword = (str) => {
         return re.test(str);
     }
 }
-
 
 
 let showPassword = (elementName, eyeNumber) => {
@@ -349,29 +355,19 @@ if (checkElement("confirmation-modal-delete-button") == true) {
     document.getElementById('confirmation-modal-delete-button').addEventListener('click', function() {
         $('#confirmation-modal').modal('toggle')
         let xhrDone = (res) => {
-            // console.log(deleteMethod)
-            //parse the response
-            showAlert('Item has been deleted', 1)
+            res = JSON.parse(res);
+            showAlert(res.message, 1)
             table.row('#' + tableRowId).remove().draw()
-            //console.log(deleteMethod)
-            if (deleteMethod == 'api/' + level1name + '/') {
-                removeDataItem(1, deleteId)
-
-            }
-            if (deleteMethod == 'api/' + level2name + '/') {
-                removeDataItem(2, deleteId, 0)
-
-            }
-
+            removeDataItem(1, deleteId);
         }
 
-        let bodyobj = {
+        let bodyObj = {
             id: deleteId,
-            tableName: tableName
+            tableName: deleteTableName
         }
-        var bodyobjectjson = JSON.stringify(bodyobj);
+        var bodyObjectJson = JSON.stringify(bodyObj);
         //call the delete table record endpoint
-        xhrcall(3, `${deleteMethod}`, bodyobjectjson, "json", "", xhrDone, token)
+        xhrcall(3, `${deleteMethod}`, bodyObjectJson, "json", "", xhrDone, token)
 
     })
 }
@@ -381,39 +377,41 @@ let deleteTableItem = (dId, method, tTableName) => {
     deleteId = dId;
     tableRowId = dId;
     deleteMethod = method;
-    tableName = tTableName;
+    deleteTableName = tTableName;
     $('#confirmation-modal').modal('toggle')
 }
 
 //todo : make this work with multipile fields and values.
-let updateTableItem = (dId, method, tTableName, tFields, tValues, toggleBtns = 0) => {
+let switchTableItem = (dId, method, tTableName, tSchema = {}, toggleBtns = 0) => {
+    tSchema.id = dId;
     let bodyobj = {
-        id: dId,
-        tableName: tTableName,
-        fields: tFields,
-        values: tValues,
+        table: tTableName,
+        tableData: tSchema,
     }
+    //debug
+    //console.log(tSchema[0])
+    //console.log(tSchema[Object.keys(tSchema)[0]]);
+
     var bodyobjectjson = JSON.stringify(bodyobj);
     let xhrDone = (res) => {
         //console.log(bodyobjectjson)
-        //console.log(`off-${tFields}-${dId}`)
 
         //check if the element is there before we try an update
-        if (checkElement(`off-${tFields}-${dId}`) == true) {
+        if (checkElement(`off-${tTableName}-${dId}`) == true) {
             //this is redundant now so we may remove it
             if (toggleBtns == 1) {
                 //check the value
-                if (tValues == 0) {
+                if (tSchema[Object.keys(tSchema)[0]] == 0) {
                     //show the on state
-                    document.getElementById(`off-${tFields}-${dId}`).classList.add('d-none');
-                    document.getElementById(`on-${tFields}-${dId}`).classList.remove('d-none');
-                    document.getElementById(`text-${tFields}-${dId}`).innerHTML = "No";
+                    document.getElementById(`off-${tTableName}-${dId}`).classList.add('d-none');
+                    document.getElementById(`on-${tTableName}-${dId}`).classList.remove('d-none');
+                    document.getElementById(`text-${tTableName}-${dId}`).innerHTML = "No";
 
                 } else {
                     //show the off state
-                    document.getElementById(`off-${tFields}-${dId}`).classList.remove('d-none');
-                    document.getElementById(`on-${tFields}-${dId}`).classList.add('d-none');
-                    document.getElementById(`text-${tFields}-${dId}`).innerHTML = "Yes"
+                    document.getElementById(`off-${tTableName}-${dId}`).classList.remove('d-none');
+                    document.getElementById(`on-${tTableName}-${dId}`).classList.add('d-none');
+                    document.getElementById(`text-${tTableName}-${dId}`).innerHTML = "Yes"
                 }
 
 

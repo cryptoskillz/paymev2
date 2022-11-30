@@ -44,25 +44,27 @@ export async function onRequestPut(context) {
         if (contentType != null) {
             theData = await request.json();
 
-            //           UPDATE users SET name = ?1 WHERE id = ?2
+            //UPDATE users SET name = ?1 WHERE id = ?2
             let theQuery = `UPDATE ${theData.table} SET `
             let theQueryValues = "";
             let theQueryWhere = "";
             //loop through the query data
-            for (const key in theData) {
+            console.log(theData.tableData)
+            for (const key in theData.tableData) {
+                let tdata = theData.tableData;
                 //check it is not the table name
                 //note : we could use a more elegant JSON structure and element this check
                 if ((key != "table") && (key != "id")) {
                     //build the fields
                     if (theQueryValues == "")
-                        theQueryValues = `${key} = '${theData[key]}' `
+                        theQueryValues = `${key} = '${tdata[key]}' `
                     else
-                        theQueryValues = theQueryValues + `,${key} = '${theData[key]}' `
+                        theQueryValues = theQueryValues + `,${key} = '${tdata[key]}' `
 
                 }
                 //check for ad id and add a put.
                 if (key == "id")
-                    theQueryWhere = ` where id = '${theData[key]}'`
+                    theQueryWhere = ` where id = '${tdata[key]}'`
             }
             //compile the query
             theQuery = theQuery + theQueryValues + theQueryWhere;
@@ -71,7 +73,7 @@ export async function onRequestPut(context) {
                 .run();
 
 
-            return new Response(JSON.stringify({ message: "User has been updated" }), { status: 200 });
+            return new Response(JSON.stringify({ message: `${theData.table} has been updated` }), { status: 200 });
         }
         return new Response(JSON.stringify({ error: "server" }), { status: 400 });
     } else {
@@ -105,7 +107,7 @@ export async function onRequestDelete(context) {
             const info = await context.env.DB.prepare(`UPDATE ${theData.tableName} SET isDeleted = ?1 WHERE id = ?2`)
                 .bind(1, theData.id)
                 .run();
-            return new Response(JSON.stringify({ status: "ok" }), { status: 200 });
+            return new Response(JSON.stringify({ message: `${theData.tableName} has been deleted` }), { status: 200 });
 
         }
         return new Response(JSON.stringify({ error: "server" }), { status: 400 });
@@ -136,7 +138,7 @@ export async function onRequestPost(context) {
         if (contentType != null) {
             //get the data
             theData = await request.json();
-            console.log(theData)
+            //console.log(theData)
             //check if it is a user table and generate an API id
             let apiSecret = "";
             if (theData.table == "user")
@@ -165,7 +167,7 @@ export async function onRequestPost(context) {
             }
             //compile the query
             theQuery = theQuery + theQueryFields + " ) VALUES ( " + theQueryValues + " ); "
-            console.log(theQuery)
+            //console.log(theQuery)
             //run the query
             const info = await context.env.DB.prepare(theQuery)
                 .run();
@@ -234,9 +236,9 @@ export async function onRequestGet(context) {
         //check if they also want the data
         if (searchParams.get('getOnlyTableSchema') == 0) {
             //build the where statement if they sent up and id
-            let sqlWhere = "";
+            let sqlWhere = "where isDeleted = 0 ";
             if (tableId != undefined)
-                sqlWhere = `where id = ${tableId}`
+                sqlWhere = sqlWhere +`and id = ${tableId}`
 
             //process the fields
             let tmp = fields.split(",");
@@ -252,7 +254,7 @@ export async function onRequestGet(context) {
                     else
                         fields = fields + "," + tmp[i]
                 }
-                //console.log(`SELECT ${fields} from ${tableName} ${sqlWhere}`)
+                console.log(`SELECT ${fields} from ${tableName} ${sqlWhere}`)
                 let sql = `SELECT ${fields} from ${tableName} ${sqlWhere}`
                 query = context.env.DB.prepare(sql);
             }
