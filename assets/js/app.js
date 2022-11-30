@@ -170,11 +170,17 @@ if (checkElement("btn-create") == true) {
             clearFormData();
         }
         //get the form data
-        let bodyJson = getFormData(1);
-        //check we have valid data to submit
-        if (bodyJson != false) {
+        let theJson = getFormData(1);
+        if (theJson != false) {
+            let bodyObj = {
+                table: document.getElementById('formTableName').value,
+                tableData: theJson,
+            }
+            let bodyObjectJson = JSON.stringify(bodyObj);
+            //check we have valid data to submit
+
             //post the record
-            xhrcall(0, `api/database/table/`, bodyJson, "json", "", xhrDone, token)
+            xhrcall(0, `api/database/table/`, bodyObjectJson, "json", "", xhrDone, token)
         }
 
     })
@@ -196,14 +202,14 @@ if (checkElement("btn-update") == true) {
         }
         //get the form data
         let theJson = getFormData(1);
-        let bodyObj = {
-            table: document.getElementById('formTableName').value,
-            tableData: theJson,
-        }
-        console.log(bodyObj)
-        let bodyObjectJson = JSON.stringify(bodyObj);
-        //check we have valid data to submit
-        if (bodyObjectJson != false) {
+        if (theJson != false) {
+            let bodyObj = {
+                table: document.getElementById('formTableName').value,
+                tableData: theJson,
+            }
+            //console.log(bodyObj)
+            let bodyObjectJson = JSON.stringify(bodyObj);
+            //check we have valid data to submit
             //post the record
             xhrcall(4, `api/database/table/`, bodyObjectJson, "json", "", xhrDone, token)
         }

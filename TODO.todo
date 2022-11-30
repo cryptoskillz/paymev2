@@ -3,6 +3,8 @@ GENERAL
  ✔ clean up the app.js remove the code we not using, local cache etc. @done (22-11-23 00:58)
  ☐ update the readme 
  ☐ add a published date to all fields and add to the post in table.js
+ ☐ add an updated date to all fields in the the post / put in table.js
+ ☐ add an deleted date to all fields in the deleted in table.js
  ☐ add a isDelted to all fields and add to table.js
 
 CREATE ACCOUNT
@@ -11,7 +13,7 @@ CREATE ACCOUNT
 
  LOGIN
 
- ☐ check the user is not blocke
+ ☐ check the user is not blocked
 
 
 DASHBOARD
@@ -37,7 +39,7 @@ LEVEV 1 VIEW
  ✔ add a check for api errors @done (22-11-26 23:36)
  ✔ hide admin create of the site from non admins @done (22-11-26 01:38)
  ☐ remove visibilty hack to the button
- ✔ add property @done (22-11-30 03:40)
+ ✔ add property @done (22-11-30 18:50)
  ☐ delete property
  ☐ update property
 
@@ -101,8 +103,8 @@ API
  ☐ add validation to the form builder
  ☐ if id disable the field
  ✔ rationalise the add to one js file called table.js @done (22-11-30 03:41)
- ☐ rationalise the edtit to one js files
- ☐ have an include for edit
+ ✔ rationalise the edtit to one js files @done (22-11-30 16:51)
+ ✔ have an include for edit @done (22-11-30 18:37)
  ✔ have an include for add @done (22-11-30 03:41)
 
  FUNCTIONS API
@@ -117,7 +119,7 @@ API
 
  APP
 
- ☐ update the updateTableItem function with multipile fields and values (this may be done table.js in the API)
+ ✔ update the updateTableItem function with multipile fields and values (renamed to switch) (this may be done table.js in the API) @done (22-11-30 18:38)
 
  TABLE API
 

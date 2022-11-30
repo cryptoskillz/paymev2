@@ -49,7 +49,7 @@ export async function onRequestPut(context) {
             let theQueryValues = "";
             let theQueryWhere = "";
             //loop through the query data
-            console.log(theData.tableData)
+            //console.log(theData.tableData)
             for (const key in theData.tableData) {
                 let tdata = theData.tableData;
                 //check it is not the table name
@@ -68,7 +68,7 @@ export async function onRequestPut(context) {
             }
             //compile the query
             theQuery = theQuery + theQueryValues + theQueryWhere;
-            console.log(theQuery);
+            //console.log(theQuery);
             const info = await context.env.DB.prepare(theQuery)
                 .run();
 
@@ -138,6 +138,7 @@ export async function onRequestPost(context) {
         if (contentType != null) {
             //get the data
             theData = await request.json();
+
             //console.log(theData)
             //check if it is a user table and generate an API id
             let apiSecret = "";
@@ -148,7 +149,8 @@ export async function onRequestPost(context) {
             let theQueryFields = "";
             let theQueryValues = "";
             //loop through the query data
-            for (const key in theData) {
+             for (const key in theData.tableData) {
+                let tdata = theData.tableData;
                 //check it is not the table name
                 //note : we could use a more elegant JSON structure and element this check
                 if (key != "table") {
@@ -160,14 +162,14 @@ export async function onRequestPost(context) {
 
                     //build the values
                     if (theQueryValues == "")
-                        theQueryValues = `'${theData[key]}'`
+                        theQueryValues = `'${tdata[key]}'`
                     else
-                        theQueryValues = theQueryValues + `,'${theData[key]}'`
+                        theQueryValues = theQueryValues + `,'${tdata[key]}'`
                 }
             }
             //compile the query
             theQuery = theQuery + theQueryFields + " ) VALUES ( " + theQueryValues + " ); "
-            //console.log(theQuery)
+            console.log(theQuery)
             //run the query
             const info = await context.env.DB.prepare(theQuery)
                 .run();
@@ -254,7 +256,7 @@ export async function onRequestGet(context) {
                     else
                         fields = fields + "," + tmp[i]
                 }
-                console.log(`SELECT ${fields} from ${tableName} ${sqlWhere}`)
+                //console.log(`SELECT ${fields} from ${tableName} ${sqlWhere}`)
                 let sql = `SELECT ${fields} from ${tableName} ${sqlWhere}`
                 query = context.env.DB.prepare(sql);
             }
