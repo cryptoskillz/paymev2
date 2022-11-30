@@ -103,11 +103,11 @@ API
  ✔ rationalise the edtit to one js files @done (22-11-30 16:51)
  ✔ have an include for edit @done (22-11-30 18:37)
  ✔ have an include for add @done (22-11-30 03:41)
- ☐ add the ability to render different types 
- ☐ add aliases to the name field so we can clean them up, we can do this a little bit but might have to hand crank it. 
- ☐ if the field name is password render it out two elements
- ☐ add validation to the form builder
- ☐ if id disable the field
+ ✔ add the ability to render different types @done (22-12-01 00:39)
+ ✔ add aliases to the name field so we can clean them up, we can do this a little bit but might have to hand crank it. @done (22-12-01 01:05)
+ ✔ if the field name is password render it out two elements @done (22-12-01 01:05)
+ ✔ add validation to the form builder @done (22-12-01 01:05)
+ ✔ if id disable the field @done (22-12-01 00:39)
 
 
  FUNCTIONS API

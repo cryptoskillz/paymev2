@@ -90,6 +90,61 @@ let clearFormData = () => {
     }
 }
 
+
+
+/*
+This funtion handles the building of the form
+*/
+
+let buildFormElement = (theData, theValues = "") => {
+    let disabled = "";
+    let theType = "text";
+    let required = "required"
+    //console.log(theData);
+    //console.log(theValues)
+    //set the value
+    let theValue = "";
+    //check we have some values (create will not have any obvs)
+    if (theValues != "") {
+        //loop through the values
+        for (const key in theValues) {
+
+            //find a match to the schema name
+            if (key == theData.name) {
+                //store it
+                theValue = theValues[key];
+                //get the hell out of here. 
+                break;
+            }
+        }
+    }
+
+    if (theData.name == "id") {
+        disabled = "disabled"
+    }
+
+    switch (theData.name) {
+        case "id":
+            disabled = 'disabled';
+            break;
+        case "email":
+            theType = 'email';
+            break;
+        case "phone":
+            theType = 'tel'
+    }
+    //captalise the element
+    const theTitle = theData.name.charAt(0).toUpperCase() + theData.name.slice(1);
+    //built the element
+    let inpHtml = `<div class="form-group">
+                        <label>${theTitle}</label>
+                        <input type="${theType}" class="form-control form-control-user" id="inp-${theData.name}" aria-describedby="${theData.name}" placeholder="Enter ${theData.name}" value="${theValue}" ${disabled}>
+                        <span class="text-danger d-none" id="error-${theData.name}"></span>  
+                    </div>`
+    //return it
+    return (inpHtml)
+}
+
 let getFormData = (smartValidate = 0) => {
     //clear the errors
     let theErrors = document.getElementsByClassName('text-danger')
@@ -105,10 +160,14 @@ let getFormData = (smartValidate = 0) => {
     for (var i = 0; i < theElements.length; ++i) {
         //get the element name
         let elementName = theElements[i].id;
+        //get the name.
+        let fieldName = elementName.replace("inp-", "");
         //check if its blank
         if (theElements[i].value == "") {
             //set the error id
             let errorId = elementName.replace("inp", 'error');
+            //change the message
+            document.getElementById(errorId).innerHTML = `${fieldName} cannot be blank`;
             //remove the error
             document.getElementById(errorId).classList.remove('d-none');
             //set valid to false
@@ -118,21 +177,28 @@ let getFormData = (smartValidate = 0) => {
         if (smartValidate == 1) {
             //chekc if the field type is an email
             if (elementName == "inp-email") {
-                console.log("validate email")
-            }
+                if (validateEmail(theElements[i].value) == false)
+                {
+                    //set the error id
+                    let errorId = elementName.replace("inp", 'error');
+                    //change the message
+                    document.getElementById(errorId).innerHTML = `${fieldName} has to be an email`;
+                    //remove the error
+                    document.getElementById(errorId).classList.remove('d-none');
+                    //set valid to false
+                    valid = 0;
+                }
 
+            }
             //check if its an integer field
 
             //check if its a password field 
-
-
         }
         //build the json
-        let sqlName = elementName.replace("inp-", "")
         if (theJson == "{")
-            theJson = theJson + `"${sqlName}":"${theElements[i].value}"`
+            theJson = theJson + `"${fieldName}":"${theElements[i].value}"`
         else
-            theJson = theJson + `,"${sqlName}":"${theElements[i].value}"`
+            theJson = theJson + `,"${fieldName}":"${theElements[i].value}"`
     }
     let theTable = document.getElementById('formTableName').value;
     //check is isAdmin and the it is one of the tables we want to add attach to the admin
@@ -217,38 +283,7 @@ if (checkElement("btn-update") == true) {
     })
 }
 
-/*
-This funtion handles the building of the form
-*/
 
-let buildFormElement = (theData, theValues = "") => {
-    //console.log(theData)
-    //set the value
-    let theValue = "";
-    //check we have some values (create will not have any obvs)
-    if (theValues != "") {
-        //loop through the values
-        for (const key in theValues) {
-            //find a match to the schema name
-            if (key == theData.name) {
-                //store it
-                theValue = theValues[key];
-                //get the hell out of here. 
-                break;
-            }
-        }
-    }
-    //captalise the element
-    const theTitle = theData.name.charAt(0).toUpperCase() + theData.name.slice(1);
-    //built the element
-    let inpHtml = `<div class="form-group">
-                        <label>${theTitle}</label>
-                        <input type="text" class="form-control form-control-user" id="inp-${theData.name}" aria-describedby="${theData.name}" placeholder="Enter ${theData.name}" value="${theValue}">
-                        <span class="text-danger d-none" id="error-${theData.name}">${theData.name} cannot be blank</span>  
-                    </div>`
-    //return it
-    return (inpHtml)
-}
 
 
 /*
@@ -502,7 +537,7 @@ let checkLogin = () => {
 
             //check admin stuff
             if (user.isAdmin == 1) {
-                if (checkElement("btn-create-cy") == true) 
+                if (checkElement("btn-create-cy") == true)
                     document.getElementById('btn-create-cy').classList.remove("d-none");
                 document.getElementById("navadmin").classList.remove("d-none")
             }

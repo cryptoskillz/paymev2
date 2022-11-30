@@ -15,7 +15,9 @@
          }
          //set table name
          document.getElementById('formTableName').value = theTable;
+         //set the inputs
          document.getElementById('formInputs').innerHTML = formHtml;
+         //set the header
          document.getElementById('data-header').innerHTML = `add a new ${theTable}`
          //show the body div
          document.getElementById('showBody').classList.remove('d-none');
