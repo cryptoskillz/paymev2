@@ -68,7 +68,7 @@ export async function onRequestPut(context) {
             }
             //compile the query
             theQuery = theQuery + theQueryValues + theQueryWhere;
-            //console.log(theQuery);
+            console.log(theQuery);
             const info = await context.env.DB.prepare(theQuery)
                 .run();
 
@@ -202,7 +202,7 @@ export async function onRequestGet(context) {
         //get the search paramaters
         const { searchParams } = new URL(request.url);
         //get the table id
-        let tableId = searchParams.get('id');
+        let recordId = searchParams.get('id');
         //get the table name
         let tableName = searchParams.get('tablename');
         //get the table name
@@ -239,8 +239,8 @@ export async function onRequestGet(context) {
         if (searchParams.get('getOnlyTableSchema') == 0) {
             //build the where statement if they sent up and id
             let sqlWhere = "where isDeleted = 0 ";
-            if (tableId != undefined)
-                sqlWhere = sqlWhere +`and id = ${tableId}`
+            if (recordId != undefined)
+                sqlWhere = sqlWhere +`and id = ${recordId}`
 
             //process the fields
             let tmp = fields.split(",");

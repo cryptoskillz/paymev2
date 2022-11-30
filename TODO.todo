@@ -38,10 +38,10 @@ LEVEV 1 VIEW
  ✔ add distributions @done (22-11-22 22:20)
  ✔ add a check for api errors @done (22-11-26 23:36)
  ✔ hide admin create of the site from non admins @done (22-11-26 01:38)
- ☐ remove visibilty hack to the button
+ ✔ remove visibilty hack to the button @done (22-11-30 20:08)
  ✔ add property @done (22-11-30 18:50)
- ☐ delete property
- ☐ update property
+ ✔ delete property @done (22-11-30 20:27)
+ ✔ update property @done (22-11-30 20:27)
 
 
 

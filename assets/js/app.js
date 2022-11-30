@@ -502,10 +502,8 @@ let checkLogin = () => {
 
             //check admin stuff
             if (user.isAdmin == 1) {
-                let element = document.getElementById('btn-create-cy');
-                if (typeof(element) != 'undefined' && element != null) {
-                    element.style.visibility = "visible"
-                }
+                if (checkElement("btn-create-cy") == true) 
+                    document.getElementById('btn-create-cy').classList.remove("d-none");
                 document.getElementById("navadmin").classList.remove("d-none")
             }
             //check the user is logged in some one could spoof this so we could do a valid jwt check here 

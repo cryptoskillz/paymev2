@@ -18,7 +18,7 @@
              formHtml = formHtml + buildFormElement(res.schema[i], res.data[0]);
          }
          //set table name
-         document.getElementById('formTableName').value = "user";
+         document.getElementById('formTableName').value = theTable;
          //set the form
          document.getElementById('formInputs').innerHTML = formHtml;
          //show the body div

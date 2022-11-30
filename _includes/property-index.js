@@ -15,14 +15,24 @@ whenDocumentReady(isReady = () => {
         res = JSON.parse(res)
         //get the datatable
         table = $('#dataTable').DataTable();
+        let tmpTableName = "property";
         for (var i = 0; i < res.data.length; ++i) {
             let theData = res.data[i];
+            let deleteButton = "";
+            let editButton = "";
+            console.log(user)
+            if (user.isAdmin == 1) {
+
+                editButton = `<a href="/${tmpTableName}/edit?id=${theData.id}" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-edit fa-sm text-white-50"></i> edit</a>`
+                deleteButton = `<a href="javascript:deleteTableItem(${theData.id},'api/database/table/','${tmpTableName}')" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-trash fa-sm text-white-50"></i> Delete</a>`
+
+            }
             //build the button
             let propertybutton = `<a href="/property/view?id=${theData.id}" id="ep-${theData.name}-${i}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
     <i class="fas fa-eye fa-sm text-white-50"></i> View</a>`
 
             var rowNode = table
-                .row.add([theData.id, theData.name, theData.published_at, `${propertybutton}`])
+                .row.add([theData.id, theData.name, theData.published_at, `${propertybutton} ${editButton} ${deleteButton}`])
                 .draw()
                 .node().id = theData.id;
 
