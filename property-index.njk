@@ -6,14 +6,14 @@ permalink: /{{env.LEVEL1NAME}}/
 This is the top level nav page and it has a js file of the same name in the _includes directory. It uses dataname to generate the nav
 -->
 {% set theJs %}
-    {% include 'level1index.js' %}
+    {% include 'property-index.js' %}
 {% endset %}
 <!-- Page Heading -->
 
  <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">{{env.LEVEL1NAME | capitalize }}</h1>
     
-    <a href="/{{env.LEVEL1NAME}}/new/" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="visibility:hidden" id="btn-create-cy">
+    <a href="/{{env.LEVEL1NAME}}/new/" class="btn btn-sm btn-primary shadow-sm" id="btn-create-cy">
     <i class="fas fa-download fa-sm text-white-50"></i> Create New</a>
     
 </div>

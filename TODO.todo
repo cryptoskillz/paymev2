@@ -1,7 +1,21 @@
 GENERAL 
 
  ✔ clean up the app.js remove the code we not using, local cache etc. @done (22-11-23 00:58)
+ ✔ add a published date to all fields and add to the post in table.js @done (22-11-30 22:13)
+ ✔ add an updated date to all fields in the the post / put in table.js @done (22-11-30 22:13)
+ ✔ add an deleted date to all fields in the deleted in table.js @done (22-11-30 22:13)
+ ✔ add a isDelted to all fields and add to table.js @done (22-11-30 22:13)
  ☐ update the readme 
+
+
+CREATE ACCOUNT
+
+ ✔ check it is allowed @done (22-11-30 22:20)
+
+ LOGIN
+
+ ✔ check the user is not blocked @done (22-11-30 22:13)
+
 
 DASHBOARD
 
@@ -11,9 +25,9 @@ ACCOUNT
 
  ✔ auto populate the username from the first part of the email @done (22-11-26 22:28)
  ✔ have an option to turn on a password rule @done (22-11-26 22:28)
+ ✔ user the isadmin in the token to control access to the api endpoints. @done (22-11-29 01:16)
  ☐ refactor forgot password
  ☐ refactor reset password
- ✔ user the isadmin in the token to control access to the api endpoints. @done (22-11-29 01:16)
 
 LEVEV 1 VIEW
 
@@ -25,7 +39,11 @@ LEVEV 1 VIEW
  ✔ add distributions @done (22-11-22 22:20)
  ✔ add a check for api errors @done (22-11-26 23:36)
  ✔ hide admin create of the site from non admins @done (22-11-26 01:38)
- ☐ remove visibilty hack to the button
+ ✔ remove visibilty hack to the button @done (22-11-30 20:08)
+ ✔ add property @done (22-11-30 18:50)
+ ✔ delete property @done (22-11-30 20:27)
+ ✔ update property @done (22-11-30 20:27)
+
 
 
 SETTINGS
@@ -33,13 +51,14 @@ SETTINGS
  ☐ add the settings layout.
 
 API
+ 
 
  ✔ port login to d1 @done (22-11-25 21:56)
- ☐ port setting to d1 
  ✔ port register to d1 @done (22-11-26 01:20)
- ☐ port forgot password to d1
  ✔ add the login for none admins @done (22-11-26 23:36)
  ✔ add the propety ids (do we require the foreign ID as it we can just do a call in the property page) @done (22-11-26 02:29)
+ ☐ port setting to d1 
+ ☐ port forgot password to d1
 
  REPORT
 
@@ -71,20 +90,25 @@ API
  ✔ add a adminId to the user table so we know who manages it.  if it is signed up we will default it to 1 as we can assume the first entry in the databse is the main admin.  We could make this smarter but I don't want to. @done (22-11-27 01:49)
  ✔ render the users @done (22-11-29 01:12)
  ✔ add delete user @done (22-11-29 01:12)
- ☐ add edit user
+ ✔ add edit user @done (22-11-30 03:41)
  ✔ add create new user @done (22-11-29 01:12)
  ✔ add your admin to the table @done (22-11-29 03:49)
  ✔ set the defaults in the schema @done (22-11-29 23:10)
   
 
 
- CREATE NEW / EDIT USER
+ CREATE NEW / EDIT TABLE
 
+ ✔ rationalise the add to one js file called table.js @done (22-11-30 03:41)
+ ✔ rationalise the edtit to one js files @done (22-11-30 16:51)
+ ✔ have an include for edit @done (22-11-30 18:37)
+ ✔ have an include for add @done (22-11-30 03:41)
  ☐ add the ability to render different types 
  ☐ add aliases to the name field so we can clean them up, we can do this a little bit but might have to hand crank it. 
  ☐ if the field name is password render it out two elements
  ☐ add validation to the form builder
  ☐ if id disable the field
+
 
  FUNCTIONS API
 
@@ -93,12 +117,16 @@ API
  ✔ remove page.js @done (22-11-29 01:15)
  ✔ remove properties.js @done (22-11-26 23:35)
  ✔ remove user.js @done (22-11-26 23:35)
- ☐ does login / settings / regsiter.js stay in the root of api it kind of makes sense to move them to a frontend folder as thats what uses them  
  ✔ add user.js to admin directory @done (22-11-26 23:35)
-
+ ☐ does login / settings / regsiter.js stay in the root of api it kind of makes sense to move them to a frontend folder as thats what uses them  
+ 
  APP
 
- ☐ update the updateTableItem function with multipile fields and values (this may be done table.js in the API)
+ ✔ update the updateTableItem function with multipile fields and values (renamed to switch) (this may be done table.js in the API) @done (22-11-30 18:38)
+
+ TABLE API
+
+ ☐ checks one field works as it seems to return all
 
 
 

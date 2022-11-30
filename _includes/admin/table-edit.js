@@ -18,7 +18,7 @@
              formHtml = formHtml + buildFormElement(res.schema[i], res.data[0]);
          }
          //set table name
-         document.getElementById('formTableName').value = "user";
+         document.getElementById('formTableName').value = theTable;
          //set the form
          document.getElementById('formInputs').innerHTML = formHtml;
          //show the body div
@@ -27,7 +27,7 @@
      //get the id
      let id = getUrlParamater('id');
      //build the url paramater
-     url = adminUrl + `database/table?tablename=user&fields=id,email,username,password,phone&getOnlyTableSchema=0&id=${id}`;
+     url = adminUrl + `database/table?tablename=${theTable}&fields=${theFields}&getOnlyTableSchema=0&id=${id}`;
      //make the call
      xhrcall(1, url, "", "json", "", getTableDone, token)
  });

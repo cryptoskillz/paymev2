@@ -1,9 +1,6 @@
 ---
 layout: login-layout.njk
 ---
-{% set theJs %}
-    {% include 'admin/users.js' %}
-{% endset %}
     <!-- Outer Row -->
         <div class="row justify-content-center">
 
@@ -38,8 +35,3 @@ layout: login-layout.njk
             </div>
 
         </div>
-{% if env.ENVIRONMENT == 'local' %}
-    <script type="text/javascript">{{theJs | safe}}</script>
-{% else %}
-    <script type="text/javascript">{{theJs | jsmin | safe}}</script>
-{% endif %}

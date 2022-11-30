@@ -52,7 +52,7 @@ export async function onRequestPost(context) {
 
 
             //prepare the query
-            const query = context.env.DB.prepare(`SELECT user.name,user.username,user.email,user.phone,user.id,user.isAdmin,userAccess.foreignId,user.apiSecret from user LEFT JOIN userAccess ON user.id = userAccess.userId where user.email = '${registerData.email}' and user.password = '${registerData.password}'`);
+            const query = context.env.DB.prepare(`SELECT user.isDeleted,user.isBlocked,user.name,user.username,user.email,user.phone,user.id,user.isAdmin,userAccess.foreignId,user.apiSecret from user LEFT JOIN userAccess ON user.id = userAccess.userId where user.email = '${registerData.email}' and user.password = '${registerData.password}'`);
             //get the result
             //note : we could make this return first and not all 
             const queryResult = await query.all();
@@ -60,16 +60,24 @@ export async function onRequestPost(context) {
             if (queryResult.results.length > 0) {
                 //set the user
                 let user = queryResult.results[0];
-                //console.log(user)
+               
+                //check if they are blocked
+                if (user.isBlocked == 1)
+                    return new Response(JSON.stringify({ error: "user account is blocked" }), { status: 400 });
+
+                //check if they are deleted
+                if (user.isDeleted == 1)
+                    return new Response(JSON.stringify({ error: "user does not exist" }), { status: 400 });
+
                 if (user.isAdmin == 1) {
                     //prepare the query
-                    const query2 = context.env.DB.prepare(`SELECT COUNT(*) as total from property`);
+                    const query2 = context.env.DB.prepare(`SELECT COUNT(*) as total from property where isDeleted = 0`);
                     const queryResult2 = await query2.first();
                     user.foreignCount = queryResult2.total;
                 } else {
 
                     //prepare the query
-                    const query2 = context.env.DB.prepare(`SELECT COUNT(*) as total from property_owner where userId = ${user.id} `);
+                    const query2 = context.env.DB.prepare(`SELECT COUNT(*) as total from property_owner where userId = ${user.id} and isDeleted = 0 `);
                     const queryResult2 = await query2.first();
                     user.foreignCount = queryResult2.total;
                 }
@@ -86,6 +94,7 @@ export async function onRequestPost(context) {
                     return new Response(JSON.stringify({ error: "invalid login" }), { status: 400 });
 
                 }
+                
             } else {
                 return new Response(JSON.stringify({ error: "username  / password issue" }), { status: 400 });
             }
