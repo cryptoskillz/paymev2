@@ -17,13 +17,14 @@
          document.getElementById('formTableName').value = theTable;
          //set the inputs
          document.getElementById('formInputs').innerHTML = formHtml;
-         //set the header
-         document.getElementById('data-header').innerHTML = `add a new ${theTable}`
+
          //show the body div
          document.getElementById('showBody').classList.remove('d-none');
      }
 
-
+     let tmpName = theTable.replace("_", " ");
+     //set the tmpName
+     document.getElementById('data-header').innerHTML = `add a new ${tmpName}`
      url = adminUrl + `database/table?tablename=${theTable}&fields=${theFields}&getOnlyTableSchema=1`
      xhrcall(1, url, "", "json", "", getTableDone, token)
  });

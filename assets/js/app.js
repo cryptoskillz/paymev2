@@ -119,8 +119,39 @@ let buildFormElement = (theData, theValues = "") => {
         }
     }
 
+    //check for id and disable it
     if (theData.name == "id") {
         disabled = "disabled"
+    }
+
+    //check if its date paid and its a create new
+    if ((theData.name == "date_paid") && (theValues == "")) {
+        var d = new Date();
+        //console.log(d)
+        let theDay= d.getDate();
+        if (theDay < 10)
+            theDay = `0${theDay}`
+        
+        let theMonth= d.getMonth()+1;
+        if (theMonth < 10)
+            theMonth = `0${theMonth}`
+
+
+        let theHours= d.getHours();
+        if (theHours < 10)
+            theHours = `0${theHours}`
+
+
+        let theMinutes= d.getMinutes();
+        if (theMinutes < 10)
+            theMinutes = `0${theMinutes}`
+
+        let theSeconds= d.getSeconds();
+        if (theSeconds < 10)
+            theSeconds = `0${theSeconds}`
+
+
+        theValue = `${d.getFullYear()}-${theMonth}-${theDay} ${theHours}:${theMinutes} ${theSeconds}`
     }
 
     switch (theData.name) {
@@ -177,8 +208,7 @@ let getFormData = (smartValidate = 0) => {
         if (smartValidate == 1) {
             //chekc if the field type is an email
             if (elementName == "inp-email") {
-                if (validateEmail(theElements[i].value) == false)
-                {
+                if (validateEmail(theElements[i].value) == false) {
                     //set the error id
                     let errorId = elementName.replace("inp", 'error');
                     //change the message
@@ -190,6 +220,8 @@ let getFormData = (smartValidate = 0) => {
                 }
 
             }
+
+
             //check if its an integer field
 
             //check if its a password field 
@@ -218,6 +250,22 @@ let getFormData = (smartValidate = 0) => {
 }
 
 
+
+/*
+This function handles the property select
+*/
+let propertySelectChange = () => {
+    let theValue = document.getElementById("propertySelect").value;
+    console.log(theValue);
+    switch (theValue) {
+        case "1":
+            window.location.href = "/property/cost/new/"
+            break;
+        case "2":
+            xhrtype = 'GET';
+            break;
+    }
+}
 
 /*
 This function handles the input of a create form
