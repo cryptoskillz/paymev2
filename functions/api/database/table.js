@@ -46,7 +46,7 @@ export async function onRequestPut(context) {
 
             //UPDATE users SET name = ?1 WHERE id = ?2
             let theQuery = `UPDATE ${theData.table} SET `
-            let theQueryValues = "";
+            let theQueryValues = "updatedAt = CURRENT_TIMESTAMP";
             let theQueryWhere = "";
             //loop through the query data
             //console.log(theData.tableData)
@@ -56,11 +56,7 @@ export async function onRequestPut(context) {
                 //note : we could use a more elegant JSON structure and element this check
                 if ((key != "table") && (key != "id")) {
                     //build the fields
-                    if (theQueryValues == "")
-                        theQueryValues = `${key} = '${tdata[key]}' `
-                    else
-                        theQueryValues = theQueryValues + `,${key} = '${tdata[key]}' `
-
+                    theQueryValues = theQueryValues + `,${key} = '${tdata[key]}' `
                 }
                 //check for ad id and add a put.
                 if (key == "id")
@@ -68,7 +64,7 @@ export async function onRequestPut(context) {
             }
             //compile the query
             theQuery = theQuery + theQueryValues + theQueryWhere;
-            console.log(theQuery);
+            //console.log(theQuery);
             const info = await context.env.DB.prepare(theQuery)
                 .run();
 
@@ -104,8 +100,8 @@ export async function onRequestDelete(context) {
             //console.log("debug")
             //console.log(theData);
             //console.log(`UPDATE ${theData.tableName} SET isDeleted = 1 WHERE id = ${theData.id}`)
-            const info = await context.env.DB.prepare(`UPDATE ${theData.tableName} SET isDeleted = ?1 WHERE id = ?2`)
-                .bind(1, theData.id)
+            const info = await context.env.DB.prepare(`UPDATE ${theData.tableName} SET isDeleted = '1',deletedAt = CURRENT_TIMESTAMP WHERE id = ${theData.id}`)
+                //.bind(1,CURRENT_TIMESTAMP,theData.id)
                 .run();
             return new Response(JSON.stringify({ message: `${theData.tableName} has been deleted` }), { status: 200 });
 
@@ -169,7 +165,7 @@ export async function onRequestPost(context) {
             }
             //compile the query
             theQuery = theQuery + theQueryFields + " ) VALUES ( " + theQueryValues + " ); "
-            console.log(theQuery)
+            //console.log(theQuery)
             //run the query
             const info = await context.env.DB.prepare(theQuery)
                 .run();

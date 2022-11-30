@@ -20,7 +20,6 @@ whenDocumentReady(isReady = () => {
             let theData = res.data[i];
             let deleteButton = "";
             let editButton = "";
-            console.log(user)
             if (user.isAdmin == 1) {
 
                 editButton = `<a href="/${tmpTableName}/edit?id=${theData.id}" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-edit fa-sm text-white-50"></i> edit</a>`
@@ -32,7 +31,7 @@ whenDocumentReady(isReady = () => {
     <i class="fas fa-eye fa-sm text-white-50"></i> View</a>`
 
             var rowNode = table
-                .row.add([theData.id, theData.name, theData.published_at, `${propertybutton} ${editButton} ${deleteButton}`])
+                .row.add([theData.id, theData.name, theData.createdAt, `${propertybutton} ${editButton} ${deleteButton}`])
                 .draw()
                 .node().id = theData.id;
 
@@ -41,6 +40,6 @@ whenDocumentReady(isReady = () => {
     }
 
     //build the json
-    url = adminUrl + "database/table?tablename=property&fields=id,name,published_at&getOnlyTableSchema=0"
+    url = adminUrl + "database/table?tablename=property&fields=id,name,createdAt&getOnlyTableSchema=0"
     xhrcall(1, url, "", "json", "", getTableDone, token)
 })
