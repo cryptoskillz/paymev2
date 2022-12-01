@@ -1,0 +1,10 @@
+---
+layout: layout.njk
+permalink: /property/payment/edit/
+---
+<script>
+    let theTable = "rental_payment";
+    let theFields = "id,description,amount,date_paid";
+    let foreignKeys = "";
+</script>
+{% include "admin/table-edit.njk" %}

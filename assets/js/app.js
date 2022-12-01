@@ -119,8 +119,40 @@ let buildFormElement = (theData, theValues = "") => {
         }
     }
 
+
+    //check for id and disable it
     if (theData.name == "id") {
         disabled = "disabled"
+    }
+
+    //check if its date paid and its a create new
+    if ((theData.name == "date_paid") && (theValues == "")) {
+        var d = new Date();
+        //console.log(d)
+        let theDay = d.getDate();
+        if (theDay < 10)
+            theDay = `0${theDay}`
+
+        let theMonth = d.getMonth() + 1;
+        if (theMonth < 10)
+            theMonth = `0${theMonth}`
+
+
+        let theHours = d.getHours();
+        if (theHours < 10)
+            theHours = `0${theHours}`
+
+
+        let theMinutes = d.getMinutes();
+        if (theMinutes < 10)
+            theMinutes = `0${theMinutes}`
+
+        let theSeconds = d.getSeconds();
+        if (theSeconds < 10)
+            theSeconds = `0${theSeconds}`
+
+
+        theValue = `${d.getFullYear()}-${theMonth}-${theDay} ${theHours}:${theMinutes} ${theSeconds}`
     }
 
     switch (theData.name) {
@@ -133,6 +165,41 @@ let buildFormElement = (theData, theValues = "") => {
         case "phone":
             theType = 'tel'
     }
+
+    //check if their are any foeign keys to set
+    if (window.localStorage.currentDataItem != "") {
+        let currentItem = window.localStorage.currentDataItem;
+        currentItem = JSON.parse(currentItem);
+        for (const key in foreignKeys) {
+            //console.log("KEY " + key);
+            //console.log("FK " + foreignKeys[key]);
+            for (const key2 in currentItem) {
+                /*
+                debug
+                if (theData.name == "propertyId") {
+
+                    console.log("================")
+                    console.log(key)
+                    console.log(foreignKeys[key]);
+                    console.log(key2)
+                    console.log(currentItem[key2]);
+
+                }
+                */
+                if (theData.name == foreignKeys[key]) {
+                    //debug
+                    //console.log('found')
+                    //console.log(currentItem[key2]);
+                    theValue = currentItem[key2];
+                    disabled = "disabled"
+                    break;
+                }
+
+            }
+        }
+
+    }
+
     //captalise the element
     const theTitle = theData.name.charAt(0).toUpperCase() + theData.name.slice(1);
     //built the element
@@ -177,8 +244,7 @@ let getFormData = (smartValidate = 0) => {
         if (smartValidate == 1) {
             //chekc if the field type is an email
             if (elementName == "inp-email") {
-                if (validateEmail(theElements[i].value) == false)
-                {
+                if (validateEmail(theElements[i].value) == false) {
                     //set the error id
                     let errorId = elementName.replace("inp", 'error');
                     //change the message
@@ -190,6 +256,8 @@ let getFormData = (smartValidate = 0) => {
                 }
 
             }
+
+
             //check if its an integer field
 
             //check if its a password field 
@@ -217,6 +285,16 @@ let getFormData = (smartValidate = 0) => {
 
 }
 
+
+let formatCurencyBaht = (code) => {
+    const formatter = new Intl.NumberFormat('th-TH', {
+        style: 'currency',
+        currency: 'THB',
+        minimumFractionDigits: 2
+    })
+    let currency = formatter.format(code)
+    return (currency)
+}
 
 
 /*

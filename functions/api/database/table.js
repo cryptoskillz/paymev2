@@ -241,6 +241,7 @@ export async function onRequestGet(context) {
             //process the fields
             let tmp = fields.split(",");
             //not we dont want to show the isDeleted flag if there. 
+            //console.log(tmp.length)
             if (tmp.length == 1) {
                 //console.log(`SELECT * from ${tableName} ${sqlWhere}`)
                 query = context.env.DB.prepare(`SELECT * from ${tableName} ${sqlWhere} `);

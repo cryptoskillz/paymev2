@@ -27,7 +27,8 @@
      //get the id
      let id = getUrlParamater('id');
      //set the header
-     document.getElementById('data-header').innerHTML = `Edit ${theTable}`
+     let tmpName = theTable.replace("_"," ");
+     document.getElementById('data-header').innerHTML = `Edit ${tmpName}`
      //build the url paramater
      url = adminUrl + `database/table?tablename=${theTable}&fields=${theFields}&getOnlyTableSchema=0&id=${id}`;
      //make the call

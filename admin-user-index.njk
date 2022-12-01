@@ -5,6 +5,11 @@ permalink: /admin/users/
 <!--
 This is the top level nav page and it has a js file of the same name in the _includes directory. It uses dataname to generate the nav
 -->
+<script>
+    let theTable = "user";
+    let theFields = "id,email,username,phone,isBlocked,isAdmin";
+    let getOnlyTableSchema = 0;
+</script>
 {% set theJs %}
     {% include 'admin/users-generic.js' %}
 {% endset %}

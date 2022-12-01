@@ -4,7 +4,7 @@ permalink: /{{env.LEVEL1NAME}}/new/
 ---
 <script>
     let theTable = "property";
-    //let theFields = [{ "fieldName" : "Name", "value":"" "required" : 1, "maxlength": 45, "type": "text"}]
     let theFields = "name,address_1,address_2,address_3,address_4,address_5,address_6,bathrooms,bedrooms,local_cost,taxes_cost";
+    let foreignKeys = "";
 </script>
 {% include "admin/table-new.njk" %}
