@@ -6,7 +6,7 @@ GENERAL
  ✔ add an deleted date to all fields in the deleted in table.js @done (22-11-30 22:13)
  ✔ add a isDelted to all fields and add to table.js @done (22-11-30 22:13)
  ☐ update the readme 
- ☐ remove the id paramates for the localstorage
+ ✔ remove the id paramates for the localstorage @done (22-12-01 22:54)
 
 
 CREATE ACCOUNT
@@ -66,9 +66,9 @@ API
  ✔ have the view for the property owners to pull the name and email from the user table as we do not have it in the property owners anymore. @done (22-11-29 23:11)
  ✔ round up percentage @done (22-11-29 23:11)
  ✔ make the address a hyper link @done (22-11-29 23:11)
- ☐ add add property
- ☐ add add payment
- ☐ add add cost
+ ✔ add add property @done (22-12-01 22:54)
+ ✔ add add payment @done (22-12-01 22:54)
+ ✔ add add cost @done (22-12-01 22:54)
  ☐ add add dist
  ☐ add add contract
 
@@ -127,7 +127,7 @@ API
 
  TABLE API
 
- ☐ checks one field works as it seems to return all
+ ✔ checks one field works as it seems to return all @done (22-12-01 22:54)
 
 
 
