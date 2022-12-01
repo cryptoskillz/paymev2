@@ -248,10 +248,10 @@ export async function onRequestGet(context) {
                 if (foreignId != "")
                     sqlWhere = sqlWhere + `and ${foreignId} = ${recordId}`
             }
-
-            console.log(recordId)
-            console.log(foreignId)
-            console.log(`SELECT ${fields} from ${tableName} ${sqlWhere}`)
+            //debug
+            //console.log(recordId)
+            //console.log(foreignId)
+            //console.log(`SELECT ${fields} from ${tableName} ${sqlWhere}`)
             //process the fields
             let tmp = fields.split(",");
             //not we dont want to show the isDeleted flag if there. 

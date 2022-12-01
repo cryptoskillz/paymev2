@@ -19,19 +19,36 @@ whenDocumentReady(isReady = () => {
         document.getElementById('formTableName').value = theTable;
         //set the inputs
         document.getElementById('formInputs').innerHTML = formHtml;
-
         //show the body div
         document.getElementById('showBody').classList.remove('d-none');
     }
-
-
 
     //set the tmpName
     let tmpName = theTable.replace("_", " ");
     document.getElementById('data-header').innerHTML = `add a new ${tmpName}`
 
-    //call the data
-    url = adminUrl + `database/table?tablename=${theTable}&fields=${theFields}&getOnlyTableSchema=1`
-    xhrcall(1, url, "", "json", "", getTableDone, token);
+     //get the table results for this level.
+    let getTableData = () => {
+        //call the data
+        url = adminUrl + `database/table?tablename=${theTable}&fields=${theFields}&getOnlyTableSchema=1`
+        xhrcall(1, url, "", "json", "", getTableDone, token);
+    }
+
+    let getLookUpDone = (res) => {
+        //console.log(res);
+        getTableData();
+    }
+    if (lookUps != "")
+    {
+        //call the data
+        url = adminUrl + `database/lookUp?theData=${lookUps}&id=${window.localStorage.currentDataItemId}`
+        xhrcall(1, url, "", "json", "", getLookUpDone, token);
+    }
+    else
+    {
+        getTableData();
+    }
+
+    
 
 });

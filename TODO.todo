@@ -1,7 +1,8 @@
 GENERAL 
 
  ☐ update the readme 
- ☐ make sure payments and costs is using the ID for the where
+ ✔ make sure payments and costs is using the ID for the where @done (22-12-02 01:57)
+ ☐ make sure all tables has a name field to make lookups work neater
 
 ACCOUNT
 
@@ -24,4 +25,10 @@ FUNCTIONS API
 SECOND LEVEL CREATES (PROPERTY COSTS)
 
  ☐ add a look up so we can put in a dropdowns for foreign fields.
- 
+
+
+LOOK UP
+
+get the main id from the token this would make it more secure
+
+
