@@ -48,7 +48,7 @@ whenDocumentReady(isReady = () => {
 
                 editButton = `<a href="/${theTable}/edit?id=${theData.id}" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-edit fa-sm text-white-50"></i> Edit</a>`
                 deleteButton = `<a href="javascript:deleteTableItem(${theData.id},'api/database/table/','${theTable}')" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-trash fa-sm text-white-50"></i> Delete</a>`
-                propertySelect = `<select onchange="propertySelectChange(${theData.id})" class="form-select" aria-label="Default select example" name="propertySelect" id="propertySelect">
+                propertySelect = `<select onchange="propertySelectChange(${theData.id})" class="form-select" aria-label="Default select example" name="propertySelect-${i}" id="propertySelect-${i}">
                 <option value="0">Please select</option>
   <option value="1">Costs</option>
   <option value="2">Payments</option>
