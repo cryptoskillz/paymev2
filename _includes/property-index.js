@@ -22,7 +22,7 @@ let propertySelectChange = (id) => {
             window.location.href = `/property/costs/`
             break;
         case "2":
-            xhrtype = 'GET';
+            window.location.href = `/property/payments/`
             break;
     }
 }
@@ -52,11 +52,15 @@ whenDocumentReady(isReady = () => {
                 <option value="0">Please select</option>
   <option value="1">Costs</option>
   <option value="2">Payments</option>
-  <option value="3">Owners</option>
+  
+</select>`
+
+/*
+<option value="3">Owners</option>
   <option value="4">Token</option>
   <option value="5">Rental agreements</option>
   <option value="audi">Audi</option>
-</select>`
+  */
             }
 
             var rowNode = table

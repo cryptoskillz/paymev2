@@ -24,28 +24,14 @@ whenDocumentReady(isReady = () => {
         document.getElementById('showBody').classList.remove('d-none');
     }
 
-    //process the results from the look up API call
-    let getLookUpDone = (res) => {
-        console.log(res)
-    }
+
 
     //set the tmpName
     let tmpName = theTable.replace("_", " ");
     document.getElementById('data-header').innerHTML = `add a new ${tmpName}`
 
-    //check for foreign keys
-    if (foreignKeys != "") {
-        
-        foreignKeys.id = getUrlParamater("id");
-        console.log(foreignKeys);
-        foreignKeys = JSON.stringify(foreignKeys);
-        //call the data
-        url = adminUrl + `database/lookUp?theData=${foreignKeys}`;
-        xhrcall(1, url, "", "json", "", getLookUpDone, token);
-    } else {
-        //call the data
-        url = adminUrl + `database/table?tablename=${theTable}&fields=${theFields}&getOnlyTableSchema=1`
-        xhrcall(1, url, "", "json", "", getTableDone, token);
-    }
+    //call the data
+    url = adminUrl + `database/table?tablename=${theTable}&fields=${theFields}&getOnlyTableSchema=1`
+    xhrcall(1, url, "", "json", "", getTableDone, token);
 
 });

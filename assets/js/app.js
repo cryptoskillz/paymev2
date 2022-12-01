@@ -119,6 +119,7 @@ let buildFormElement = (theData, theValues = "") => {
         }
     }
 
+
     //check for id and disable it
     if (theData.name == "id") {
         disabled = "disabled"
@@ -164,6 +165,41 @@ let buildFormElement = (theData, theValues = "") => {
         case "phone":
             theType = 'tel'
     }
+
+    //check if their are any foeign keys to set
+    if (window.localStorage.currentDataItem != "") {
+        let currentItem = window.localStorage.currentDataItem;
+        currentItem = JSON.parse(currentItem);
+        for (const key in foreignKeys) {
+            //console.log("KEY " + key);
+            //console.log("FK " + foreignKeys[key]);
+            for (const key2 in currentItem) {
+                /*
+                debug
+                if (theData.name == "propertyId") {
+
+                    console.log("================")
+                    console.log(key)
+                    console.log(foreignKeys[key]);
+                    console.log(key2)
+                    console.log(currentItem[key2]);
+
+                }
+                */
+                if (theData.name == foreignKeys[key]) {
+                    //debug
+                    //console.log('found')
+                    //console.log(currentItem[key2]);
+                    theValue = currentItem[key2];
+                    disabled = "disabled"
+                    break;
+                }
+
+            }
+        }
+
+    }
+
     //captalise the element
     const theTitle = theData.name.charAt(0).toUpperCase() + theData.name.slice(1);
     //built the element
