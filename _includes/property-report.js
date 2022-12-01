@@ -12,15 +12,6 @@ let url = "";
 whenDocumentReady(isReady = () => {
     document.getElementById('showBody').classList.remove('d-none')
 
-    let formatCurencyBaht = (code) => {
-        const formatter = new Intl.NumberFormat('th-TH', {
-            style: 'currency',
-            currency: 'THB',
-            minimumFractionDigits: 2
-        })
-        let currency = formatter.format(code)
-        return (currency)
-    }
 
     let addTableRow = (name, value, table) => {
         table = table + `<tr><th scope="row">${name}:</th><td>${value}</td></tr>`

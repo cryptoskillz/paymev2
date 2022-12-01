@@ -1,0 +1,10 @@
+---
+layout: layout.njk
+permalink: /property/cost/new/
+---
+<script>
+    let theTable = "rental_cost";
+    let theFields = "type,description,amount,date_paid";
+    let foreignKeys = {"table":"property","id":0,"ids":{"id":"proertyId","rentalId":"rentalId"}}
+</script>
+{% include "admin/table-new.njk" %}

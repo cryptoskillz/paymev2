@@ -128,25 +128,25 @@ let buildFormElement = (theData, theValues = "") => {
     if ((theData.name == "date_paid") && (theValues == "")) {
         var d = new Date();
         //console.log(d)
-        let theDay= d.getDate();
+        let theDay = d.getDate();
         if (theDay < 10)
             theDay = `0${theDay}`
-        
-        let theMonth= d.getMonth()+1;
+
+        let theMonth = d.getMonth() + 1;
         if (theMonth < 10)
             theMonth = `0${theMonth}`
 
 
-        let theHours= d.getHours();
+        let theHours = d.getHours();
         if (theHours < 10)
             theHours = `0${theHours}`
 
 
-        let theMinutes= d.getMinutes();
+        let theMinutes = d.getMinutes();
         if (theMinutes < 10)
             theMinutes = `0${theMinutes}`
 
-        let theSeconds= d.getSeconds();
+        let theSeconds = d.getSeconds();
         if (theSeconds < 10)
             theSeconds = `0${theSeconds}`
 
@@ -250,22 +250,16 @@ let getFormData = (smartValidate = 0) => {
 }
 
 
-
-/*
-This function handles the property select
-*/
-let propertySelectChange = () => {
-    let theValue = document.getElementById("propertySelect").value;
-    console.log(theValue);
-    switch (theValue) {
-        case "1":
-            window.location.href = "/property/cost/new/"
-            break;
-        case "2":
-            xhrtype = 'GET';
-            break;
-    }
+let formatCurencyBaht = (code) => {
+    const formatter = new Intl.NumberFormat('th-TH', {
+        style: 'currency',
+        currency: 'THB',
+        minimumFractionDigits: 2
+    })
+    let currency = formatter.format(code)
+    return (currency)
 }
+
 
 /*
 This function handles the input of a create form

@@ -6,6 +6,7 @@ GENERAL
  ✔ add an deleted date to all fields in the deleted in table.js @done (22-11-30 22:13)
  ✔ add a isDelted to all fields and add to table.js @done (22-11-30 22:13)
  ☐ update the readme 
+ ☐ remove the id paramates for the localstorage
 
 
 CREATE ACCOUNT
