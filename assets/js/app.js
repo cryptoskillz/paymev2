@@ -174,9 +174,10 @@ let buildFormElement = (theData, theValues = "") => {
             //console.log("KEY " + key);
             //console.log("FK " + foreignKeys[key]);
             for (const key2 in currentItem) {
+                
+                //debug
                 /*
-                debug
-                if (theData.name == "propertyId") {
+                if (theData.name == "rentalId") {
 
                     console.log("================")
                     console.log(key)
@@ -186,6 +187,7 @@ let buildFormElement = (theData, theValues = "") => {
 
                 }
                 */
+                
                 if (theData.name == foreignKeys[key]) {
                     //debug
                     //console.log('found')
@@ -201,11 +203,12 @@ let buildFormElement = (theData, theValues = "") => {
     }
 
     //captalise the element
-    const theTitle = theData.name.charAt(0).toUpperCase() + theData.name.slice(1);
+    let theTitle = theData.name.charAt(0).toUpperCase() + theData.name.slice(1);
+    theTitle = theTitle.replace("_"," ");
     //built the element
     let inpHtml = `<div class="form-group">
                         <label>${theTitle}</label>
-                        <input type="${theType}" class="form-control form-control-user" id="inp-${theData.name}" aria-describedby="${theData.name}" placeholder="Enter ${theData.name}" value="${theValue}" ${disabled}>
+                        <input type="${theType}" class="form-control form-control-user" id="inp-${theData.name}" aria-describedby="${theData.name}" placeholder="Enter ${theTitle}" value="${theValue}" ${disabled}>
                         <span class="text-danger d-none" id="error-${theData.name}"></span>  
                     </div>`
     //return it

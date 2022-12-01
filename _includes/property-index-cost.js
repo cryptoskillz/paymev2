@@ -45,7 +45,7 @@ whenDocumentReady(isReady = () => {
     //get the table results for this level.
     let getTableData = () => {
         //build the json
-        url = adminUrl + `database/table?tablename=${theTable}&fields=${theFields}&getOnlyTableSchema=${getOnlyTableSchema}`
+        url = adminUrl + `database/table?tablename=${theTable}&fields=${theFields}&getOnlyTableSchema=${getOnlyTableSchema}&id=${window.localStorage.currentDataItemId}&foreignId=propertyId`
         xhrcall(1, url, "", "json", "", getTableDone, token);
     }
 
@@ -61,7 +61,7 @@ whenDocumentReady(isReady = () => {
     //check if we have a current data item 
     if (window.localStorage.currentDataItem == "") {
         //build the json to get the main record from the main table so we can get the foreign ids.
-        url = adminUrl + `database/table?tablename=${window.localStorage.mainTable}&fields=&getOnlyTableSchema=${getOnlyTableSchema}&id=${window.localStorage.currentDataItemId}`
+        url = adminUrl + `database/table?tablename=${window.localStorage.mainTable}&fields=&getOnlyTableSchema=${getOnlyTableSchema}&id=${window.localStorage.currentDataItemId}&foreignId=`
         xhrcall(1, url, "", "json", "", getMainTableDone, token)
     } else {
         //build the json

@@ -145,7 +145,7 @@ export async function onRequestPost(context) {
             let theQueryFields = "";
             let theQueryValues = "";
             //loop through the query data
-             for (const key in theData.tableData) {
+            for (const key in theData.tableData) {
                 let tdata = theData.tableData;
                 //check it is not the table name
                 //note : we could use a more elegant JSON structure and element this check
@@ -197,12 +197,19 @@ export async function onRequestGet(context) {
         let queryResults;
         //get the search paramaters
         const { searchParams } = new URL(request.url);
-        //get the table id
-        let recordId = searchParams.get('id');
+
         //get the table name
         let tableName = searchParams.get('tablename');
         //get the table name
         let fields = searchParams.get('fields');
+        //get the table id
+        let recordId = "";
+        if (searchParams.get('id') != null)
+            recordId = searchParams.get('id');
+        //get the foreign id 
+        let foreignId = "";
+        if (searchParams.get('foreignId') != null)
+            foreignId = searchParams.get('foreignId')
         //set an array for the results
         let schemaResults = [];
         //create the data array we are going to send back to the frontend.
@@ -235,9 +242,16 @@ export async function onRequestGet(context) {
         if (searchParams.get('getOnlyTableSchema') == 0) {
             //build the where statement if they sent up and id
             let sqlWhere = "where isDeleted = 0 ";
-            if (recordId != undefined)
-                sqlWhere = sqlWhere +`and id = ${recordId}`
+            if ((recordId != "") && (foreignId == ""))
+                sqlWhere = sqlWhere + `and id = ${recordId}`
+            else {
+                if (foreignId != "")
+                    sqlWhere = sqlWhere + `and ${foreignId} = ${recordId}`
+            }
 
+            console.log(recordId)
+            console.log(foreignId)
+            console.log(`SELECT ${fields} from ${tableName} ${sqlWhere}`)
             //process the fields
             let tmp = fields.split(",");
             //not we dont want to show the isDeleted flag if there. 
@@ -253,7 +267,7 @@ export async function onRequestGet(context) {
                     else
                         fields = fields + "," + tmp[i]
                 }
-                //console.log(`SELECT ${fields} from ${tableName} ${sqlWhere}`)
+
                 let sql = `SELECT ${fields} from ${tableName} ${sqlWhere}`
                 query = context.env.DB.prepare(sql);
             }
