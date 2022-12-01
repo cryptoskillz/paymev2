@@ -11,13 +11,15 @@ let whenDocumentReady = (f) => {
 /*
 This function handles the property select
 */
-let propertySelectChange = (id) => {
-    let theValue = document.getElementById("propertySelect").value;
-    //console.log(theValue);
+let propertySelectChange = (id,theElement) => {
+    //clear the current element
     window.localStorage.currentDataItem = "";
+    //store the ID
     window.localStorage.currentDataItemId = id;
+    //store the table
     window.localStorage.mainTable = theTable;
-    switch (theValue) {
+    //find out which one we are going to.
+    switch (theElement.value) {
         case "1":
             window.location.href = `/property/costs/`
             break;
@@ -48,7 +50,7 @@ whenDocumentReady(isReady = () => {
 
                 editButton = `<a href="/${theTable}/edit?id=${theData.id}" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-edit fa-sm text-white-50"></i> Edit</a>`
                 deleteButton = `<a href="javascript:deleteTableItem(${theData.id},'api/database/table/','${theTable}')" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-trash fa-sm text-white-50"></i> Delete</a>`
-                propertySelect = `<select onchange="propertySelectChange(${theData.id})" class="form-select" aria-label="Default select example" name="propertySelect-${i}" id="propertySelect-${i}">
+                propertySelect = `<select onchange="propertySelectChange(${theData.id},this)" class="form-select" aria-label="Default select example" name="propertySelect-${i}" id="propertySelect-${i}">
                 <option value="0">Please select</option>
   <option value="1">Costs</option>
   <option value="2">Payments</option>
