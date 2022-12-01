@@ -7,5 +7,6 @@ permalink: /property/cost/new/
     let theFields = "type,description,amount,date_paid,propertyId,rentalId";
     let foreignKeys = {"id":"propertyId"}
     let lookUps = "rental_agreement";
+    let lookUpIds = "rentalId";
 </script>
 {% include "admin/table-new.njk" %}

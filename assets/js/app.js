@@ -151,9 +151,9 @@ let buildFormElement = (theData, theValues = "") => {
         if (theSeconds < 10)
             theSeconds = `0${theSeconds}`
 
-
         theValue = `${d.getFullYear()}-${theMonth}-${theDay} ${theHours}:${theMinutes} ${theSeconds}`
     }
+
 
     switch (theData.name) {
         case "id":
@@ -174,7 +174,7 @@ let buildFormElement = (theData, theValues = "") => {
             //console.log("KEY " + key);
             //console.log("FK " + foreignKeys[key]);
             for (const key2 in currentItem) {
-                
+
                 //debug
                 /*
                 if (theData.name == "rentalId") {
@@ -187,7 +187,7 @@ let buildFormElement = (theData, theValues = "") => {
 
                 }
                 */
-                
+
                 if (theData.name == foreignKeys[key]) {
                     //debug
                     //console.log('found')
@@ -204,13 +204,36 @@ let buildFormElement = (theData, theValues = "") => {
 
     //captalise the element
     let theTitle = theData.name.charAt(0).toUpperCase() + theData.name.slice(1);
-    theTitle = theTitle.replace("_"," ");
+    theTitle = theTitle.replace("_", " ");
     //built the element
-    let inpHtml = `<div class="form-group">
+    let inpHtml;
+    //check if we have look up ids
+    if (theData.name == lookUpIds) {
+        //set an options var
+        let theOptions;
+        //loop through the lookups
+        //note : we can only deal with one look up per page at the moment
+        //       we also render it in sequential order we could be fancier but i like the simplicity of this logic. 
+        for (var i = 0; i < lookupData[0].theData.length; ++i) {
+            //console.log(lookupData[0].theData[i])
+            theOptions = theOptions + `<option value="${lookupData[0].theData[i].id}">${lookupData[0].theData[i].name}</option>`
+        }
+
+        inpHtml = `<div class="form-group">
+                        <label>${theTitle}</label>
+                        <select class="form-control form-control-user" id="inp-${theData.name}">
+                            <option value="">Please select</option>
+                            ${theOptions}
+                        </select>
+                        <span class="text-danger d-none" id="error-${theData.name}"></span>  
+                    </div>`
+    } else {
+        inpHtml = `<div class="form-group">
                         <label>${theTitle}</label>
                         <input type="${theType}" class="form-control form-control-user" id="inp-${theData.name}" aria-describedby="${theData.name}" placeholder="Enter ${theTitle}" value="${theValue}" ${disabled}>
                         <span class="text-danger d-none" id="error-${theData.name}"></span>  
                     </div>`
+    }
     //return it
     return (inpHtml)
 }

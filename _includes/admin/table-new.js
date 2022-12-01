@@ -3,6 +3,8 @@ let whenDocumentReady = (f) => {
     /in/.test(document.readyState) ? setTimeout('whenDocumentReady(' + f + ')', 9) : f()
 }
 
+let lookupData;
+
 whenDocumentReady(isReady = () => {
 
     //process the result from the table API call.
@@ -35,7 +37,8 @@ whenDocumentReady(isReady = () => {
     }
 
     let getLookUpDone = (res) => {
-        //console.log(res);
+        res = JSON.parse(res);
+        lookupData = res;
         getTableData();
     }
     if (lookUps != "")
