@@ -7,6 +7,7 @@ let decodeJwt = async (req, secret) => {
     let details = await jwt.decode(bearer, secret)
     return (details)
 }
+
 //get the records
 export async function onRequestGet(context) {
     //build the paramaters
@@ -25,24 +26,27 @@ export async function onRequestGet(context) {
     //get the tables
     let theData = searchParams.get('theData');
     //get the id 
-    let recordId = searchParams.get('id');
+    //let recordId = searchParams.get('id');
     //get the tables
-    let theTables = theData.split(',');
-    //hold the SQL
-    let theSQL = "";
+    theData = JSON.parse(theData);
+    //console.log(theData);
     //hold the query
     let query;
     //hold the results for the lookups
     let theResults = [];
-    //loop through the tables
-    for (var i = 0; i < theTables.length; ++i) {
-        //build the SQL
-        theSQL = `SELECT id,name from ${theTables[i]} where propertyId = '${recordId}'`
+    for (var i = 0; i < theData.length; ++i) {
+        //console.log(theData[i]);
+        //build the query
+        let theSQL = `SELECT id,name from ${theData[i].table}`;
+        //check for a foreign key
+        if (theData[i].foreignKey != "")
+            theSQL = theSQL+` where ${theData[i].foreignKey} = ${theData[i].value}`;
+        console.log(theSQL)
         //run it
         query = context.env.DB.prepare(theSQL);
         let queryResults = await query.all();
         //store the results
-        let theJson = {"table":theTables[i],"theData": queryResults.results}
+        let theJson = {"table":theData[i].table,"key":theData[i].key,"theData": queryResults.results}
         theResults.push(theJson)
     }
     ///return the response

@@ -3,7 +3,7 @@ let whenDocumentReady = (f) => {
     /in/.test(document.readyState) ? setTimeout('whenDocumentReady(' + f + ')', 9) : f()
 }
 
-let lookupData;
+let lookUpData = [];
 
 whenDocumentReady(isReady = () => {
 
@@ -38,13 +38,15 @@ whenDocumentReady(isReady = () => {
 
     let getLookUpDone = (res) => {
         res = JSON.parse(res);
-        lookupData = res;
+        lookUpData = res;
         getTableData();
     }
+
     if (lookUps != "")
     {
+        lookUps = JSON.stringify(lookUps);
         //call the data
-        url = adminUrl + `database/lookUp?theData=${lookUps}&id=${window.localStorage.currentDataItemId}`
+        url = adminUrl + `database/lookUp?theData=${lookUps}`
         xhrcall(1, url, "", "json", "", getLookUpDone, token);
     }
     else

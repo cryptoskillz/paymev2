@@ -3,10 +3,19 @@ layout: layout.njk
 permalink: /property/rental-agreements/new/
 ---
 <script>
+    //set the table you want to insert for
     let theTable = "rental_agreement";
-    let theFields = "name,amount,propertyId,agentId,tenantId,active";
+    //set the fields you want to return, leave it blank for all.
+    let theFields = "name,amount,deposit,contract,start_date,end_date,propertyId,agentId,tenantId,active";
+    //set the primary table id
     let foreignKeys = {"id":"propertyId"}
-    let lookUps = "";
-    let lookUpIds = "";
+    /*
+    set the loop up table
+    table = the foreign table
+    key = the id in primary table (theTable)
+    foreignKey = the the foreign key to match to leave blank to return all
+    value = the primary id that we math to the foreign key
+    */
+    let lookUps = [{"table":"agent","key":"agentId","foreignKey":"","value":""},{"table":"tenant","key":"tenantId","foreignKey":"id","value":window.localStorage.currentDataItemId}]
 </script>
 {% include "admin/table-new.njk" %}

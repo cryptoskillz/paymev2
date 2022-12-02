@@ -208,28 +208,51 @@ let buildFormElement = (theData, theValues = "") => {
     let theTitle = theData.name.charAt(0).toUpperCase() + theData.name.slice(1);
     theTitle = theTitle.replace("_", " ");
     //built the element
-    let inpHtml;
+    let inpHtml = "";
+    //store the render type
+    //1 = input
+    //2 = select
+    let renderInp = 1;
+    //set an options var
+    let theOptions;
     //check if we have look up ids
-    if (theData.name == lookUpIds) {
-        //set an options var
-        let theOptions;
-        //loop through the lookups
-        //note : we can only deal with one look up per page at the moment
-        //       we also render it in sequential order we could be fancier but i like the simplicity of this logic. 
-        
-        for (var i = 0; i < lookupData[0].theData.length; ++i) {
-            //check for selected value
-            let selected = "";
-            if (theValue != 0)
-            {
-                if (theValue == lookupData[0].theData[i].id)
-                    selected = "selected";
-            }
-            //console.log(lookupData[0].theData[i])
-            theOptions = theOptions + `<option value="${lookupData[0].theData[i].id}" ${selected}>${lookupData[0].theData[i].name}</option>`
-        }
+    if (lookUpData.length > 0) {
 
-        inpHtml = `<div class="form-group">
+        //store the selected field
+        let selected = "";
+        //loop through the lookups
+        for (var i = 0; i < lookUpData.length; ++i) {
+            if (theData.name == lookUpData[i].key) {
+                //console.log(lookUpData[i]);
+                //console.log(theData.name);
+                renderInp = 2;
+                for (var i2 = 0; i2 < lookUpData[i].theData.length; ++i2) {
+                    let tmpData = lookUpData[i].theData[i2];
+                    //debug
+                    console.log(tmpData);
+                    console.log(theValue);
+                    console.log(theData.name);
+                    if (tmpData.id == theValue)
+                        selected = "selected";
+                    else
+                        selected = "";
+                    theOptions = theOptions + `<option value="${tmpData.id}" ${selected}>${tmpData.name}</option>`
+
+                }
+            }
+        }
+    }
+
+    switch (renderInp) {
+        case 1:
+            inpHtml = `<div class="form-group ${visible}">
+                        <label>${theTitle}</label>
+                        <input type="${theType}" class="form-control form-control-user" id="inp-${theData.name}" aria-describedby="${theData.name}" placeholder="Enter ${theTitle}" value="${theValue}" ${disabled}>
+                        <span class="text-danger d-none" id="error-${theData.name}"></span>  
+                    </div>`
+            break;
+        case 2:
+            inpHtml = `<div class="form-group">
                         <label>${theTitle}</label>
                         <select class="form-control form-control-user" id="inp-${theData.name}">
                             <option value="">Please select</option>
@@ -237,13 +260,10 @@ let buildFormElement = (theData, theValues = "") => {
                         </select>
                         <span class="text-danger d-none" id="error-${theData.name}"></span>  
                     </div>`
-    } else {
-        inpHtml = `<div class="form-group ${visible}">
-                        <label>${theTitle}</label>
-                        <input type="${theType}" class="form-control form-control-user" id="inp-${theData.name}" aria-describedby="${theData.name}" placeholder="Enter ${theTitle}" value="${theValue}" ${disabled}>
-                        <span class="text-danger d-none" id="error-${theData.name}"></span>  
-                    </div>`
+            break;
+
     }
+
     //return it
     return (inpHtml)
 }

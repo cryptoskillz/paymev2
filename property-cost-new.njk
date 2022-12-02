@@ -6,7 +6,6 @@ permalink: /property/cost/new/
     let theTable = "rental_cost";
     let theFields = "type,description,amount,date_paid,propertyId,rentalId";
     let foreignKeys = {"id":"propertyId"}
-    let lookUps = "rental_agreement";
-    let lookUpIds = "rentalId";
+    let lookUps = [{"table":"rental_agreement","key":"rentalId","foreignKey":"propertyId","value":window.localStorage.currentDataItemId}]
 </script>
 {% include "admin/table-new.njk" %}
