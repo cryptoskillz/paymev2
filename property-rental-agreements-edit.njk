@@ -1,0 +1,12 @@
+---
+layout: layout.njk
+permalink: /property/rental-agreements/edit/
+---
+<script>
+    let theTable = "rental_agreement";
+    let theFields = "id,name,amount,propertyId,agentId,tenantId,active";
+    let foreignKeys = {"id":"propertyId"}
+    let lookUps = "";
+    let lookUpIds = "";
+</script>
+{% include "admin/table-edit.njk" %}
