@@ -4,7 +4,8 @@ permalink: /property/cost/edit/
 ---
 <script>
     let theTable = "rental_cost";
-    let theFields = "id,description,amount,date_paid";
+    let theFields = "id,description,amount,date_paid,rentalId";
     let foreignKeys = "";
+    let lookUps = [{"table":"rental_agreement","key":"rentalId","foreignKey":"","value":""}]
 </script>
 {% include "admin/table-edit.njk" %}

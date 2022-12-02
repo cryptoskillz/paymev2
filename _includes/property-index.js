@@ -26,6 +26,8 @@ let propertySelectChange = (id,theElement) => {
         case "2":
             window.location.href = `/property/payments/`
             break;
+        case "3":
+            window.location.href = `/property/rental-agreements/`
     }
 }
 
@@ -54,13 +56,13 @@ whenDocumentReady(isReady = () => {
                 <option value="0">Please select</option>
   <option value="1">Costs</option>
   <option value="2">Payments</option>
-  
+  <option value="3">Rental agreements</option>
 </select>`
 
 /*
 <option value="3">Owners</option>
   <option value="4">Token</option>
-  <option value="5">Rental agreements</option>
+  
   <option value="audi">Audi</option>
   */
             }

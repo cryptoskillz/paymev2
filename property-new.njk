@@ -6,5 +6,7 @@ permalink: /{{env.LEVEL1NAME}}/new/
     let theTable = "property";
     let theFields = "name,address_1,address_2,address_3,address_4,address_5,address_6,bathrooms,bedrooms,local_cost,taxes_cost";
     let foreignKeys = "";
+    //set the loop up table
+    let lookUps = []
 </script>
 {% include "admin/table-new.njk" %}

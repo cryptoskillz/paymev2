@@ -100,6 +100,7 @@ let buildFormElement = (theData, theValues = "") => {
     let disabled = "";
     let theType = "text";
     let required = "required"
+    let visible = "";
     //console.log(theData);
     //console.log(theValues)
     //set the value
@@ -151,9 +152,9 @@ let buildFormElement = (theData, theValues = "") => {
         if (theSeconds < 10)
             theSeconds = `0${theSeconds}`
 
-
         theValue = `${d.getFullYear()}-${theMonth}-${theDay} ${theHours}:${theMinutes} ${theSeconds}`
     }
+
 
     switch (theData.name) {
         case "id":
@@ -174,7 +175,7 @@ let buildFormElement = (theData, theValues = "") => {
             //console.log("KEY " + key);
             //console.log("FK " + foreignKeys[key]);
             for (const key2 in currentItem) {
-                
+
                 //debug
                 /*
                 if (theData.name == "rentalId") {
@@ -187,13 +188,14 @@ let buildFormElement = (theData, theValues = "") => {
 
                 }
                 */
-                
+
                 if (theData.name == foreignKeys[key]) {
                     //debug
                     //console.log('found')
                     //console.log(currentItem[key2]);
                     theValue = currentItem[key2];
-                    disabled = "disabled"
+                    disabled = "disabled";
+                    visible = "d-none";
                     break;
                 }
 
@@ -204,13 +206,64 @@ let buildFormElement = (theData, theValues = "") => {
 
     //captalise the element
     let theTitle = theData.name.charAt(0).toUpperCase() + theData.name.slice(1);
-    theTitle = theTitle.replace("_"," ");
+    theTitle = theTitle.replace("_", " ");
     //built the element
-    let inpHtml = `<div class="form-group">
+    let inpHtml = "";
+    //store the render type
+    //1 = input
+    //2 = select
+    let renderInp = 1;
+    //set an options var
+    let theOptions;
+    //check if we have look up ids
+    if (lookUpData.length > 0) {
+
+        //store the selected field
+        let selected = "";
+        //loop through the lookups
+        for (var i = 0; i < lookUpData.length; ++i) {
+            if (theData.name == lookUpData[i].key) {
+                //console.log(lookUpData[i]);
+                //console.log(theData.name);
+                renderInp = 2;
+                for (var i2 = 0; i2 < lookUpData[i].theData.length; ++i2) {
+                    let tmpData = lookUpData[i].theData[i2];
+                    //debug
+                    console.log(tmpData);
+                    console.log(theValue);
+                    console.log(theData.name);
+                    if (tmpData.id == theValue)
+                        selected = "selected";
+                    else
+                        selected = "";
+                    theOptions = theOptions + `<option value="${tmpData.id}" ${selected}>${tmpData.name}</option>`
+
+                }
+            }
+        }
+    }
+
+    switch (renderInp) {
+        case 1:
+            inpHtml = `<div class="form-group ${visible}">
                         <label>${theTitle}</label>
                         <input type="${theType}" class="form-control form-control-user" id="inp-${theData.name}" aria-describedby="${theData.name}" placeholder="Enter ${theTitle}" value="${theValue}" ${disabled}>
                         <span class="text-danger d-none" id="error-${theData.name}"></span>  
                     </div>`
+            break;
+        case 2:
+            inpHtml = `<div class="form-group">
+                        <label>${theTitle}</label>
+                        <select class="form-control form-control-user" id="inp-${theData.name}">
+                            <option value="">Please select</option>
+                            ${theOptions}
+                        </select>
+                        <span class="text-danger d-none" id="error-${theData.name}"></span>  
+                    </div>`
+            break;
+
+    }
+
     //return it
     return (inpHtml)
 }

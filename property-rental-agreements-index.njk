@@ -1,24 +1,24 @@
 ---
 layout: layout.njk
-permalink: /property/costs/
+permalink: /property/rental-agreements/
 ---
 <!--
 This is the top level nav page and it has a js file of the same name in the _includes directory. It uses dataname to generate the nav
 -->
 <script>
-    let theTable = "rental_cost";
-    let theFields = "id,description,amount,date_paid,createdAt";
+    let theTable = "rental_agreement";
+    let theFields = "id,name,amount,active,createdAt";
     let getOnlyTableSchema = 0;
 </script>
 {% set theJs %}
-    {% include 'property-cost-index.js' %}
+    {% include 'property-rental-agreements-index.js' %}
 {% endset %}
 <!-- Page Heading -->
 
  <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800"><a href="/properties/">Properties</a> / Property costs</h1>
+    <h1 class="h3 mb-0 text-gray-800"><a href="/properties/">Properties</a> / Rental Agreements </h1>
     
-    <a href="/property/cost/new/" class="btn btn-sm btn-primary shadow-sm" id="btn-create-cy">
+    <a href="/property/rental-agreements/new/" class="btn btn-sm btn-primary shadow-sm" id="btn-create-cy">
     <i class="fas fa-download fa-sm text-white-50"></i> Create New</a>
     
 </div>
@@ -33,9 +33,9 @@ This is the top level nav page and it has a js file of the same name in the _inc
                 <thead>
                     <tr>
                         <th>Id</th>
-                        <th>Description</th>
+                        <th>Name</th>
                         <th>Amount</th>
-                        <th>Date Paid</th>
+                        <th>Active</th>
                         <th>Date Created</th>
                         <th>Actions</th>
                     </tr>
@@ -43,9 +43,9 @@ This is the top level nav page and it has a js file of the same name in the _inc
                 <tfoot>
                     <tr>
                         <th>Id</th>
-                        <th>Description</th>
+                        <th>Name</th>
                         <th>Amount</th>
-                        <th>Date Paid</th>
+                        <th>Active</th>
                         <th>Date Created</th>
                         <th>Actions</th>
                     </tr>

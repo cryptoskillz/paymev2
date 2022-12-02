@@ -3,6 +3,7 @@
      /in/.test(document.readyState) ? setTimeout('whenDocumentReady(' + f + ')', 9) : f()
  }
 
+ let lookUpData = [];
 
  whenDocumentReady(isReady = () => {
      let getTableDone = (res) => {
@@ -26,11 +27,31 @@
      }
      //get the id
      let id = getUrlParamater('id');
-     //set the header
-     let tmpName = theTable.replace("_"," ");
-     document.getElementById('data-header').innerHTML = `Edit ${tmpName}`
-     //build the url paramater
-     url = adminUrl + `database/table?tablename=${theTable}&fields=${theFields}&getOnlyTableSchema=0&id=${id}`;
-     //make the call
-     xhrcall(1, url, "", "json", "", getTableDone, token)
+
+     //set the tmpName
+     let tmpName = theTable.replace("_", " ");
+     document.getElementById('data-header').innerHTML = `edit ${tmpName}`
+
+     //get the table results for this level.
+     let getTableData = () => {
+         //call the data
+         url = adminUrl + `database/table?tablename=${theTable}&fields=${theFields}&getOnlyTableSchema=0&id=${id}`
+         xhrcall(1, url, "", "json", "", getTableDone, token);
+     }
+
+     let getLookUpDone = (res) => {
+         res = JSON.parse(res);
+         lookUpData = res;
+         getTableData();
+     }
+
+     if (lookUps != "") {
+         lookUps = JSON.stringify(lookUps);
+         //call the data
+         url = adminUrl + `database/lookUp?theData=${lookUps}&id=${window.localStorage.currentDataItemId}`
+         xhrcall(1, url, "", "json", "", getLookUpDone, token);
+     } else {
+         getTableData();
+     }
+
  });

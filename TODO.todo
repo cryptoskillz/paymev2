@@ -2,7 +2,14 @@ GENERAL
 
  ☐ update the readme 
  ✔ make sure payments and costs is using the ID for the where @done (22-12-02 01:57)
- ☐ make sure all tables has a name field to make lookups work neater
+ ✔ make sure all tables has a name field to make lookups work neater @done (22-12-03 01:07)
+ ✔ look up is always looking for a property ID we would like to improve this @done (22-12-03 01:07)
+ ✔ add rental agreement @done (22-12-02 15:23)
+ ☐ add property_token
+ ☐ add property_owner
+ ☐ add property_distribution
+ ☐ add agent
+ ☐ add tennant
 
 ACCOUNT
 
@@ -24,11 +31,17 @@ FUNCTIONS API
  
 SECOND LEVEL CREATES (PROPERTY COSTS)
 
- ☐ add a look up so we can put in a dropdowns for foreign fields.
+ ✔ add a look up so we can put in a dropdowns for foreign fields. @done (22-12-03 01:08)
 
 
 LOOK UP
 
-get the main id from the token this would make it more secure
+ ☐ get the main id from the token this would make it more secure
+ ✔ make buildform data work with multipile lookups @done (22-12-03 01:08)
+
+GETFORMDATA
+
+ ☐ check integer fields has only integers
+
 
 
