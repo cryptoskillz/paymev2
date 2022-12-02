@@ -3,6 +3,13 @@ GENERAL
  ☐ update the readme 
  ✔ make sure payments and costs is using the ID for the where @done (22-12-02 01:57)
  ☐ make sure all tables has a name field to make lookups work neater
+ ☐ look up is always looking for a property ID we would like to improve this 
+ ✔ add rental agreement @done (22-12-02 15:23)
+ ☐ add property_token
+ ☐ add property_owner
+ ☐ add property_distribution
+ ☐ add agent
+ ☐ add tennant
 
 ACCOUNT
 
@@ -35,4 +42,6 @@ LOOK UP
 GETFORMDATA
 
  ☐ check integer fields has only integers
+
+
 
