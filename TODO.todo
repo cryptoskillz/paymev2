@@ -32,3 +32,7 @@ LOOK UP
  ☐ get the main id from the token this would make it more secure
  ☐ make buildform data work with multipile lookups
 
+GETFORMDATA
+
+ ☐ check integer fields has only integers
+

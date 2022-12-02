@@ -100,6 +100,7 @@ let buildFormElement = (theData, theValues = "") => {
     let disabled = "";
     let theType = "text";
     let required = "required"
+    let visible = "";
     //console.log(theData);
     //console.log(theValues)
     //set the value
@@ -193,7 +194,8 @@ let buildFormElement = (theData, theValues = "") => {
                     //console.log('found')
                     //console.log(currentItem[key2]);
                     theValue = currentItem[key2];
-                    disabled = "disabled"
+                    disabled = "disabled";
+                    visible = "d-none";
                     break;
                 }
 
@@ -214,9 +216,17 @@ let buildFormElement = (theData, theValues = "") => {
         //loop through the lookups
         //note : we can only deal with one look up per page at the moment
         //       we also render it in sequential order we could be fancier but i like the simplicity of this logic. 
+        
         for (var i = 0; i < lookupData[0].theData.length; ++i) {
+            //check for selected value
+            let selected = "";
+            if (theValue != 0)
+            {
+                if (theValue == lookupData[0].theData[i].id)
+                    selected = "selected";
+            }
             //console.log(lookupData[0].theData[i])
-            theOptions = theOptions + `<option value="${lookupData[0].theData[i].id}">${lookupData[0].theData[i].name}</option>`
+            theOptions = theOptions + `<option value="${lookupData[0].theData[i].id}" ${selected}>${lookupData[0].theData[i].name}</option>`
         }
 
         inpHtml = `<div class="form-group">
@@ -228,7 +238,7 @@ let buildFormElement = (theData, theValues = "") => {
                         <span class="text-danger d-none" id="error-${theData.name}"></span>  
                     </div>`
     } else {
-        inpHtml = `<div class="form-group">
+        inpHtml = `<div class="form-group ${visible}">
                         <label>${theTitle}</label>
                         <input type="${theType}" class="form-control form-control-user" id="inp-${theData.name}" aria-describedby="${theData.name}" placeholder="Enter ${theTitle}" value="${theValue}" ${disabled}>
                         <span class="text-danger d-none" id="error-${theData.name}"></span>  

@@ -4,7 +4,9 @@ permalink: /property/payment/edit/
 ---
 <script>
     let theTable = "rental_payment";
-    let theFields = "id,description,amount,date_paid";
+    let theFields = "id,description,amount,date_paid,rentalId";
     let foreignKeys = "";
+    let lookUps = "rental_agreement";
+    let lookUpIds = "rentalId";
 </script>
 {% include "admin/table-edit.njk" %}
