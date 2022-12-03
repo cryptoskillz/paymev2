@@ -1,0 +1,25 @@
+---
+layout: layout.njk
+permalink: /agents/
+crumb : /agent/
+fields : ["id","name","email","url"]
+title :
+---
+<script>
+    //store the crumb 
+    let theCrumb = "{{ crumb }}";
+    let theTable = "agent";
+    let theFields = "{% for field in fields %}{% if loop.last %}{{ field }}{% else %}{{ field }},{% endif %}{% endfor %}";
+    //set the primary table id
+    let foreignKeys = ""
+    let getOnlyTableSchema = 0;
+    let allowOnlyOne = 0;
+</script>
+{% set theJs %}
+    {% include 'admin/table-index.js' %}
+{% endset %}
+<script>
+    //clear the currentDataItem
+    window.localStorage.currentDataItemId = "";
+</script>
+{%  include "admin/table-index.njk" %}

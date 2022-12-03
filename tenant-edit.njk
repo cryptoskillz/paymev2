@@ -1,0 +1,12 @@
+---
+layout: layout.njk
+permalink: /tenant/edit/
+---
+<script>
+    let theTable = "tenant";
+    let theFields = "id,name,email,phone";
+    let foreignKeys = "";
+    //set the loop up table
+    let lookUps = []
+</script>
+{% include "admin/table-edit.njk" %}

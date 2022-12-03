@@ -7,10 +7,11 @@ GENERAL
  ✔ add rental agreement @done (22-12-02 15:23)
  ✔ add property_owner @done (22-12-04 00:15)
  ✔ add property_distribution @done (22-12-04 00:15)
- ☐ add agent
- ☐ add tennant
+ ✔ add agent @done (22-12-04 03:56)
+ ✔ add tennant @done (22-12-04 03:56)
  ✔ get the column rendering working in table-index.js then we can have 1 file for property indexs @done (22-12-04 00:15)
  ✔ check the looks ups on each section (costs, payments, rental agreements, tokens, owners, user, proerties,  ) @done (22-12-04 02:47)
+ ☐ fix the title for tenants / agents
 
 ACCOUNT
 
