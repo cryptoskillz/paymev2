@@ -5,7 +5,10 @@
 
  whenDocumentReady(isReady = () => {
      let getTableDone = (res) => {
-         res = JSON.parse(res)
+         res = JSON.parse(res);
+         if (allowOnlyOne == 0)
+             if (res.data.length == 0)
+                 document.getElementById('btn-create-cy').classList.remove('d-none');
          //console.log(res)
          table = $('#dataTable').DataTable();
          for (var i = 0; i < res.data.length; ++i) {

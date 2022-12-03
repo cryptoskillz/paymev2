@@ -11,7 +11,7 @@ let whenDocumentReady = (f) => {
 /*
 This function handles the property select
 */
-let propertySelectChange = (id,theElement) => {
+let propertySelectChange = (id, theElement) => {
     //clear the current element
     window.localStorage.currentDataItem = "";
     //store the ID
@@ -28,6 +28,10 @@ let propertySelectChange = (id,theElement) => {
             break;
         case "3":
             window.location.href = `/property/rental-agreements/`
+            break;
+        case "4":
+            window.location.href = `/property/tokens/`
+            break;
     }
 }
 
@@ -37,6 +41,9 @@ whenDocumentReady(isReady = () => {
     let getTableDone = (res) => {
         //parse json
         res = JSON.parse(res);
+        if (allowOnlyOne == 0)
+            if (res.data.length == 0)
+                document.getElementById('btn-create-cy').classList.remove('d-none');
         //get the datatable
         table = $('#dataTable').DataTable();
         for (var i = 0; i < res.data.length; ++i) {
@@ -57,14 +64,15 @@ whenDocumentReady(isReady = () => {
   <option value="1">Costs</option>
   <option value="2">Payments</option>
   <option value="3">Rental agreements</option>
+ <option value="4">Token</option>
+
 </select>`
 
-/*
-<option value="3">Owners</option>
-  <option value="4">Token</option>
-  
-  <option value="audi">Audi</option>
-  */
+                /*
+                <option value="3">Owners</option>
+                  
+                  <option value="audi">Audi</option>
+                  */
             }
 
             var rowNode = table

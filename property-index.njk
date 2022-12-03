@@ -6,10 +6,10 @@ permalink: /{{env.LEVEL1NAME}}/
 This is the top level nav page and it has a js file of the same name in the _includes directory. It uses dataname to generate the nav
 -->
 <script>
-
     let theTable = "property";
     let theFields = "id,name,createdAt";
     let getOnlyTableSchema = 0;
+    let allowOnlyOne = 0;
 </script>
 {% set theJs %}
     {% include 'property-index.js' %}

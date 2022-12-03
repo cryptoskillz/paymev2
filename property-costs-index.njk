@@ -1,31 +1,32 @@
 ---
 layout: layout.njk
-permalink: /admin/users/
+permalink: /property/costs/
 ---
 <!--
 This is the top level nav page and it has a js file of the same name in the _includes directory. It uses dataname to generate the nav
 -->
 <script>
-    let theTable = "user";
-    let theFields = "id,email,username,phone,isBlocked,isAdmin";
+    let theTable = "rental_cost";
+    let theFields = "id,description,amount,date_paid,createdAt";
     let getOnlyTableSchema = 0;
     let allowOnlyOne = 0;
 </script>
 {% set theJs %}
-    {% include 'admin/users-generic.js' %}
+    {% include 'property-cost-index.js' %}
 {% endset %}
 <!-- Page Heading -->
+
  <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">USERS</h1>
+    <h1 class="h3 mb-0 text-gray-800"><a href="/properties/">Properties</a> / Property costs</h1>
     
-    <a href="/admin/users/new/" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" id="btn-create-cy">
+    <a href="/property/cost/new/" class="btn btn-sm btn-primary shadow-sm" id="btn-create-cy">
     <i class="fas fa-download fa-sm text-white-50"></i> Create New</a>
     
 </div>
 <div class="card shadow mb-4">
 
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Current Users</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Current costs</h6>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -33,23 +34,21 @@ This is the top level nav page and it has a js file of the same name in the _inc
                 <thead>
                     <tr>
                         <th>Id</th>
-                        <th>Email</th>
-                        <th>Username</th>
-                        <th>Phone</th>
-                        <th>Blocked</th>
-                        <th>Admin</th>
-                        <th width="30%">Action</th>
+                        <th>Description</th>
+                        <th>Amount</th>
+                        <th>Date Paid</th>
+                        <th>Date Created</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tfoot>
                     <tr>
                         <th>Id</th>
-                        <th>Email</th>
-                        <th>Username</th>
-                        <th>Phone</th>
-                        <th>Blocked</th>
-                        <th>Admin</th>
-                        <th width="30%">Action</th>
+                        <th>Description</th>
+                        <th>Amount</th>
+                        <th>Date Paid</th>
+                        <th>Date Created</th>
+                        <th>Actions</th>
                     </tr>
                 </tfoot>
                 <tbody>

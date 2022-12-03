@@ -14,7 +14,7 @@ whenDocumentReady(isReady = () => {
 
     let getTableDone = (res) => {
         //parse json
-        res = JSON.parse(res);
+        res = JSON.parse(res)
         if (allowOnlyOne == 0)
             if (res.data.length == 0)
                 document.getElementById('btn-create-cy').classList.remove('d-none');
@@ -30,14 +30,13 @@ whenDocumentReady(isReady = () => {
             //check if its an admin
             if (user.isAdmin == 1) {
 
-                editButton = `<a href="/property/cost/edit?id=${theData.id}" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-edit fa-sm text-white-50"></i> Edit</a>`
+                editButton = `<a href="/property/payment/edit?id=${theData.id}" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-edit fa-sm text-white-50"></i> Edit</a>`
                 deleteButton = `<a href="javascript:deleteTableItem(${theData.id},'api/database/table/','${theTable}')" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-trash fa-sm text-white-50"></i> Delete</a>`
 
             }
-            let famount = formatCurencyBaht(theData.amount);
             //add the table rows
             var rowNode = table
-                .row.add([theData.id, theData.description, famount, theData.createdAt, theData.date_paid, `${editButton} ${deleteButton}`])
+                .row.add([theData.id, theData.name, theData.createdAt, `${editButton} ${deleteButton}`])
                 .draw()
                 .node().id = theData.id;
 
