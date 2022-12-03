@@ -4,7 +4,7 @@ permalink: /property/owner/edit/
 ---
 <script>
     let theTable = "property_owner";
-    let theFields = "id,address,tokenAmount";
+    let theFields = "id,name,address,tokenAmount";
     let foreignKeys = {"id":"propertyId"}
     let lookUps = [{"table":"rental_agreement","key":"rentalId","foreignKey":"propertyId","value":window.localStorage.currentDataItemId}]
 </script>

@@ -21,23 +21,25 @@ let propertySelectChange = (id, theElement) => {
     //find out which one we are going to.
     switch (theElement.value) {
         case "1":
-            window.location.href = `/property/costs/`
+            window.location.href = `/property/rental-agreements/`
+
             break;
         case "2":
-            window.location.href = `/property/payments/`
+            window.location.href = `/property/tokens/`
+
             break;
         case "3":
-            window.location.href = `/property/rental-agreements/`
+            window.location.href = `/property/owners/`
             break;
         case "4":
-            window.location.href = `/property/tokens/`
+            window.location.href = `/property/distributions/`
             break;
         case "5":
-            window.location.href = `/property/owners/`
-            break;    
+            window.location.href = `/property/costs/`
+            break;
         case "6":
-            window.location.href = `/property/distributions/`
-            break;                    
+            window.location.href = `/property/payments/`
+            break;
     }
 }
 
@@ -75,12 +77,13 @@ whenDocumentReady(isReady = () => {
                 if (theCrumb == "/property/") {
                     propertySelect = `<select onchange="propertySelectChange(${theData.id},this)" class="form-select" aria-label="Default select example" name="propertySelect-${i}" id="propertySelect-${i}">
                 <option value="0">Please select</option>
-  <option value="1">Costs</option>
-  <option value="2">Payments</option>
-  <option value="3">Rental agreements</option>
- <option value="4">Token</option>
-  <option value="5">Owners</option>
- <option value="6">Distributions</option>
+                  <option value="1">Rental agreements</option>
+ <option value="2">Token</option>
+  <option value="3">Owners</option>
+ <option value="4">Distributions</option>
+  <option value="5">Costs</option>
+  <option value="6">Payments</option>
+
 
 </select>`
                 }
@@ -117,13 +120,11 @@ whenDocumentReady(isReady = () => {
 
     //get the table results for this level.
     let getTableData = () => {
-        if (foreignKeys == "") {
-            //build the properties json
+       
+        if (foreignKeys == "")
             url = adminUrl + `database/table?tablename=${theTable}&fields=${theFields}&getOnlyTableSchema=${getOnlyTableSchema}`
-        } else {
-            //build the json
-            url = adminUrl + `database/table?tablename=${theTable}&fields=${theFields}&getOnlyTableSchema=${getOnlyTableSchema}&id=${window.localStorage.currentDataItemId}&foreignId=√${foreignKeys.id}`
-        }
+        else
+            url = adminUrl + `database/table?tablename=${theTable}&fields=${theFields}&getOnlyTableSchema=${getOnlyTableSchema}&id=${window.localStorage.currentDataItemId}&foreignId=${foreignKeys.id}`;
         xhrcall(1, url, "", "json", "", getTableDone, token);
     }
 
@@ -148,12 +149,8 @@ whenDocumentReady(isReady = () => {
 
     //show the body
     document.getElementById('showBody').classList.remove('d-none');
-    if (window.localStorage.currentDataItem != "")
-    {
-        console.log(window.location.pathname)
-        console.log(level1name)
-        if ( window.location.pathname != `/${level1name}/`)
-        {
+    if (window.localStorage.currentDataItem != "") {
+        if (window.location.pathname != `/${level1name}/`) {
             let tmpJson = JSON.parse(window.localStorage.currentDataItem);
             console.log(tmpJson.name)
             document.getElementById('recordTitle').innerHTML = tmpJson.name;

@@ -10,7 +10,7 @@ GENERAL
  ☐ add agent
  ☐ add tennant
  ✔ get the column rendering working in table-index.js then we can have 1 file for property indexs @done (22-12-04 00:15)
- ☐ check the looks ups on each section (costs, payments, rental agreements, tokens, owners, user, proerties,  )
+ ✔ check the looks ups on each section (costs, payments, rental agreements, tokens, owners, user, proerties,  ) @done (22-12-04 02:47)
 
 ACCOUNT
 

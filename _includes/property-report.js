@@ -28,8 +28,8 @@ whenDocumentReady(isReady = () => {
         //main property details
         let table = `<table class="table">`
         table = addTableRow("Name", res.property.name, table);
-        table = addTableRow("Cost", res.property.local_cost, table);
-        table = addTableRow("Taxes", res.property.taxes_cost, table);
+        table = addTableRow("Cost", res.property.localCost, table);
+        table = addTableRow("Taxes", res.property.taxesCost, table);
         table = addTableRow("Currency", "฿", table);
         table = addTableRow("Contract", `<a href="${res.token.address}" target="_blank">${res.token.address}</a>`, table);
         table = table + "</table>";
@@ -48,7 +48,7 @@ whenDocumentReady(isReady = () => {
                 isActive = "No"
             //add a table
             var rowNode = table
-                .row.add([tmp.id, tmp.name, tmp.amount,tmp.deposit,tmp.start_date,tmp.end_date,isActive])
+                .row.add([tmp.id, tmp.name, tmp.amount,tmp.deposit,tmp.startDate,tmp.endDate,isActive])
                 .draw()
                 .node().id = tmp.id;
         }
@@ -60,13 +60,13 @@ whenDocumentReady(isReady = () => {
             //get the owner
             let owner = res.owners[i];
             //set the percentage
-            let per = owner.amount / res.token.total_supply;
+            let per = owner.amount / res.token.totalSupply;
             per = per *100
             per = Math.round(per);
             //build the address
             let address = `<a href="${owner.address}" target="_blank">view</a>`
             //format the currency 
-            let famount = formatCurencyBaht(owner.amount);
+            let famount = formatCurencyBaht(owner.tokenAmount);
             //set the amount
             let amount = `${famount} (${per}%)`
             //add the table row
@@ -86,7 +86,7 @@ whenDocumentReady(isReady = () => {
             total = total + tmp.amount;
             let famount = formatCurencyBaht(tmp.amount);
             var rowNode = table
-                .row.add([tmp.id, tmp.type, tmp.description,famount,tmp.date_paid])
+                .row.add([tmp.id, tmp.type, tmp.description,famount,tmp.datePaid])
                 .draw()
                 .node().id = tmp.id;
         }
@@ -103,7 +103,7 @@ whenDocumentReady(isReady = () => {
             total = total + tmp.amount;
             let famount = formatCurencyBaht(tmp.amount);
             var rowNode = table
-                .row.add([tmp.id, tmp.type, tmp.description,famount,tmp.date_paid])
+                .row.add([tmp.id, tmp.type, tmp.description,famount,tmp.datePaid])
                 .draw()
                 .node().id = tmp.id;
         }
@@ -124,7 +124,7 @@ whenDocumentReady(isReady = () => {
             total = total + tmp.amount;
             let famount = formatCurencyBaht(tmp.amount);
             var rowNode = table
-                .row.add([tmp.id, tmp.name, tmp.description,famount,tmp.date_paid])
+                .row.add([tmp.id, tmp.name, tmp.description,famount,tmp.datePaid])
                 .draw()
                 .node().id = tmp.id;
         }

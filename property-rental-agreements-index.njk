@@ -10,7 +10,7 @@ title : rental agreements
     let theCrumb = "{{ crumb }}";
     let theTable = "rental_agreement";
     let theFields = "{% for field in fields %}{% if loop.last %}{{ field }}{% else %}{{ field }},{% endif %}{% endfor %}";
-    let foreignKeys = ""
+    let foreignKeys = {"id":"propertyId"}
     let getOnlyTableSchema = 0;
     let allowOnlyOne = 0;
 </script>

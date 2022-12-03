@@ -16,6 +16,6 @@ permalink: /property/rental-agreement/edit/
     foreignKey = the the foreign key to match to leave blank to return all
     value = the primary id that we math to the foreign key
     */
-    let lookUps = [{"table":"agent","key":"agentId","foreignKey":"","value":""},{"table":"tenant","key":"tenantId","foreignKey":"id","value":window.localStorage.currentDataItemId}]
+    let lookUps = [{"table":"agent","key":"agentId","foreignKey":"","value":""},{"table":"tenant","key":"tenantId","foreignKey":"","value":""}]
 </script>
 {% include "admin/table-edit.njk" %}
