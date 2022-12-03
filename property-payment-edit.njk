@@ -4,7 +4,7 @@ permalink: /property/payment/edit/
 ---
 <script>
     let theTable = "rental_payment";
-    let theFields = "id,description,amount,date_paid,rentalId";
+    let theFields = "id,description,amount,datePaid,rentalId";
     let foreignKeys = "";
     let lookUps = [{"table":"rental_agreement","key":"rentalId","foreignKey":"propertyId","value":window.localStorage.currentDataItemId}]
 </script>

@@ -1,64 +1,20 @@
 ---
 layout: layout.njk
 permalink: /property/costs/
+crumb : /property/cost/
+fields : ["id","description","amount","datePaid","createdAt"]
+title : costs
 ---
-<!--
-This is the top level nav page and it has a js file of the same name in the _includes directory. It uses dataname to generate the nav
--->
 <script>
+    //store the crumb 
+    let theCrumb = "{{ crumb }}";
     let theTable = "rental_cost";
-    let theFields = "id,description,amount,date_paid,createdAt";
+    let theFields = "{% for field in fields %}{% if loop.last %}{{ field }}{% else %}{{ field }},{% endif %}{% endfor %}";
+    let foreignKeys = "";
     let getOnlyTableSchema = 0;
     let allowOnlyOne = 0;
 </script>
 {% set theJs %}
-    {% include 'property-cost-index.js' %}
+    {% include 'admin/table-index.js' %}
 {% endset %}
-<!-- Page Heading -->
-
- <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800"><a href="/properties/">Properties</a> / Property costs</h1>
-    
-    <a href="/property/cost/new/" class="btn btn-sm btn-primary shadow-sm" id="btn-create-cy">
-    <i class="fas fa-download fa-sm text-white-50"></i> Create New</a>
-    
-</div>
-<div class="card shadow mb-4">
-
-    <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Current costs</h6>
-    </div>
-    <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Description</th>
-                        <th>Amount</th>
-                        <th>Date Paid</th>
-                        <th>Date Created</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tfoot>
-                    <tr>
-                        <th>Id</th>
-                        <th>Description</th>
-                        <th>Amount</th>
-                        <th>Date Paid</th>
-                        <th>Date Created</th>
-                        <th>Actions</th>
-                    </tr>
-                </tfoot>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-{% if env.ENVIRONMENT == 'local' %}
-    <script type="text/javascript">{{theJs | safe}}</script>
-{% else %}
-    <script type="text/javascript">{{theJs | jsmin | safe}}</script>
-{% endif %}
+{%  include "admin/table-index.njk" %}
