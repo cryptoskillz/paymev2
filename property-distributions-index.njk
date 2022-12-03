@@ -1,25 +1,20 @@
 ---
 layout: layout.njk
-permalink: /{{env.LEVEL1NAME}}/
-crumb : /property/
-fields : ["id","name","currentlyRented","createdAt"]
-title :
+permalink: /property/distributions/
+crumb : /property/distribution/
+fields : ["id","name","amount","datePaid","createdAt"]
+title : distributions
 ---
 <script>
     //store the crumb 
     let theCrumb = "{{ crumb }}";
-    let theTable = "property";
+    let theTable = "property_distribution";
     let theFields = "{% for field in fields %}{% if loop.last %}{{ field }}{% else %}{{ field }},{% endif %}{% endfor %}";
-    //set the primary table id
-    let foreignKeys = ""
+    let foreignKeys = {"id":"propertyId"}
     let getOnlyTableSchema = 0;
     let allowOnlyOne = 0;
 </script>
 {% set theJs %}
     {% include 'admin/table-index.js' %}
 {% endset %}
-<script>
-    //clear the currentDataItem
-    window.localStorage.currentDataItemId = "";
-</script>
 {%  include "admin/table-index.njk" %}

@@ -1,0 +1,19 @@
+---
+layout: layout.njk
+permalink: /property/rental-agreement/new/
+crumb : /property/rental-agreement/
+---
+<script>
+    //store the crumb 
+    let theCrumb = "{{ crumb }}";
+    //set the table you want to insert for
+    let theTable = "rental_agreement";
+    //set the fields you want to return, leave it blank for all.
+    let theFields = "propertyId,name,amount,deposit,contract,startDate,endDate,agentId,tenantId,active";
+    //set the primary table id
+    let foreignKeys = {"id":"propertyId"}
+    //set the loop up table
+    let lookUps = [{"table":"agent","key":"agentId","foreignKey":"","value":""},{"table":"tenant","key":"tenantId","foreignKey":"","value":""}]
+
+</script>
+{% include "admin/table-new.njk" %}

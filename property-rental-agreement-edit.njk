@@ -1,12 +1,12 @@
 ---
 layout: layout.njk
-permalink: /property/rental-agreements/new/
+permalink: /property/rental-agreement/edit/
 ---
 <script>
     //set the table you want to insert for
     let theTable = "rental_agreement";
     //set the fields you want to return, leave it blank for all.
-    let theFields = "name,amount,deposit,contract,start_date,end_date,propertyId,agentId,tenantId,active";
+    let theFields = "name,amount,deposit,contract,startDate,endDate,propertyId,agentId,tenantId,active";
     //set the primary table id
     let foreignKeys = {"id":"propertyId"}
     /*
@@ -16,6 +16,6 @@ permalink: /property/rental-agreements/new/
     foreignKey = the the foreign key to match to leave blank to return all
     value = the primary id that we math to the foreign key
     */
-    let lookUps = [{"table":"agent","key":"agentId","foreignKey":"","value":""},{"table":"tenant","key":"tenantId","foreignKey":"id","value":window.localStorage.currentDataItemId}]
+    let lookUps = [{"table":"agent","key":"agentId","foreignKey":"","value":""},{"table":"tenant","key":"tenantId","foreignKey":"","value":""}]
 </script>
-{% include "admin/table-new.njk" %}
+{% include "admin/table-edit.njk" %}

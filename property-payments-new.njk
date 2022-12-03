@@ -1,9 +1,9 @@
 ---
 layout: layout.njk
-permalink: /property/cost/new/
+permalink: /property/payment/new/
 ---
 <script>
-    let theTable = "rental_cost";
+    let theTable = "rental_payment";
     let theFields = "propertyId,type,description,amount,datePaid,rentalId";
     let foreignKeys = {"id":"propertyId"}
     let lookUps = [{"table":"rental_agreement","key":"rentalId","foreignKey":"propertyId","value":window.localStorage.currentDataItemId}]

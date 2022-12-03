@@ -5,11 +5,12 @@ GENERAL
  ✔ make sure all tables has a name field to make lookups work neater @done (22-12-03 01:07)
  ✔ look up is always looking for a property ID we would like to improve this @done (22-12-03 01:07)
  ✔ add rental agreement @done (22-12-02 15:23)
- ☐ add property_token
- ☐ add property_owner
- ☐ add property_distribution
+ ✔ add property_owner @done (22-12-04 00:15)
+ ✔ add property_distribution @done (22-12-04 00:15)
  ☐ add agent
  ☐ add tennant
+ ✔ get the column rendering working in table-index.js then we can have 1 file for property indexs @done (22-12-04 00:15)
+ ✔ check the looks ups on each section (costs, payments, rental agreements, tokens, owners, user, proerties,  ) @done (22-12-04 02:47)
 
 ACCOUNT
 
@@ -42,6 +43,15 @@ LOOK UP
 GETFORMDATA
 
  ☐ check integer fields has only integers
+
+PROPERTY TOKENS
+
+ ☐ if you delete and there are no properties left then show the create button
+ ✔ add edit @done (22-12-04 00:15)
+ ✔ add delete @done (22-12-04 00:15)
+
+ 
+
 
 
 

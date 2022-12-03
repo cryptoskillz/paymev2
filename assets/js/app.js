@@ -1,13 +1,8 @@
 let redirectUrl = ""; // hold the redcirect URL
 let token;
 let user;
-var table // datatable
+//var table // datatable
 
-let dataSchema = '{ "id": "", "name": "", "address 1": "", "address 2": "", "address 3": "", "address 4": "", "address 5": "", "address 6": "","bathrooms":"","bedrooms":"","local_currency":"","imageurl":"","taxes":"","suggested_rental_price":"","cost":"","tokenId":"","rentalId":"", "createdAt": "" }'
-dataSchema = JSON.parse(dataSchema);
-//add this to the settings page
-let settingsSchema = '{"btcaddress":"","xpub":"","compnanyname":""}'
-settingsSchema = JSON.parse(settingsSchema);
 
 //TODO: replace this with plain js
 (function($) {
@@ -127,7 +122,7 @@ let buildFormElement = (theData, theValues = "") => {
     }
 
     //check if its date paid and its a create new
-    if ((theData.name == "date_paid") && (theValues == "")) {
+    if ((theData.name == "datePaid") && (theValues == "")) {
         var d = new Date();
         //console.log(d)
         let theDay = d.getDate();
@@ -204,8 +199,12 @@ let buildFormElement = (theData, theValues = "") => {
 
     }
 
+    //add a space before each upper case as we use camel case in the sql 
+    let theTitle  = theData.name;
+    theTitle = theTitle.replace(/([a-z])([A-Z])/g, '$1 $2');
     //captalise the element
-    let theTitle = theData.name.charAt(0).toUpperCase() + theData.name.slice(1);
+    theTitle = theTitle.charAt(0).toUpperCase() + theTitle.slice(1);
+    //remove any _
     theTitle = theTitle.replace("_", " ");
     //built the element
     let inpHtml = "";
@@ -229,9 +228,9 @@ let buildFormElement = (theData, theValues = "") => {
                 for (var i2 = 0; i2 < lookUpData[i].theData.length; ++i2) {
                     let tmpData = lookUpData[i].theData[i2];
                     //debug
-                    console.log(tmpData);
-                    console.log(theValue);
-                    console.log(theData.name);
+                    //console.log(tmpData);
+                    //console.log(theValue);
+                    //console.log(theData.name);
                     if (tmpData.id == theValue)
                         selected = "selected";
                     else
@@ -671,8 +670,8 @@ let checkLogin = () => {
 
             //check admin stuff
             if (user.isAdmin == 1) {
-                if (checkElement("btn-create-cy") == true)
-                    document.getElementById('btn-create-cy').classList.remove("d-none");
+                //if (checkElement("btn-create-cy") == true)
+                   // document.getElementById('btn-create-cy').classList.remove("d-none");
                 document.getElementById("navadmin").classList.remove("d-none")
             }
             //check the user is logged in some one could spoof this so we could do a valid jwt check here 

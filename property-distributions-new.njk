@@ -1,0 +1,11 @@
+---
+layout: layout.njk
+permalink: /property/distribution/new/
+---
+<script>
+    let theTable = "property_distribution";
+    let theFields = "propertyId,name,description,amount,datePaid,propertyOwnerId";
+    let foreignKeys = {"id":"propertyId"}
+    let lookUps = [{"table":"property_owner","key":"propertyOwnerId","foreignKey":"","value":""}]
+</script>
+{% include "admin/table-new.njk" %}
