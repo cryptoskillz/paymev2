@@ -52,6 +52,11 @@ PROPERTY TOKENS
  ✔ add edit @done (22-12-04 00:15)
  ✔ add delete @done (22-12-04 00:15)
 
+CRYPTO 
+
+ ☐ make it connect to meta mask on cloudflare.  UKC works and its pretty much the same code
+ ☐ test deploy on live net
+
  
 
 
