@@ -124,7 +124,8 @@ whenDocumentReady(isReady = () => {
             account = result.address;
             return account;
         }
-
+        console.log("getAccounts")
+        console.log(account)
         return account[0];
     }
 
@@ -161,14 +162,29 @@ whenDocumentReady(isReady = () => {
     }
 
     (async () => {
-        let res = await isConnected();
-        if (res == false) {
+
+        const accounts = await web3.eth.getAccounts();
+        console.log(accounts.length);
+        if (accounts.length == 0) {
             showAlert("Please connect meta mask", 2, 1);
         } else {
             //res = await deployIt();
+            currentAccount = accounts[0];
             document.getElementById("btn-token-deploy").disabled = false;
 
         }
+
+        /*
+        //get is connected working
+                //let res = await isConnected();
+                if (res == false) {
+                    showAlert("Please connect meta mask", 2, 1);
+                } else {
+                    //res = await deployIt();
+                    document.getElementById("btn-token-deploy").disabled = false;
+
+                }
+                */
 
     })();
 
@@ -176,13 +192,13 @@ whenDocumentReady(isReady = () => {
     document.getElementById('btn-token-deploy').addEventListener('click', function() {
 
         (async () => {
-            let res = await isConnected();
-            if (res == false) {
-                showAlert("Please connect meta mask", 2, 1);
-            } else {
+            //let res = await isConnected();
+            //if (res == false) {
+            //    showAlert("Please connect meta mask", 2, 1);
+            // } else {
 
-                res = await deployIt();
-            }
+            res = await deployIt();
+            //}
 
         })();
 
