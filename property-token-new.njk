@@ -7,10 +7,72 @@ crumb : /property/
     //set the table you want to insert for
     let theTable = "property_token";
     //set the fields you want to return, leave it blank for all.
-    let theFields = "propertyId,name,issuer,address,description,total_supply";
+    let theFields = "propertyId,name,contractAddress,description,totalSupply,isDeployed";
     //set the primary table id
     let foreignKeys = {"id":"propertyId"}
     //set the loop up table
     let lookUps = []
 </script>
-{% include "admin/table-new.njk" %}
+{% set theJs %}
+    {% include 'admin/table-new.js' %}
+{% endset %}
+{% set theJsExtend %}
+    {% include 'property-token-new.js' %}
+{% endset %}
+<!-- Page Heading -->
+   <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800" id="data-header"></h1>
+        <a href="javascript:history.back()" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+        <i class="fas fa-backward fa-sm text-white-50"></i> Back</a>
+    </div>
+<p class="mb-4">
+</p>
+
+    <div id="formInputs">
+        <div class="form-group d-none">
+            <label>Property Id</label>
+            <input type="text" class="form-control form-control-user" name="inp-propertyId" id="inp-propertyId" aria-describedby="propertyId" placeholder="Enter Property Id" value="" disabled>
+            <span class="text-danger d-none" id="error-propertyId"></span>  
+        </div>
+        <div class="form-group ">
+            <label>Name</label>
+            <input type="text" class="form-control form-control-user" name="inp-name" id="inp-name" aria-describedby="name" placeholder="Enter Name" value="">
+            <span class="text-danger d-none" id="error-name"></span>  
+        </div>
+        <div class="form-group ">
+            <label>Symbol</label>
+            <input type="text" class="form-control form-control-user" name="inp-contractSymbol" id="inp-contractSymbol" aria-describedby="contractSymbol" placeholder="Enter Contract Symbol" value="">
+            <span class="text-danger d-none" id="error-contractSymbol"></span>  
+        </div>  
+        <div class="form-group ">
+            <label>Total Supply</label>
+            <input type="text" class="form-control form-control-user" name="inp-totalSupply" id="inp-totalSupply" aria-describedby="totalSupply" placeholder="Total Supply" value="" >
+            <span class="text-danger d-none" id="error-totalSupply"></span>  
+        </div>       
+        <div class="form-group ">
+            <label>Contract Address</label>
+            <input type="text" class="form-control form-control-user" name="inp-contractAddress" id="inp-contractAddress" aria-describedby="contractAddress" placeholder="Contract Address" value="">
+            <span class="text-danger d-none" id="error-contractAddress"></span>  
+        </div>              
+        <div class="form-group ">
+            <label>Deployed?</label>
+            <input type="text" class="form-control form-control-user" name="inp-isDeployed" id="inp-isDeployed" placeholder="Is It Deployed?" value="">
+            <span class="text-danger d-none" id="error-isDeployed"></span>  
+        </div>
+
+    </div>
+     <input type="hidden" id="formTableName" name="formTableName" value="">
+
+<button class="btn btn-primary btn-user btn-block d-none" id="btn-create">
+    Create
+</button>
+
+<button class="btn btn-primary btn-user btn-block" id="btn-token-deploy" disabled>
+    Deploy
+</button>
+<script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+{% if env.ENVIRONMENT == 'local' %}
+    <script type="text/javascript">{{theJsExtend | safe}}</script>
+{% else %}
+    <script type="text/javascript">{{theJsExtend | jsmin | safe}}</script>
+{% endif %}

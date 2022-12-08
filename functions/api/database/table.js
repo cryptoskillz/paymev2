@@ -191,12 +191,18 @@ export async function onRequestGet(context) {
         data, // arbitrary space for passing data between middlewares
     } = context;
     let theToken = await decodeJwt(request.headers, env.SECRET);
+        console.log(theToken)
     //check they are an admin
     if (theToken.payload.isAdmin == 1) {
         let query;
         let queryResults;
         //get the search paramaters
         const { searchParams } = new URL(request.url);
+        let checkAdmin = 0;
+        if (searchParams.get('checkAdmin') != null)
+        {
+            checkAdmin = searchParams.get('checkAdmin');
+        }
 
         //get the table name
         let tableName = searchParams.get('tablename');
@@ -248,10 +254,15 @@ export async function onRequestGet(context) {
                 if (foreignId != "")
                     sqlWhere = sqlWhere + `and ${foreignId} = ${recordId}`
             }
+
+            if (checkAdmin != 0)
+            {
+                sqlWhere = sqlWhere + `and adminId = ${theToken.payload.id}`
+            }
             //debug
             //console.log(recordId)
             //console.log(foreignId)
-            //console.log(`SELECT ${fields} from ${tableName} ${sqlWhere}`)
+            console.log(`SELECT ${fields} from ${tableName} ${sqlWhere}`)
             //process the fields
             let tmp = fields.split(",");
             //not we dont want to show the isDeleted flag if there. 

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <h1>w00t</h1>
+    <span id="theMessage"></span>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script><script type="text/javascript">
+let theEl = document.getElementById("theMessage");
+let privateKey = "";
+let tempHardcodedPrivKey = "<ADD PRIVATE KEY HERE>";
+
+let web3 = new Web3(Web3.givenProvider || "https://data-seed-prebsc-1-s2.binance.org:8545/");
+//set the contract address
+const contract_address = "0xbf86927f6ce7946608b3e64c91775e4845bc78dd";
+let currentAccount;
+
+//set the contract abi
+let contract_abi = [{
+    "inputs": [{
+            "internalType": "string",
+            "name": "_name",
+            "type": "string"
+        },
+        {
+            "internalType": "string",
+            "name": "_symbol",
+            "type": "string"
+        },
+        {
+            "internalType": "uint256",
+            "name": "_amount",
+            "type": "uint256"
+        },
+        {
+            "internalType": "bytes32",
+            "name": "_salt",
+            "type": "bytes32"
+        }
+    ],
+    "name": "deploy",
+    "outputs": [{
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+    }],
+    "stateMutability": "payable",
+    "type": "function"
+}]
+
+
+const getAccounts = async () => {
+    account = "";
+    if (privateKey === "") {
+        account = await web3.eth.getAccounts((error, result) => {
+            if (error) {
+                console.log(error);
+            } else {
+                return account;
+            }
+        });
+    } else {
+        let result = await web3.eth.accounts.privateKeyToAccount(privateKey);
+        account = result.address;
+        return account;
+    }
+
+    return account[0];
+}
+
+const isConnected = async () => {
+    let conn = false;
+
+    if (!window.ethereum) {
+        return false;
+    }
+
+    currentAccount = await getAccounts();
+    if (currentAccount === undefined) {
+        conn = false;
+    } else {
+        conn = true;
+    }
+
+    if (!web3.currentProvider.isMetaMask) {
+        conn = false;
+        web3 = new Web3("https://data-seed-prebsc-1-s2.binance.org:8545/");
+    } else {
+        web3 = new Web3(Web3.givenProvider);
+    }
+    walletConnected = conn
+    return conn;
+}
+
+
+
+// useless async here
+async function deployIt() {
+    let _salt = web3.utils.fromAscii("fdsfhsjdfhsdufysdufyu8ewyfefwefe")
+    theEl.innerHTML = "Fetching account";
+    //const accounts = await web3.eth.getAccounts();
+    //get the contract
+    console.log(currentAccount);
+    theEl.innerHTML = "Deploying contract";
+    const DeployContract = new web3.eth.Contract(contract_abi, contract_address);
+    let res = await DeployContract.methods.deploy("ace token 7", "ac7", 2007, _salt).send({ from: currentAccount });
+    console.log(res);
+    theEl.innerHTML = "Done. Contract code is: "+res.events[0].address;
+    // useless await here
+    //return await deployIt("ace token 3", "ac3", 2001);
+}
+
+(async () => {
+    let res = await isConnected();
+    if (res == false) {
+        theEl.innerHTML = "Please connect meta mask";
+    } else {
+        res = await deployIt();
+    }
+
+})();
+</script>
+
+</html>

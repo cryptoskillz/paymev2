@@ -82,7 +82,7 @@ export async function onRequestPost(context) {
                     user.foreignCount = queryResult2.total;
                 }
                 //sign the token
-                const token = await jwt.sign({ password: user.password, username: user.username, isAdmin: user.isAdmin }, env.SECRET)
+                const token = await jwt.sign({ id: user.id,password: user.password, username: user.username, isAdmin: user.isAdmin }, env.SECRET)
                 // Verifing token
                 const isValid = await jwt.verify(token, env.SECRET)
                 //check it is true

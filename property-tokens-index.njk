@@ -11,7 +11,8 @@ title : tokens
     //set the table you want to insert for
     let theTable = "property_token";
     let theFields = "{% for field in fields %}{% if loop.last %}{{ field }}{% else %}{{ field }},{% endif %}{% endfor %}";
-    let foreignKeys = {"id":"propertyId"}
+    let foreignKeys = {"id":"propertyId"};
+    let checkAdmin = 0;
     let getOnlyTableSchema = 0;
     let allowOnlyOne = 1;
 </script>
