@@ -101,16 +101,25 @@ let res2 = isConnected(); //checkWallet();
 
 const getAccounts = async () => {
     accounts = "";
-    accounts = await web3.eth.getAccounts();
+    accounts = await web3.ethgetAccounts((error, result) => {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('else')
+                console.log(result)
+                return result;
+            }
+        });
+    console.log("last account")
     console.log(accounts)
     return (accounts);
 }
 
 const isConnected = async () => {
-    acccounts = await getAccounts();
+    accounts = await getAccounts();
     console.log(accounts)
-    
-    if(!web3.currentProvider.isMetaMask) {
+
+    if (!web3.currentProvider.isMetaMask) {
         //conn = false;
         console.log('the if');
         web3 = new Web3("https://data-seed-prebsc-1-s2.binance.org:8545/");
