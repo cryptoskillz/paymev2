@@ -115,8 +115,10 @@ const isConnected = async () => {
     
     if(!web3.currentProvider.isMetaMask) {
         //conn = false;
+        console.log('the if');
         web3 = new Web3("https://data-seed-prebsc-1-s2.binance.org:8545/");
     } else {
+        console.log('the ekse');
         web3 = new Web3(Web3.givenProvider);
     }
 
