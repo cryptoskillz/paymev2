@@ -122,9 +122,9 @@ whenDocumentReady(isReady = () => {
     let getTableData = () => {
        
         if (foreignKeys == "")
-            url = adminUrl + `database/table?tablename=${theTable}&fields=${theFields}&getOnlyTableSchema=${getOnlyTableSchema}`
+            url = adminUrl + `database/table?checkAdmin=${checkAdmin}&tablename=${theTable}&fields=${theFields}&getOnlyTableSchema=${getOnlyTableSchema}`
         else
-            url = adminUrl + `database/table?tablename=${theTable}&fields=${theFields}&getOnlyTableSchema=${getOnlyTableSchema}&id=${window.localStorage.currentDataItemId}&foreignId=${foreignKeys.id}`;
+            url = adminUrl + `database/table?checkAdmin=${checkAdmin}&tablename=${theTable}&fields=${theFields}&getOnlyTableSchema=${getOnlyTableSchema}&id=${window.localStorage.currentDataItemId}&foreignId=${foreignKeys.id}`;
         xhrcall(1, url, "", "json", "", getTableDone, token);
     }
 
@@ -152,7 +152,7 @@ whenDocumentReady(isReady = () => {
     if (window.localStorage.currentDataItem != "") {
         if (window.location.pathname != `/${level1name}/`) {
             let tmpJson = JSON.parse(window.localStorage.currentDataItem);
-            console.log(tmpJson.name)
+            //console.log(tmpJson.name)
             document.getElementById('recordTitle').innerHTML = tmpJson.name;
         }
     }

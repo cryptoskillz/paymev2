@@ -31,6 +31,7 @@ CREATE TABLE "property" (
 	"internationalCost" REAL,
 	"localCost" REAL,
 	"currentlyRented" INTEGER,
+	"adminId" INTEGER,
 	"isDeleted" INTEGER DEFAULT 0,
 	"createdAt" TEXT DEFAULT CURRENT_TIMESTAMP,
 	"updatedAt" TEXT,
@@ -42,10 +43,10 @@ CREATE TABLE "property" (
 CREATE TABLE "property_token" (
 	"id"	INTEGER,
 	"name"	TEXT,
-	"issuer"	TEXT,
-	"address"	TEXT,
-	"description"	TEXT,
+	"contractAddress" TEXT,
+	"contractSymbol" TEXT,
 	"totalSupply" REAL,
+	"isDeployed" INTEGER DEFAULT 0,
 	"propertyId" INTEGER,
 	"isDeleted" INTEGER DEFAULT 0,
 	"createdAt" TEXT DEFAULT CURRENT_TIMESTAMP,
@@ -213,7 +214,8 @@ INSERT INTO "property" ("name",
 						"bathrooms",
 						"bedrooms",
 						"localCost",
-						"taxesCost") VALUES 
+						"taxesCost",
+						"adminId") VALUES 
 						('DCONDO', 
 						'address 1', 
 						'address 2', 
@@ -224,7 +226,8 @@ INSERT INTO "property" ("name",
 						1,
 						2,
 						1800000,
-						40000
+						40000,
+						1
 						);
 
 INSERT INTO "property" ("name",
@@ -237,7 +240,8 @@ INSERT INTO "property" ("name",
 						"bathrooms",
 						"bedrooms",
 						"localCost",
-						"taxesCost") VALUES 
+						"taxesCost",
+						"adminId") VALUES 
 						('DCONDO 2', 
 						'address 1', 
 						'address 2', 
@@ -248,12 +252,13 @@ INSERT INTO "property" ("name",
 						1,
 						2,
 						1800000,
-						40000
+						40000,
+						1
 						);
 
 
 
-INSERT INTO "property_token" ("name","issuer","address","description","totalSupply","propertyId") VALUES ('dcondo001Token','TFvzmpCYumneehXj963corUxYi7e2YaWXF','https://shasta.tronscan.org/#/token/1000690','the property token',1800000.00,1);
+INSERT INTO "property_token" ("name","contractAddress","contractSymbol","totalSupply","propertyId") VALUES ('dcondo001Token','https://shasta.tronscan.org/#/token/1000690','DC1',1800000.00,1);
 
 INSERT INTO "property_owner" ("address","tokenAmount","propertyId","userId") VALUES ('https://shasta.tronscan.org/#/address/TFvzmpCYumneehXj963corUxYi7e2YaWXF',1000000,1,1);
 INSERT INTO "property_owner" ("address","tokenAmount","propertyId","userId") VALUES ('https://shasta.tronscan.org/#/address/TFvzmpCYumneehXj963corUxYi7e2YaWXF',800000,1,2);

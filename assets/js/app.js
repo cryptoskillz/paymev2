@@ -246,7 +246,7 @@ let buildFormElement = (theData, theValues = "") => {
         case 1:
             inpHtml = `<div class="form-group ${visible}">
                         <label>${theTitle}</label>
-                        <input type="${theType}" class="form-control form-control-user" id="inp-${theData.name}" aria-describedby="${theData.name}" placeholder="Enter ${theTitle}" value="${theValue}" ${disabled}>
+                        <input type="${theType}" class="form-control form-control-user" name="inp-${theData.name}" id="inp-${theData.name}" aria-describedby="${theData.name}" placeholder="Enter ${theTitle}" value="${theValue}" ${disabled}>
                         <span class="text-danger d-none" id="error-${theData.name}"></span>  
                     </div>`
             break;
