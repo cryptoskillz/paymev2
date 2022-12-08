@@ -112,6 +112,14 @@ const getAccounts = async () => {
 
 const isConnected = async () => {
     acccounts = await getAccounts();
+    if (accounts.length == 0) {
+            showAlert("Please connect meta mask", 2, 1);
+        } else {
+
+            currentAccount = accounts[0];
+            document.getElementById("btn-token-deploy").disabled = false;
+
+        }
     console.log(accounts)
     return(accounts);
 }
@@ -188,8 +196,8 @@ whenDocumentReady(isReady = () => {
     //(async () => {
    
     //})();
-
-
+   let accounts = isConnected(); //checkWallet();
+    
     document.getElementById('btn-token-deploy').addEventListener('click', function() {
 
         //(async () => {
@@ -202,7 +210,7 @@ whenDocumentReady(isReady = () => {
 });
 
 
-     let accounts = isConnected(); //checkWallet();
+
      /*
         console.log(accounts.length);
         console.log(accounts)
