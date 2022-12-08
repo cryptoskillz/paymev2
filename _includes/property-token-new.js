@@ -63,7 +63,7 @@ async function deployIt() {
         //set the contract
         const DeployContract = new web3.eth.Contract(contractAbi, contractAddress);
         //call the deploy contract function
-        let res = await DeployContract.methods.deploy(_name, _symbol, _totalSupply, _salt).send({ from: "0x960f470cE20Bfb519facA30b770474BBCdF78ef8" });
+        let res = await DeployContract.methods.deploy(_name, _symbol, _totalSupply, _salt).send({ from: currentAccount });
         //store the address
         let tmpAddress = res.events[0].address;
         //update the details
@@ -110,60 +110,15 @@ whenDocumentReady(isReady = () => {
 
 
     const getAccounts = async () => {
-        account = "";
-        if (privateKey === "") {
-            account = await web3.eth.getAccounts((error, result) => {
-                if (error) {
-                    console.log(error);
-                } else {
-                    return account;
-                }
-            });
-        } else {
-            let result = await web3.eth.accounts.privateKeyToAccount(privateKey);
-            account = result.address;
-            return account;
-        }
-        console.log("getAccounts")
-        console.log(account)
-        return account[0];
+       let accounts = await web3.eth.getAccounts();
+       return(accounts);
     }
 
-    const isConnected = async () => {
-        let conn = false;
-
-        if (!window.ethereum) {
-            console.log('no eth')
-            return false;
-        }
-
-        currentAccount = await getAccounts();
-        console.log(currentAccount);
-        if (currentAccount === undefined) {
-            console.log('in undefined')
-            conn = false;
-        } else {
-            console.log('in true of undefined')
-            conn = true;
-        }
-
-        if (!web3.currentProvider.isMetaMask) {
-            console.log('its not meta mask')
-            conn = false;
-            web3 = new Web3(contractUrl);
-        } else {
-            console.log('gp')
-            console.log(Web3.givenProvider)
-            web3 = new Web3(Web3.givenProvider);
-        }
-        console.log(conn);
-        walletConnected = conn
-        return conn;
-    }
+   
 
     (async () => {
-
-        const accounts = await web3.eth.getAccounts();
+        getAccounts();
+        const accounts = await getAccounts()
         console.log(accounts.length);
         if (accounts.length == 0) {
             showAlert("Please connect meta mask", 2, 1);
@@ -173,33 +128,13 @@ whenDocumentReady(isReady = () => {
             document.getElementById("btn-token-deploy").disabled = false;
 
         }
-
-        /*
-        //get is connected working
-                //let res = await isConnected();
-                if (res == false) {
-                    showAlert("Please connect meta mask", 2, 1);
-                } else {
-                    //res = await deployIt();
-                    document.getElementById("btn-token-deploy").disabled = false;
-
-                }
-                */
-
     })();
 
 
     document.getElementById('btn-token-deploy').addEventListener('click', function() {
 
         (async () => {
-            //let res = await isConnected();
-            //if (res == false) {
-            //    showAlert("Please connect meta mask", 2, 1);
-            // } else {
-
             res = await deployIt();
-            //}
-
         })();
 
 
