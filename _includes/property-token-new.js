@@ -8,7 +8,7 @@
 
 let privateKey = "";
 let tempHardcodedPrivKey = "<ADD PRIVATE KEY HERE>";
-let web3 = new Web3(Web3.givenProvider ||  "https://data-seed-prebsc-1-s2.binance.org:8545/");
+let web3 = new Web3(Web3.givenProvider || "https://data-seed-prebsc-1-s2.binance.org:8545/");
 //set the contract address
 let currentAccount = "";
 
@@ -45,10 +45,10 @@ let contractAbi = [{
     "type": "function"
 }]
 
-    const getAccounts = async () => {
-       let accounts = await new web3.eth.getAccounts();
-       return(accounts);
-    }
+const getAccounts = async () => {
+    let accounts = await new web3.eth.getAccounts();
+    return (accounts);
+}
 
 // useless async here
 async function deployIt() {
@@ -116,7 +116,7 @@ whenDocumentReady(isReady = () => {
 
 
 
-   
+
 
     (async () => {
         getAccounts();
@@ -126,7 +126,7 @@ whenDocumentReady(isReady = () => {
         if (accounts.length == 0) {
             showAlert("Please connect meta mask", 2, 1);
         } else {
-            
+
             currentAccount = accounts[0];
             document.getElementById("btn-token-deploy").disabled = false;
 
