@@ -45,6 +45,11 @@ let contractAbi = [{
     "type": "function"
 }]
 
+    const getAccounts = async () => {
+       let accounts = await new web3.eth.getAccounts();
+       return(accounts);
+    }
+
 // useless async here
 async function deployIt() {
     try {
@@ -109,10 +114,7 @@ whenDocumentReady(isReady = () => {
     document.getElementById('inp-isDeployed').value = "0";
 
 
-    const getAccounts = async () => {
-       let accounts = await web3.eth.getAccounts();
-       return(accounts);
-    }
+
 
    
 
