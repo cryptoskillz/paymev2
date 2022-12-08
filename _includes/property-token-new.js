@@ -100,6 +100,7 @@ let res2 = isConnected(); //checkWallet();
 */
 
 const getAccounts = async () => {
+    accounts = "";
     accounts = await web3.eth.getAccounts((error, result) => {
         if (error) {
              console.log('in first if')
@@ -210,7 +211,7 @@ whenDocumentReady(isReady = () => {
     //(async () => {
 
     //})();
-    let accounts = isConnected(); //checkWallet();
+    let res = isConnected(); //checkWallet();
 
     document.getElementById('btn-token-deploy').addEventListener('click', function() {
 
