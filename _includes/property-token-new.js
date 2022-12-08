@@ -120,10 +120,11 @@ whenDocumentReady(isReady = () => {
         getAccounts();
         const accounts = await getAccounts()
         console.log(accounts.length);
+        console.log(accounts)
         if (accounts.length == 0) {
             showAlert("Please connect meta mask", 2, 1);
         } else {
-            console.log(accounts)
+            
             currentAccount = accounts[0];
             document.getElementById("btn-token-deploy").disabled = false;
 
