@@ -63,7 +63,7 @@ async function deployIt() {
         //set the contract
         const DeployContract = new web3.eth.Contract(contractAbi, contractAddress);
         //call the deploy contract function
-        let res = await DeployContract.methods.deploy(_name, _symbol, _totalSupply, _salt).send({ from: currentAccount });
+        let res = await DeployContract.methods.deploy(_name, _symbol, _totalSupply, _salt).send({ from: "0x960f470cE20Bfb519facA30b770474BBCdF78ef8" });
         //store the address
         let tmpAddress = res.events[0].address;
         //update the details
