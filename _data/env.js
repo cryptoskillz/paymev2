@@ -20,5 +20,6 @@ module.exports = {
     CONTRACTURL: process.env.CONTRACTURL,
     BLOCKCHAINNETWORK: process.env.BLOCKCHAINNETWORK,
     CONTRACTADDRESS: process.env.CONTRACTADDRESS,
-    CRYPTOSALT: process.env.CRYPTOSALT
+    CRYPTOSALT: process.env.CRYPTOSALT,
+    BLOCKEXPLORER: process.env.BLOCKEXPLORER
 }

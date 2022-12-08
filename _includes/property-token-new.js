@@ -8,10 +8,9 @@
 
 let privateKey = "";
 let tempHardcodedPrivKey = "<ADD PRIVATE KEY HERE>";
-
 let web3 = new Web3(Web3.givenProvider || contractUrl);
 //set the contract address
-let currentAccount;
+let currentAccount = "";
 
 //set the contract abi
 let contractAbi = [{
@@ -69,7 +68,7 @@ async function deployIt() {
         let tmpAddress = res.events[0].address;
         //update the details
         document.getElementById("inp-isDeployed").value = "1"
-        document.getElementById("inp-contractAddress").value = `https://testnet.bscscan.com/token/${tmpAddress}`;
+        document.getElementById("inp-contractAddress").value = `${blockExplorer}${tmpAddress}`;
         document.getElementById("btn-token-deploy").classList.add('d-none');
         document.getElementById("btn-create").classList.remove('d-none');
         showAlert("Contract deployed", 1, 1);
@@ -133,22 +132,30 @@ whenDocumentReady(isReady = () => {
         let conn = false;
 
         if (!window.ethereum) {
+            console.log('no eth')
             return false;
         }
 
         currentAccount = await getAccounts();
+        console.log(currentAccount);
         if (currentAccount === undefined) {
+            console.log('in undefined')
             conn = false;
         } else {
+            console.log('in true of undefined')
             conn = true;
         }
 
         if (!web3.currentProvider.isMetaMask) {
+            console.log('its not meta mask')
             conn = false;
-            web3 = new Web3("https://data-seed-prebsc-1-s2.binance.org:8545/");
+            web3 = new Web3(contractUrl);
         } else {
+            console.log('gp')
+            console.log(Web3.givenProvider)
             web3 = new Web3(Web3.givenProvider);
         }
+        console.log(true);
         walletConnected = conn
         return conn;
     }
