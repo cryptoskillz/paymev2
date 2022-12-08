@@ -107,6 +107,7 @@ const getAccounts = async () => {
             console.log(error);
         } else {
             console.log('in first else')
+            console.log(result)
             return result;
         }
     });
