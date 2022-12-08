@@ -46,34 +46,38 @@ let contractAbi = [{
     "type": "function"
 }]
 
-
-
-
 // useless async here
 async function deployIt() {
     try {
-        showAlert("Deploying contract please wait", 1, 0);
+        //debug
+        //console.log(_name);
+        //console.log(_symbol);
+        //console.log(_totalSupply);
+        //get the values
         let _name = document.getElementById('inp-name').value;
-        _name = _name.toString();
         let _symbol = document.getElementById('inp-contractSymbol').value;
-        _symbol = _symbol.toString();
+        let _totalSupply = document.getElementById("inp-totalSupply").value;
+        //show the alert
+        showAlert("Deploying contract please wait", 1, 0);
+        //set the salt
         let _salt = web3.utils.fromAscii(cryptoSalt);
-        let totalSupply = "";
-        totalSupply = document.getElementById("inp-totalSupply").value;
-        totalSupply = totalSupply.toString() 
+        //set the contract
         const DeployContract = new web3.eth.Contract(contractAbi, contractAddress);
-        let res = await DeployContract.methods.deploy(String(_name), String(_symbol), String(totalSupply), _salt).send({ from: currentAccount });
-        console.log(res.events[0].address);
-        showAlert("Contract deployed", 1, 1);
-        document.getElementById("inp-isDeployd").value = "1"
-        document.getElementById("inp-contractAddress").value = `https://testnet.bscscan.com/token/${res.events[0].address}`;
+        //call the deploy contract function
+        let res = await DeployContract.methods.deploy(_name, _symbol, _totalSupply, _salt).send({ from: currentAccount });
+        //store the address
+        let tmpAddress = res.events[0].address;
+        //update the details
+        document.getElementById("inp-isDeployed").value = "1"
+        document.getElementById("inp-contractAddress").value = `https://testnet.bscscan.com/token/${tmpAddress}`;
         document.getElementById("btn-token-deploy").classList.add('d-none');
         document.getElementById("btn-create").classList.remove('d-none');
+        showAlert("Contract deployed", 1, 1);
+        console.log(tmpAddress);
     } catch (e) {
         showAlert(e.message, 2, 0);
         //console.error(e);
-    } finally {
-    }
+    } finally {}
 
 }
 
