@@ -168,7 +168,7 @@ whenDocumentReady(isReady = () => {
         if (accounts.length == 0) {
             showAlert("Please connect meta mask", 2, 1);
         } else {
-            //res = await deployIt();
+            console.log(accounts)
             currentAccount = accounts[0];
             document.getElementById("btn-token-deploy").disabled = false;
 
