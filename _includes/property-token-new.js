@@ -46,6 +46,7 @@ let contractAbi = [{
 }]
 
 const getAccounts = async () => {
+    console.log("web3",web3)
     const accounts = await web3.eth.getAccounts();
     return (accounts);
 }

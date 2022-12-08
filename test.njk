@@ -74,7 +74,7 @@ const isConnected = async () => {
     if (!window.ethereum) {
         return false;
     }
-
+    console.log("web3",web3)
     currentAccount = await getAccounts();
     if (currentAccount === undefined) {
         conn = false;
