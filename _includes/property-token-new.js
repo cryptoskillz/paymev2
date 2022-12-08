@@ -155,7 +155,7 @@ whenDocumentReady(isReady = () => {
             console.log(Web3.givenProvider)
             web3 = new Web3(Web3.givenProvider);
         }
-        console.log(true);
+        console.log(conn);
         walletConnected = conn
         return conn;
     }
