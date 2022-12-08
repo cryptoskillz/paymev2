@@ -101,16 +101,8 @@ let res2 = isConnected(); //checkWallet();
 
 const getAccounts = async () => {
     accounts = "";
-    accounts = await web3.eth.getAccounts((error, result) => {
-        if (error) {
-             console.log('in first if')
-            console.log(error);
-        } else {
-            console.log('in first else')
-            console.log(result)
-            return result;
-        }
-    });
+    accounts = await web3.eth.getAccounts();
+    console.log(acccounts)
     return (accounts);
 }
 
