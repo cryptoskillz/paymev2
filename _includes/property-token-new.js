@@ -101,27 +101,36 @@ let res2 = isConnected(); //checkWallet();
 
 const getAccounts = async () => {
     accounts = await web3.eth.getAccounts((error, result) => {
-            if (error) {
-                console.log(error);
-            } else {
-                return result;
-            }
-        });
+        if (error) {
+            console.log(error);
+        } else {
+            return result;
+        }
+    });
     return (accounts);
 }
 
 const isConnected = async () => {
     acccounts = await getAccounts();
+    
+    if(!web3.currentProvider.isMetaMask) {
+        //conn = false;
+        web3 = new Web3("https://data-seed-prebsc-1-s2.binance.org:8545/");
+    } else {
+        web3 = new Web3(Web3.givenProvider);
+    }
+
+
     if (accounts.length == 0) {
-            showAlert("Please connect meta mask", 2, 1);
-        } else {
+        showAlert("Please connect meta mask", 2, 1);
+    } else {
 
-            currentAccount = accounts[0];
-            document.getElementById("btn-token-deploy").disabled = false;
+        currentAccount = accounts[0];
+        document.getElementById("btn-token-deploy").disabled = false;
 
-        }
+    }
     console.log(accounts)
-    return(accounts);
+    return (accounts);
 }
 
 
@@ -194,10 +203,10 @@ whenDocumentReady(isReady = () => {
 
 
     //(async () => {
-   
+
     //})();
-   let accounts = isConnected(); //checkWallet();
-    
+    let accounts = isConnected(); //checkWallet();
+
     document.getElementById('btn-token-deploy').addEventListener('click', function() {
 
         //(async () => {
@@ -211,7 +220,7 @@ whenDocumentReady(isReady = () => {
 
 
 
-     /*
+/*
         console.log(accounts.length);
         console.log(accounts)
         if (accounts.length == 0) {
