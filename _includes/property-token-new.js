@@ -8,7 +8,7 @@
 
 let privateKey = "";
 let tempHardcodedPrivKey = "<ADD PRIVATE KEY HERE>";
-let web3 = new Web3(Web3.givenProvider || contractUrl);
+let web3 = new Web3(Web3.givenProvider ||  "https://data-seed-prebsc-1-s2.binance.org:8545/");
 //set the contract address
 let currentAccount = "";
 
