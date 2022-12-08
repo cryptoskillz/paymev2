@@ -25,7 +25,7 @@ kill -9 `lsof -t -i:8788`
 echo "starting wrangler"
 
 
-wrangler pages dev _site --d1=DB --persist --binding SECRET=fdfdf  --kv=kvdata --local --live-reload  &
+wrangler pages dev _site --port 8080 --d1=DB --persist --binding SECRET=fdfdf  --kv=kvdata --local --live-reload  &
 
 if [[ $ELEVENTY_ENV == 'cypress' ]]
 then

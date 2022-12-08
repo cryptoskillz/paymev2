@@ -46,12 +46,12 @@ crumb : /property/
         </div>  
         <div class="form-group ">
             <label>Total Supply</label>
-            <input type="text" class="form-control form-control-user" name="inp-totalSupply" id="inp-totalSupply" aria-describedby="totalSupply" placeholder="Total Supply" value="" disabled>
+            <input type="text" class="form-control form-control-user" name="inp-totalSupply" id="inp-totalSupply" aria-describedby="totalSupply" placeholder="Total Supply" value="" >
             <span class="text-danger d-none" id="error-totalSupply"></span>  
         </div>       
         <div class="form-group ">
             <label>Contract Address</label>
-            <input type="text" class="form-control form-control-user" name="inp-contractAddress" id="inp-contractAddress" aria-describedby="contractAddress" placeholder="Enter Contract Address" value="" disabled>
+            <input type="text" class="form-control form-control-user" name="inp-contractAddress" id="inp-contractAddress" aria-describedby="contractAddress" placeholder="Contract Address" value="" disabled>
             <span class="text-danger d-none" id="error-contractAddress"></span>  
         </div>              
         <div class="form-group ">
@@ -63,10 +63,14 @@ crumb : /property/
     </div>
      <input type="hidden" id="formTableName" name="formTableName" value="">
 
-<button class="btn btn-primary btn-user btn-block" id="btn-create">
+<button class="btn btn-primary btn-user btn-block d-none" id="btn-create">
     Create
 </button>
 
+<button class="btn btn-primary btn-user btn-block" id="btn-token-deploy" disabled>
+    Deploy
+</button>
+<script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
 {% if env.ENVIRONMENT == 'local' %}
     <script type="text/javascript">{{theJsExtend | safe}}</script>
 {% else %}
