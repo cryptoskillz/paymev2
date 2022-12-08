@@ -102,7 +102,7 @@ let res2 = isConnected(); //checkWallet();
 const getAccounts = async () => {
     accounts = "";
     accounts = await web3.eth.getAccounts();
-    console.log(acccounts)
+    console.log(accounts)
     return (accounts);
 }
 
