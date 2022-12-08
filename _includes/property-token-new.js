@@ -45,11 +45,77 @@ let contractAbi = [{
     "type": "function"
 }]
 
+/*
+
+
 const getAccounts = async () => {
-    console.log("web3",web3)
-    const accounts = await web3.eth.getAccounts();
+    account = "";
+    if(privateKey === "") {
+        account = await web3.eth.getAccounts((error, result) => {
+            if (error) {
+                console.log(error);
+            } else {
+                return result;
+            }
+        });
+    } else {
+        let result = await web3.eth.accounts.privateKeyToAccount(privateKey);
+        account = result.address;
+        return account;
+    }
+
+    return account[0];
+}
+
+const isConnected = async () => {
+    let conn = false;
+
+    if(!window.ethereum) {
+        return false;
+    }
+
+    currentAccount = await getAccounts();
+    console.log(currentAccount);
+    if(currentAccount === undefined) {
+        conn = false;
+    } else {
+        conn = true;
+    }
+
+    if(!web3.currentProvider.isMetaMask) {
+        conn = false;
+        web3 = new Web3("https://data-seed-prebsc-1-s2.binance.org:8545/");
+    } else {
+        web3 = new Web3(Web3.givenProvider);
+    }
+
+    //console.log(currentAccount);
+    walletConnected = conn
+    return conn;
+}
+
+let res2 = isConnected(); //checkWallet();
+
+
+*/
+
+const getAccounts = async () => {
+    accounts = await web3.eth.getAccounts((error, result) => {
+            if (error) {
+                console.log(error);
+            } else {
+                return result;
+            }
+        });
     return (accounts);
 }
+
+const isConnected = async () => {
+    acccounts = await getAccounts();
+    console.log(accounts)
+    return(accounts);
+}
+
 
 // useless async here
 async function deployIt() {
@@ -119,9 +185,25 @@ whenDocumentReady(isReady = () => {
 
 
 
-    (async () => {
-        getAccounts();
-        const accounts = await getAccounts()
+    //(async () => {
+   
+    //})();
+
+
+    document.getElementById('btn-token-deploy').addEventListener('click', function() {
+
+        //(async () => {
+        //    res = await deployIt();
+        //})();
+
+
+    })
+
+});
+
+
+     let accounts = isConnected(); //checkWallet();
+     /*
         console.log(accounts.length);
         console.log(accounts)
         if (accounts.length == 0) {
@@ -132,16 +214,4 @@ whenDocumentReady(isReady = () => {
             document.getElementById("btn-token-deploy").disabled = false;
 
         }
-    })();
-
-
-    document.getElementById('btn-token-deploy').addEventListener('click', function() {
-
-        (async () => {
-            res = await deployIt();
-        })();
-
-
-    })
-
-});
+    */

@@ -11,6 +11,8 @@ let privateKey = "";
 let tempHardcodedPrivKey = "<ADD PRIVATE KEY HERE>";
 
 let web3 = new Web3(Web3.givenProvider || "https://data-seed-prebsc-1-s2.binance.org:8545/");
+//web3 = new Web3("https://data-seed-prebsc-1-s2.binance.org:8545/");
+
 //set the contract address
 const contract_address = "0xbf86927f6ce7946608b3e64c91775e4845bc78dd";
 let currentAccount = "";
@@ -76,12 +78,13 @@ const isConnected = async () => {
     }
     console.log("web3",web3)
     currentAccount = await getAccounts();
+    console.log(currentAccount)
     if (currentAccount === undefined) {
         conn = false;
     } else {
         conn = true;
     }
-
+    console.log(web3.currentProvider)
     if (!web3.currentProvider.isMetaMask) {
         conn = false;
         web3 = new Web3("https://data-seed-prebsc-1-s2.binance.org:8545/");
