@@ -2,40 +2,77 @@
 let whenDocumentReady = (f) => {
     /in/.test(document.readyState) ? setTimeout('whenDocumentReady(' + f + ')', 9) : f()
 }
+let factoryContractAbi;
+if (network == "testnet") {
+    factoryContractAbi = [{
+        "inputs": [{
+                "internalType": "string",
+                "name": "_name",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_symbol",
+                "type": "string"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "_salt",
+                "type": "bytes32"
+            }
+        ],
+        "name": "deploy",
+        "outputs": [{
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+        }],
+        "stateMutability": "payable",
+        "type": "function"
+    }]
+} else {
+    //note do the live abi
+    factoryContractAbi = [{
+        "inputs": [{
+                "internalType": "string",
+                "name": "_name",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_symbol",
+                "type": "string"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "_salt",
+                "type": "bytes32"
+            }
+        ],
+        "name": "deploy",
+        "outputs": [{
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+        }],
+        "stateMutability": "payable",
+        "type": "function"
+    }]
+}
 
-let web3 = new Web3(Web3.givenProvider || "https://data-seed-prebsc-1-s2.binance.org:8545/");
+
+let web3 = new Web3(Web3.givenProvider || RPCUrl);
 //set the contract abi
-let contractAbi = [{
-    "inputs": [{
-            "internalType": "string",
-            "name": "_name",
-            "type": "string"
-        },
-        {
-            "internalType": "string",
-            "name": "_symbol",
-            "type": "string"
-        },
-        {
-            "internalType": "uint256",
-            "name": "_amount",
-            "type": "uint256"
-        },
-        {
-            "internalType": "bytes32",
-            "name": "_salt",
-            "type": "bytes32"
-        }
-    ],
-    "name": "deploy",
-    "outputs": [{
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-    }],
-    "stateMutability": "payable",
-    "type": "function"
-}]
 
 let currentAccount = "";
 
@@ -85,7 +122,7 @@ async function deployIt() {
         //set the salt
         let _salt = web3.utils.fromAscii(cryptoSalt);
         //set the contract
-        const DeployContract = new web3.eth.Contract(contractAbi, contractAddress);
+        const DeployContract = new web3.eth.Contract(factoryContractAbi, factoryContractAddress);
         //call the deploy contract function
         let res = await DeployContract.methods.deploy(_name, _symbol, _totalSupply, _salt).send({ from: currentAccount });
         //store the address

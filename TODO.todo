@@ -56,10 +56,14 @@ CRYPTO
 
  ☐ make it connect to meta mask on cloudflare.  UKC works and its pretty much the same code
  ☐ test deploy on live net
- ☐ deploy live factore
+ ☐ deploy live factory
+ ☐ chnged contract address to factoryaddress
  ☐ add eth
  ☐ add matic
- 
+ ☐ load the abi from an env var
+ ☐ implement the switch network using chian id (I think)
+
+
 
  
 

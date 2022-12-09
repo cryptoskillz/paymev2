@@ -12,6 +12,14 @@ crumb : /property/
     let foreignKeys = {"id":"propertyId"}
     //set the loop up table
     let lookUps = []
+        //block chain stuff
+    var factoryContractAddress = "{{env.FACTORYCONTRACTADDRESS}}";
+    var blockchainNetwork = "{{env.BLOCKCHAINNETWORK}}";
+    var network = "{{env.NETWORK}}";
+    var RPCUrl = "{{env.RPCURl}}";
+    var cryptoSalt= "{{env.CRYPTOSALT}}"
+    var blockExplorer = "{{env.BLOCKEXPLORER}}"
+
 </script>
 {% set theJs %}
     {% include 'admin/table-new.js' %}

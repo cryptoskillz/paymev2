@@ -3,6 +3,10 @@ require('dotenv').config();
 
 let todaysDate = new Date();
 let _YEAR = todaysDate.getFullYear();
+
+//get this one working  
+//FACTORYCONTRACTABI:process.env.FACTORYCONTRACTABI,
+
 module.exports = {
     YEAR: _YEAR,
     TITLE: "Building block ADMIN",
@@ -17,9 +21,10 @@ module.exports = {
     DASHBOARDSTRAP: "Welcome to the content editor.",
     CANCREATEACCOUNT: process.env.CANCREATEACCOUNT,
     COMPLEXPASSWORD: process.env.COMPLEXPASSWORD,
-    CONTRACTURL: process.env.CONTRACTURL,
+    RPCURl: process.env.RPCURl,
     BLOCKCHAINNETWORK: process.env.BLOCKCHAINNETWORK,
-    CONTRACTADDRESS: process.env.CONTRACTADDRESS,
+    FACTORYCONTRACTADDRESS: process.env.FACTORYCONTRACTADDRESS,
     CRYPTOSALT: process.env.CRYPTOSALT,
-    BLOCKEXPLORER: process.env.BLOCKEXPLORER
+    BLOCKEXPLORER: process.env.BLOCKEXPLORER,
+    NETWORK: process.env.NETWORK
 }
