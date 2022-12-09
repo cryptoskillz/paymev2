@@ -9,6 +9,7 @@
 let privateKey = "";
 let tempHardcodedPrivKey = "<ADD PRIVATE KEY HERE>";
 let web3 = new Web3(Web3.givenProvider || contractUrl);
+
 //set the contract address
 let currentAccount = "";
 
