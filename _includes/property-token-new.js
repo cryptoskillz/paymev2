@@ -1,18 +1,9 @@
-/*
+//add a ready function
+let whenDocumentReady = (f) => {
+    /in/.test(document.readyState) ? setTimeout('whenDocumentReady(' + f + ')', 9) : f()
+}
 
-    As this page interacts with the block chain it does a lot more than the standard table insert to we have to override it with its own 
-    new.js to stop the core insert from becoming to bloated. 
-
-
-*/
-
-let privateKey = "";
-let tempHardcodedPrivKey = "<ADD PRIVATE KEY HERE>";
-let web3 = new Web3(Web3.givenProvider || contractUrl);
-
-//set the contract address
-let currentAccount = "";
-
+let web3 = new Web3(Web3.givenProvider || "https://data-seed-prebsc-1-s2.binance.org:8545/");
 //set the contract abi
 let contractAbi = [{
     "inputs": [{
@@ -46,104 +37,39 @@ let contractAbi = [{
     "type": "function"
 }]
 
-/*
-
+let currentAccount = "";
 
 const getAccounts = async () => {
     account = "";
-    if(privateKey === "") {
-        account = await web3.eth.getAccounts((error, result) => {
-            if (error) {
-                console.log(error);
-            } else {
-                return result;
-            }
-        });
-    } else {
-        let result = await web3.eth.accounts.privateKeyToAccount(privateKey);
-        account = result.address;
-        return account;
-    }
-
+    account = await web3.eth.getAccounts();
     return account[0];
 }
 
 const isConnected = async () => {
     let conn = false;
-
-    if(!window.ethereum) {
-        return false;
-    }
-
     currentAccount = await getAccounts();
-    console.log(currentAccount);
-    if(currentAccount === undefined) {
+    if (currentAccount === undefined) {
+        showAlert('Please connect Metamask', 1);
+        document.getElementById('btn-token-connect-metamask').classList.remove('d-none');
         conn = false;
     } else {
+        document.getElementById('btn-token-deploy').classList.remove('d-none');
         conn = true;
     }
-
-    if(!web3.currentProvider.isMetaMask) {
-        conn = false;
-        web3 = new Web3("https://data-seed-prebsc-1-s2.binance.org:8545/");
-    } else {
-        web3 = new Web3(Web3.givenProvider);
-    }
-
-    //console.log(currentAccount);
-    walletConnected = conn
     return conn;
 }
 
-let res2 = isConnected(); //checkWallet();
-
-
-*/
-
-const getAccounts = async () => {
-    accounts = "";
-    accounts = await web3.eth.getAccounts((error, result) => {
-            if (error) {
-                console.log(error);
-            } else {
-                console.log('else')
-                console.log(result)
-                return result;
-            }
-        });
-    console.log("last account")
-    console.log(accounts)
-    return (accounts);
-}
-
-const isConnected = async () => {
-    accounts = await getAccounts();
-    console.log(accounts)
-
-    if (!web3.currentProvider.isMetaMask) {
-        //conn = false;
-        console.log('the if');
-        web3 = new Web3("https://data-seed-prebsc-1-s2.binance.org:8545/");
-    } else {
-        console.log('the else');
-        web3 = new Web3(Web3.givenProvider);
+const ethRequest = async () => {
+    try {
+        let accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+        return (accounts[0])
+    } catch (e) {
+        console.log(e);
+        showAlert(e.message, 2);
     }
 
-
-    if (accounts.length == 0) {
-        showAlert("Please connect meta mask", 2, 1);
-    } else {
-
-        currentAccount = accounts[0];
-        document.getElementById("btn-token-deploy").disabled = false;
-
-    }
-    console.log(accounts)
-    return (accounts);
 }
 
-
-// useless async here
 async function deployIt() {
     try {
         //debug
@@ -172,6 +98,7 @@ async function deployIt() {
         showAlert("Contract deployed", 1, 1);
         console.log(tmpAddress);
     } catch (e) {
+        document.getElementById('btn-token-deploy').disabled = false;
         showAlert(e.message, 2, 0);
         //console.error(e);
     } finally {}
@@ -179,16 +106,37 @@ async function deployIt() {
 }
 
 
+document.getElementById('btn-token-deploy').addEventListener('click', async function() {
 
 
-//add a ready function
-let whenDocumentReady = (f) => {
-    /in/.test(document.readyState) ? setTimeout('whenDocumentReady(' + f + ')', 9) : f()
-}
+    let res = await isConnected();
+    if (res == false) {
+        showAlert('Please connect Metamask', 1);
+    } else {
+        document.getElementById('btn-token-deploy').disabled = true;
+        res = await deployIt();
+    }
+
+
+
+});
+
+document.getElementById('btn-token-connect-metamask').addEventListener('click', async function() {
+    let res = await ethRequest();
+    if (res != undefined) {
+        document.getElementById('btn-token-connect-metamask').classList.add('d-none');
+        document.getElementById('btn-token-deploy').classList.remove('d-none');
+    } else {
+        showAlert('Please connect Metamask', 1);
+    }
+    console.log("ddd")
+    console.log(res)
+});
+
+
 
 whenDocumentReady(isReady = () => {
-    //show the body div
-    document.getElementById('showBody').classList.remove('d-none');
+
     //get the current property
     let dataItem = JSON.parse(window.localStorage.currentDataItem);
     //clean up the name
@@ -207,37 +155,22 @@ whenDocumentReady(isReady = () => {
     document.getElementById('inp-isDeployed').value = "0";
 
 
+    if (typeof window.ethereum !== 'undefined') {
+        console.log('MetaMask is installed!');
+    } else {
+        showAlert('Please connect Metamask', 2, 1);
+    }
+
+    let res = isConnected();
 
 
 
 
-    //(async () => {
-
-    //})();
-    let res = isConnected(); //checkWallet();
-
-    document.getElementById('btn-token-deploy').addEventListener('click', function() {
-
-        //(async () => {
-        //    res = await deployIt();
-        //})();
+    //show the body div
+    document.getElementById('showBody').classList.remove('d-none');
 
 
-    })
+
+
 
 });
-
-
-
-/*
-        console.log(accounts.length);
-        console.log(accounts)
-        if (accounts.length == 0) {
-            showAlert("Please connect meta mask", 2, 1);
-        } else {
-
-            currentAccount = accounts[0];
-            document.getElementById("btn-token-deploy").disabled = false;
-
-        }
-    */

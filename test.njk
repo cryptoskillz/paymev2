@@ -7,11 +7,9 @@
 </body>
 <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
 <script type="text/javascript">
-/*
-    added a style to the disbled button
-
-
-*/
+let web3 = new Web3(Web3.givenProvider || "https://data-seed-prebsc-1-s2.binance.org:8545/");
+//set the contract address
+const contract_address = "0xbf86927f6ce7946608b3e64c91775e4845bc78dd";
 
 //globals
 let user; //hold the user details

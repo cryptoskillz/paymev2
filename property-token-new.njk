@@ -67,8 +67,11 @@ crumb : /property/
     Create
 </button>
 
-<button class="btn btn-primary btn-user btn-block" id="btn-token-deploy" disabled>
+<button class="btn btn-primary btn-user btn-block d-none" id="btn-token-deploy" >
     Deploy
+</button>
+<button class="btn btn-primary btn-user btn-block d-none" id="btn-token-connect-metamask" >
+    Connect Metamask
 </button>
 <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
 {% if env.ENVIRONMENT == 'local' %}
