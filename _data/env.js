@@ -21,7 +21,7 @@ module.exports = {
     DASHBOARDSTRAP: "Welcome to the content editor.",
     CANCREATEACCOUNT: process.env.CANCREATEACCOUNT,
     COMPLEXPASSWORD: process.env.COMPLEXPASSWORD,
-    RPCURl: process.env.RPCURl,
+    RPCURL: process.env.RPCURL,
     BLOCKCHAINNETWORK: process.env.BLOCKCHAINNETWORK,
     FACTORYCONTRACTADDRESS: process.env.FACTORYCONTRACTADDRESS,
     CRYPTOSALT: process.env.CRYPTOSALT,

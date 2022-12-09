@@ -2,8 +2,11 @@
 let whenDocumentReady = (f) => {
     /in/.test(document.readyState) ? setTimeout('whenDocumentReady(' + f + ')', 9) : f()
 }
+//set the factory address
+//note : we want to move this to the env var
 let factoryContractAbi;
 if (network == "testnet") {
+    //testnet abi
     factoryContractAbi = [{
         "inputs": [{
                 "internalType": "string",
@@ -36,7 +39,8 @@ if (network == "testnet") {
         "type": "function"
     }]
 } else {
-    //note do the live abi
+    //note 
+    //do the live abi
     factoryContractAbi = [{
         "inputs": [{
                 "internalType": "string",
@@ -70,38 +74,49 @@ if (network == "testnet") {
     }]
 }
 
-
+//set up web3
 let web3 = new Web3(Web3.givenProvider || RPCUrl);
-//set the contract abi
-
+//set an account variable
 let currentAccount = "";
 
+//this function gets the list of accounts from metamask
 const getAccounts = async () => {
     account = "";
     account = await web3.eth.getAccounts();
     return account[0];
 }
 
+//check if we are connected to metamask and if not then show the connect meta button
 const isConnected = async () => {
+    //set conneciton var
     let conn = false;
+    //get the accounts
     currentAccount = await getAccounts();
+    //checj that there are some accounts
     if (currentAccount === undefined) {
-        showAlert('Please connect Metamask', 1);
+        //no accounts show connect account button
+        showAlert('Please connect Metamask', 1, 0);
         document.getElementById('btn-token-connect-metamask').classList.remove('d-none');
+        //set connectiont to false
         conn = false;
     } else {
+        //show the deploy button
         document.getElementById('btn-token-deploy').classList.remove('d-none');
+        //set connection to true
         conn = true;
     }
     return conn;
 }
 
+//this function check we are connected
 const ethRequest = async () => {
     try {
+        //ask meta mask for the accounts
         let accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+        //return them 
         return (accounts[0])
     } catch (e) {
-        console.log(e);
+        //show the error (usually user hitting the reject button on metamask)
         showAlert(e.message, 2);
     }
 
@@ -109,10 +124,6 @@ const ethRequest = async () => {
 
 async function deployIt() {
     try {
-        //debug
-        //console.log(_name);
-        //console.log(_symbol);
-        //console.log(_totalSupply);
         //get the values
         let _name = document.getElementById('inp-name').value;
         let _symbol = document.getElementById('inp-contractSymbol').value;
@@ -129,17 +140,30 @@ async function deployIt() {
         let tmpAddress = res.events[0].address;
         //update the details
         document.getElementById("inp-isDeployed").value = "1"
-        document.getElementById("inp-contractAddress").value = `${blockExplorer}${tmpAddress}`;
+        document.getElementById("inp-contractAddress").value = `${blockExplorer}token/${tmpAddress}`;
         document.getElementById("btn-token-deploy").classList.add('d-none');
         document.getElementById("btn-create").classList.remove('d-none');
         showAlert("Contract deployed", 1, 1);
-        console.log(tmpAddress);
     } catch (e) {
         document.getElementById('btn-token-deploy').disabled = false;
-        showAlert(e.message, 2, 0);
+        showAlert(e.message, 2);
         //console.error(e);
     } finally {}
 
+}
+
+let skipDeploy = () => {
+    var checkBox = document.getElementById("skipDeploy");
+    // If the checkbox is checked, display the output text
+    if (checkBox.checked == true) {
+        document.getElementById("inp-isDeployed").value = "1"
+        document.getElementById("btn-token-deploy").classList.add('d-none');
+        document.getElementById("btn-create").classList.remove('d-none');
+    } else {
+        document.getElementById("inp-isDeployed").value = "0"
+        document.getElementById("btn-token-deploy").classList.remove('d-none');
+        document.getElementById("btn-create").classList.add('d-none');
+    }
 }
 
 
@@ -166,8 +190,6 @@ document.getElementById('btn-token-connect-metamask').addEventListener('click', 
     } else {
         showAlert('Please connect Metamask', 1);
     }
-    console.log("ddd")
-    console.log(res)
 });
 
 
@@ -205,7 +227,8 @@ whenDocumentReady(isReady = () => {
 
     //show the body div
     document.getElementById('showBody').classList.remove('d-none');
-
+    //set table name
+    document.getElementById('formTableName').value = theTable;
 
 
 

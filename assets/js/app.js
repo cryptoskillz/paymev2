@@ -357,6 +357,7 @@ This function handles the input of a create form
 */
 if (checkElement("btn-create") == true) {
     document.getElementById('btn-create').addEventListener('click', function() {
+
         //process the API call
         let xhrDone = (res) => {
             //parse the response
@@ -376,6 +377,7 @@ if (checkElement("btn-create") == true) {
                 tableData: theJson,
             }
             let bodyObjectJson = JSON.stringify(bodyObj);
+        
             //check we have valid data to submit
 
             //post the record

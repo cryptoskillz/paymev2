@@ -165,7 +165,7 @@ export async function onRequestPost(context) {
             }
             //compile the query
             theQuery = theQuery + theQueryFields + " ) VALUES ( " + theQueryValues + " ); "
-            //console.log(theQuery)
+            console.log(theQuery)
             //run the query
             const info = await context.env.DB.prepare(theQuery)
                 .run();

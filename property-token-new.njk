@@ -16,7 +16,7 @@ crumb : /property/
     var factoryContractAddress = "{{env.FACTORYCONTRACTADDRESS}}";
     var blockchainNetwork = "{{env.BLOCKCHAINNETWORK}}";
     var network = "{{env.NETWORK}}";
-    var RPCUrl = "{{env.RPCURl}}";
+    var RPCUrl = "{{env.RPCURL}}";
     var cryptoSalt= "{{env.CRYPTOSALT}}"
     var blockExplorer = "{{env.BLOCKEXPLORER}}"
 
@@ -67,6 +67,12 @@ crumb : /property/
             <input type="text" class="form-control form-control-user" name="inp-isDeployed" id="inp-isDeployed" placeholder="Is It Deployed?" value="">
             <span class="text-danger d-none" id="error-isDeployed"></span>  
         </div>
+        <div class="form-group">
+           <label>I already have a contract, no need to deploy</label>
+           <input type="checkbox" class="form-control" id="skipDeploy" value=""  onclick="skipDeploy()"> 
+
+        </div>
+
 
     </div>
      <input type="hidden" id="formTableName" name="formTableName" value="">

@@ -14,6 +14,10 @@ GENERAL
  ☐ fix the title for tenants / agents
  ☐ create an upstream script to remove non core files
 
+TABLES
+
+ ☐ Make the table render render hyper links clicable
+
 ACCOUNT
 
  ☐ refactor forgot password
@@ -31,6 +35,7 @@ API
 FUNCTIONS API
 
  ☐ does login / settings / regsiter.js stay in the root of api it kind of makes sense to move them to a frontend folder as thats what uses them  
+ ☐ check the table is set in api calls
  
 SECOND LEVEL CREATES (PROPERTY COSTS)
 
