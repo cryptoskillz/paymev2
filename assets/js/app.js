@@ -129,6 +129,14 @@ let buildFormElement = (theData, theValues = "") => {
         disabled = "disabled"
     }
 
+    //check if we have to set the admin id
+    if (theData.name == "adminId") {
+        theValue = JSON.parse(window.localStorage.user);
+        theValue = theValue.id;
+        disabled = "disabled";
+        visible = "d-none";
+    }
+
     //check if its date paid and its a create new
     if ((theData.name == "datePaid") && (theValues == "")) {
         var d = new Date();
