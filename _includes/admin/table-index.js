@@ -104,6 +104,13 @@ whenDocumentReady(isReady = () => {
                 if (key == "amount")
                     tmpValue = formatCurencyBaht(tmpValue);
                 //add the row
+
+                //check if its a hyperlink 
+                let res = isValidHttpUrl(tmpValue);
+                if (res == true)
+                {
+                    tmpValue = `<a href="${tmpValue}" target="_blank">${tmpValue}</a>`
+                }
                 tableRow.push(tmpValue);
             }
             buildColumn = 1;

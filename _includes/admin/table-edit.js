@@ -6,6 +6,10 @@
  let lookUpData = [];
 
  whenDocumentReady(isReady = () => {
+if (typeof loadMessage != 'undefined') 
+    showAlert(loadMessage.message,loadMessage.type,loadMessage.timeout)
+
+
      let getTableDone = (res) => {
          //parse the repsonse
          res = JSON.parse(res)

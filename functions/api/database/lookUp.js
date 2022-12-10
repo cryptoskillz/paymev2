@@ -41,7 +41,7 @@ export async function onRequestGet(context) {
         //check for a foreign key
         if (theData[i].foreignKey != "")
             theSQL = theSQL+` where ${theData[i].foreignKey} = ${theData[i].value}`;
-        console.log(theSQL)
+        //console.log(theSQL)
         //run it
         query = context.env.DB.prepare(theSQL);
         let queryResults = await query.all();

@@ -7,7 +7,6 @@ let user;
 //TODO: replace this with plain js
 (function($) {
     "use strict"; // Start of use strict
-
     // Toggle the side navigation
     $("#sidebarToggle, #sidebarToggleTop").on('click', function(e) {
         $("body").toggleClass("sidebar-toggled");
@@ -85,6 +84,15 @@ let clearFormData = () => {
     }
 }
 
+let isValidHttpUrl = (string) => {
+  let url;
+  try {
+    url = new URL(string);
+  } catch (_) {
+    return false;
+  }
+  return true;
+}
 
 
 /*
@@ -838,5 +846,7 @@ let xhrcall = (type = 1, method, bodyObj = "", setHeader = "", redirectUrl = "",
 
     }
 };
+
+
 
 checkLogin()

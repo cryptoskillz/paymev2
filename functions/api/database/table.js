@@ -165,7 +165,7 @@ export async function onRequestPost(context) {
             }
             //compile the query
             theQuery = theQuery + theQueryFields + " ) VALUES ( " + theQueryValues + " ); "
-            console.log(theQuery)
+            //console.log(theQuery)
             //run the query
             const info = await context.env.DB.prepare(theQuery)
                 .run();
@@ -191,7 +191,7 @@ export async function onRequestGet(context) {
         data, // arbitrary space for passing data between middlewares
     } = context;
     let theToken = await decodeJwt(request.headers, env.SECRET);
-        console.log(theToken)
+    //console.log(theToken)
     //check they are an admin
     if (theToken.payload.isAdmin == 1) {
         let query;
