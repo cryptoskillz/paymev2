@@ -13,6 +13,7 @@ GENERAL
  ✔ check the looks ups on each section (costs, payments, rental agreements, tokens, owners, user, proerties,  ) @done (22-12-04 02:47)
  ☐ fix the title for tenants / agents
  ☐ create an upstream script to remove non core files
+ ☐ replace crumb with custom button it a cleaner way to render the table
 
 TABLES
 
@@ -59,6 +60,7 @@ PROPERTY TOKENS
  ✔ add minted by address @done (22-12-11 01:24)
  ✔ add minted by userid @done (22-12-11 01:24)
  ☐ move the owners to a tab in the tokens so we can bind it to a token
+ ☐ update report to deal with the new owners structure
 
 
 CRYPTO 

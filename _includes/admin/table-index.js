@@ -47,15 +47,18 @@ let propertySelectChange = (id, theElement) => {
 whenDocumentReady(isReady = () => {
 
     let getTableDone = (res) => {
+
+        if (typeof customButton === 'undefined') {
+            customButton = "";
+        }
+        
+        // customButton = "";
         //parse json
         res = JSON.parse(res)
-        if (allowOnlyOne == 1)
-        {
+        if (allowOnlyOne == 1) {
             if (res.data.length == 0)
                 document.getElementById('btn-create-cy').classList.remove('d-none');
-        }
-        else
-        {
+        } else {
             document.getElementById('btn-create-cy').classList.remove('d-none');
         }
         //get the datatable
@@ -113,14 +116,13 @@ whenDocumentReady(isReady = () => {
 
                 //check if its a hyperlink 
                 let res = isValidHttpUrl(tmpValue);
-                if (res == true)
-                {
+                if (res == true) {
                     tmpValue = `<a href="${tmpValue}" target="_blank">${tmpValue}</a>`
                 }
                 tableRow.push(tmpValue);
             }
             buildColumn = 1;
-            tableRow.push(`${reportButton} ${editButton} ${deleteButton} ${propertySelect}`);
+            tableRow.push(`${customButton} ${reportButton} ${editButton} ${deleteButton} ${propertySelect}`);
             //add the table rows
             var rowNode = table
                 .row.add(tableRow)
@@ -133,7 +135,7 @@ whenDocumentReady(isReady = () => {
 
     //get the table results for this level.
     let getTableData = () => {
-       
+
         if (foreignKeys == "")
             url = adminUrl + `database/table?checkAdmin=${checkAdmin}&tablename=${theTable}&fields=${theFields}&getOnlyTableSchema=${getOnlyTableSchema}`
         else
