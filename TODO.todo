@@ -56,8 +56,8 @@ PROPERTY TOKENS
  ✔ if you delete and there are no properties left then show the create button @done (22-12-10 20:06)
  ✔ add edit @done (22-12-04 00:15)
  ✔ add delete @done (22-12-04 00:15)
- ☐ add minted by address 
- ☐ add minted by userid
+ ✔ add minted by address @done (22-12-11 01:24)
+ ✔ add minted by userid @done (22-12-11 01:24)
  ☐ move the owners to a tab in the tokens so we can bind it to a token
 
 

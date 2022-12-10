@@ -140,7 +140,11 @@ async function deployIt() {
         let tmpAddress = res.events[0].address;
         //update the details
         document.getElementById("inp-isDeployed").value = "1"
-        document.getElementById("inp-contractAddress").value = `${blockExplorer}token/${tmpAddress}`;
+        document.getElementById("inp-contractAddress").value = `${tmpAddress}`;
+        document.getElementById("inp-blockExplorerUrl").value = `${blockExplorer}token/${tmpAddress}`;
+        document.getElementById("inp-mintedAddress").value = `${currentAccount}`;
+        let tmpUser = JSON.parse(window.localStorage.user);
+        document.getElementById("inp-mintedUserId").value = `${tmpUser.id}`;
         document.getElementById("btn-token-deploy").classList.add('d-none');
         document.getElementById("btn-create").classList.remove('d-none');
         showAlert("Contract deployed", 1, 1);

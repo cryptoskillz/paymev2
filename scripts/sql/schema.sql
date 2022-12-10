@@ -44,6 +44,9 @@ CREATE TABLE "property_token" (
 	"id"	INTEGER,
 	"name"	TEXT,
 	"contractAddress" TEXT,
+	"blockExplorerUrl" TEXT,
+	"mintedAddress" TEXT,
+	"mintedUserId" TEXT,
 	"contractSymbol" TEXT,
 	"totalSupply" REAL,
 	"isDeployed" INTEGER DEFAULT 0,
@@ -55,6 +58,8 @@ CREATE TABLE "property_token" (
 	"deletedAt" TEXT,
 	PRIMARY KEY("id" AUTOINCREMENT)
 );
+
+
 
 CREATE TABLE "property_owner" (
 	"id"	INTEGER,
@@ -258,7 +263,7 @@ INSERT INTO "property" ("name",
 
 
 
-INSERT INTO "property_token" ("name","contractAddress","contractSymbol","totalSupply","propertyId") VALUES ('dcondo001Token','https://shasta.tronscan.org/#/token/1000690','DC1',1800000.00,1);
+INSERT INTO "property_token" ("name","contractAddress","blockExplorerUrl","mintedAddress","mintedUserId","contractSymbol","totalSupply","propertyId") VALUES ('dcondo001Token','0x97690a5c72122A6Ae11e5e702368774cf636E0d3','https://testnet.bscscan.com/token/0x97690a5c72122A6Ae11e5e702368774cf636E0d3','0x960f470cE20Bfb519facA30b770474BBCdF78ef8','1','DC1',1800000.00,1);
 
 INSERT INTO "property_owner" ("address","tokenAmount","propertyId","userId") VALUES ('https://shasta.tronscan.org/#/address/TFvzmpCYumneehXj963corUxYi7e2YaWXF',1000000,1,1);
 INSERT INTO "property_owner" ("address","tokenAmount","propertyId","userId") VALUES ('https://shasta.tronscan.org/#/address/TFvzmpCYumneehXj963corUxYi7e2YaWXF',800000,1,2);
