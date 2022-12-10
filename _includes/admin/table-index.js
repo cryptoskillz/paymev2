@@ -49,9 +49,15 @@ whenDocumentReady(isReady = () => {
     let getTableDone = (res) => {
         //parse json
         res = JSON.parse(res)
-        if (allowOnlyOne == 0)
+        if (allowOnlyOne == 1)
+        {
             if (res.data.length == 0)
                 document.getElementById('btn-create-cy').classList.remove('d-none');
+        }
+        else
+        {
+            document.getElementById('btn-create-cy').classList.remove('d-none');
+        }
         //get the datatable
         table = $('#dataTable').DataTable();
         //process the results

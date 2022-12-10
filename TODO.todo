@@ -16,7 +16,7 @@ GENERAL
 
 TABLES
 
- ☐ Make the table render render hyper links clicable
+ ✔ Make the table render render hyper links clicable @done (22-12-10 19:33)
 
 ACCOUNT
 
@@ -53,20 +53,29 @@ GETFORMDATA
 
 PROPERTY TOKENS
 
- ☐ if you delete and there are no properties left then show the create button
+ ✔ if you delete and there are no properties left then show the create button @done (22-12-10 20:06)
  ✔ add edit @done (22-12-04 00:15)
  ✔ add delete @done (22-12-04 00:15)
+ ☐ add minted by address 
+ ☐ add minted by userid
+ ☐ move the owners to a tab in the tokens so we can bind it to a token
+
 
 CRYPTO 
 
- ☐ make it connect to meta mask on cloudflare.  UKC works and its pretty much the same code
+ ✔ make it connect to meta mask on cloudflare.  UKC works and its pretty much the same code @done (22-12-10 19:33)
  ☐ test deploy on live net
  ☐ deploy live factory
- ☐ chnged contract address to factoryaddress
+ ✔ chnged contract address to factoryaddress @done (22-12-10 19:34)
  ☐ add eth
  ☐ add matic
  ☐ load the abi from an env var
- ☐ implement the switch network using chian id (I think)
+ ✔ implement the switch network using chian id (I think) @done (22-12-10 19:34)
+
+ PROPERTY 
+
+ ☐ check the is rented as it it is showign null
+ ☐ check add property is working 
 
 
 

@@ -541,8 +541,10 @@ if (checkElement("confirmation-modal-delete-button") == true) {
         let xhrDone = (res) => {
             res = JSON.parse(res);
             showAlert(res.message, 1)
-            table.row('#' + tableRowId).remove().draw()
-            removeDataItem(1, deleteId);
+            table.row('#' + tableRowId).remove().draw();
+            //show the create new button
+            if ((allowOnlyOne = 1) && (table.rows().count() == 0))
+                document.getElementById('btn-create-cy').classList.remove('d-none');
         }
 
         let bodyObj = {
@@ -562,7 +564,9 @@ let deleteTableItem = (dId, method, tTableName) => {
     tableRowId = dId;
     deleteMethod = method;
     deleteTableName = tTableName;
-    $('#confirmation-modal').modal('toggle')
+    $('#confirmation-modal').modal('toggle');
+    let tmpTable = $('#dataTable').DataTable();
+    console.log(tmpTable.data().count())
 }
 
 //todo : make this work with multipile fields and values.
