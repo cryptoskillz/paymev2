@@ -51,6 +51,9 @@ whenDocumentReady(isReady = () => {
         if (typeof customButton === 'undefined') {
             customButton = "";
         }
+        if (typeof customSelect === 'undefined') {
+            customSelect = "";
+        }
         
         // customButton = "";
         //parse json
@@ -65,37 +68,25 @@ whenDocumentReady(isReady = () => {
         table = $('#dataTable').DataTable();
         //process the results
         for (var i = 0; i < res.data.length; ++i) {
-            //set the data r
+            //set the data 
             let theData = res.data[i];
             //build the buttons
             let deleteButton = "";
             let editButton = "";
-            let propertySelect = "";
-            //build the buttons
-            let reportButton = "";
-            if (theCrumb == "/property/") {
-                reportButton = `<a href="/property/report?id=${theData.id}" id="ep-${theData.name}-${i}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-    <i class="fas fa-eye fa-sm text-white-50"></i> Report</a>`
-            }
+            //parse the custom button
+            customButton = customButton.replaceAll("[id]",theData.id);
+            customButton = customButton.replaceAll("[name]",theData.name);
+            customButton = customButton.replaceAll("[counter]",i);
+            //parse the custom select
+            customSelect = customSelect.replaceAll("[id]",theData.id);
+            customSelect = customSelect.replaceAll("[name]",theData.name);
+            customSelect = customSelect.replaceAll("[counter]",i);
+  
 
             //check if its an admin
             if (user.isAdmin == 1) {
-
                 editButton = `<a href="${theCrumb}edit?id=${theData.id}" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-edit fa-sm text-white-50"></i> Edit</a>`
                 deleteButton = `<a href="javascript:deleteTableItem(${theData.id},'api/database/table/','${theTable}')" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-trash fa-sm text-white-50"></i> Delete</a>`
-                if (theCrumb == "/property/") {
-                    propertySelect = `<select onchange="propertySelectChange(${theData.id},this)" class="form-select" aria-label="Default select example" name="propertySelect-${i}" id="propertySelect-${i}">
-                <option value="0">Please select</option>
-                  <option value="1">Rental agreements</option>
- <option value="2">Token</option>
-  <option value="3">Owners</option>
- <option value="4">Distributions</option>
-  <option value="5">Costs</option>
-  <option value="6">Payments</option>
-
-
-</select>`
-                }
             }
 
             //set a table row array
@@ -122,7 +113,7 @@ whenDocumentReady(isReady = () => {
                 tableRow.push(tmpValue);
             }
             buildColumn = 1;
-            tableRow.push(`${customButton} ${reportButton} ${editButton} ${deleteButton} ${propertySelect}`);
+            tableRow.push(`${editButton} ${deleteButton} ${customButton} ${customSelect} `);
             //add the table rows
             var rowNode = table
                 .row.add(tableRow)
