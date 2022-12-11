@@ -18,29 +18,9 @@ let propertySelectChange = (id, theElement) => {
     window.localStorage.currentDataItemId = id;
     //store the table
     window.localStorage.mainTable = theTable;
-    //find out which one we are going to.
-    switch (theElement.value) {
-        case "1":
-            window.location.href = `/property/rental-agreements/`
-
-            break;
-        case "2":
-            window.location.href = `/property/tokens/`
-
-            break;
-        case "3":
-            window.location.href = `/property/owners/`
-            break;
-        case "4":
-            window.location.href = `/property/distributions/`
-            break;
-        case "5":
-            window.location.href = `/property/costs/`
-            break;
-        case "6":
-            window.location.href = `/property/payments/`
-            break;
-    }
+    //load the URL
+    if (theElement.value != 0)
+        window.location.href = theElement.value;
 }
 
 

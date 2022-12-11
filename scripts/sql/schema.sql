@@ -14,6 +14,7 @@ DROP TABLE IF EXISTS userAccess;
 CREATE TABLE "property" (
 	"id"	INTEGER,
 	"name"	TEXT,
+	"paymentAddress" TEXT,
 	"address_1"	TEXT,
 	"address_2"	TEXT,
 	"address_3"	TEXT,
@@ -41,8 +42,8 @@ CREATE TABLE "property" (
 );
 
 
-INSERT INTO "property" ("name","address_1", "address_2","address_3", "address_4", "address_5", "address_6","bathrooms","bedrooms","localCost","taxesCost","adminId") VALUES ('DCONDO', 'address 1', 'address 2', 'address 3', 'address 4', 'address 5', 'address 6',1,2,1800000,40000,1);
-INSERT INTO "property" ("name","address_1", "address_2","address_3", "address_4", "address_5", "address_6","bathrooms","bedrooms","localCost","taxesCost","adminId") VALUES ('DCONDO 2', 'address 1', 'address 2', 'address 3', 'address 4','address 5','address 6',1,2,1800000,40000,1);
+INSERT INTO "property" ("name","paymentAddress","address_1", "address_2","address_3", "address_4", "address_5", "address_6","bathrooms","bedrooms","localCost","taxesCost","adminId","currentlyRented") VALUES ('DCONDO', '0x960f470cE20Bfb519facA30b770474BBCdF78ef8','address 1', 'address 2', 'address 3', 'address 4', 'address 5', 'address 6',1,2,1800000,40000,1,1);
+INSERT INTO "property" ("name","paymentAddress","address_1", "address_2","address_3", "address_4", "address_5", "address_6","bathrooms","bedrooms","localCost","taxesCost","adminId","currentlyRented") VALUES ('DCONDO 2', '0x960f470cE20Bfb519facA30b770474BBCdF78ef8','address 1', 'address 2', 'address 3', 'address 4','address 5','address 6',1,2,1800000,40000,1,1);
 
 CREATE TABLE "property_token" (
 	"id"	INTEGER,

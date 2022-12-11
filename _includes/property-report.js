@@ -31,7 +31,7 @@ whenDocumentReady(isReady = () => {
         table = addTableRow("Cost", res.property.localCost, table);
         table = addTableRow("Taxes", res.property.taxesCost, table);
         table = addTableRow("Currency", "฿", table);
-        table = addTableRow("Contract", `<a href="${res.token.address}" target="_blank">${res.token.address}</a>`, table);
+        table = addTableRow("Contract", `<a href="${res.token.blockExplorerUrl}" target="_blank">${res.token.contractAddress}</a>`, table);
         table = table + "</table>";
         table = table + "</table>";
         //console.log(table)
