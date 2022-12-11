@@ -15,6 +15,18 @@ title :
     let checkAdmin = 1;
     let getOnlyTableSchema = 0;
     let allowOnlyOne = 0;
+    let customButton = "";
+    let customSelect = `
+            <select onchange="propertySelectChange([id],this)" class="form-select" aria-label="Property select" name="propertySelect-[counter]" id="propertySelect-[counter]">
+                <option value="0">Please select</option>
+                <option value="/property/report?id=[id]">Report</option>
+                <option value="/property/rental-agreements/">Rental agreements</option>
+                <option value="/property/tokens/">Token</option>
+                <option value="/property/owners/">Owners</option>
+                <option value="/property/distributions/">Distributions</option>
+                <option value="/property/costs/">Costs</option>
+                <option value="/property/payments/">Payments</option>
+        </select>`;
 </script>
 {% set theJs %}
     {% include 'admin/table-index.js' %}

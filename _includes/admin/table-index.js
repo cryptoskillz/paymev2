@@ -18,81 +18,55 @@ let propertySelectChange = (id, theElement) => {
     window.localStorage.currentDataItemId = id;
     //store the table
     window.localStorage.mainTable = theTable;
-    //find out which one we are going to.
-    switch (theElement.value) {
-        case "1":
-            window.location.href = `/property/rental-agreements/`
-
-            break;
-        case "2":
-            window.location.href = `/property/tokens/`
-
-            break;
-        case "3":
-            window.location.href = `/property/owners/`
-            break;
-        case "4":
-            window.location.href = `/property/distributions/`
-            break;
-        case "5":
-            window.location.href = `/property/costs/`
-            break;
-        case "6":
-            window.location.href = `/property/payments/`
-            break;
-    }
+    //load the URL
+    if (theElement.value != 0)
+        window.location.href = theElement.value;
 }
 
 
 whenDocumentReady(isReady = () => {
 
     let getTableDone = (res) => {
+
+        if (typeof customButton === 'undefined') {
+            customButton = "";
+        }
+        if (typeof customSelect === 'undefined') {
+            customSelect = "";
+        }
+        
+        // customButton = "";
         //parse json
         res = JSON.parse(res)
-        if (allowOnlyOne == 1)
-        {
+        if (allowOnlyOne == 1) {
             if (res.data.length == 0)
                 document.getElementById('btn-create-cy').classList.remove('d-none');
-        }
-        else
-        {
+        } else {
             document.getElementById('btn-create-cy').classList.remove('d-none');
         }
         //get the datatable
         table = $('#dataTable').DataTable();
         //process the results
         for (var i = 0; i < res.data.length; ++i) {
-            //set the data r
+            //set the data 
             let theData = res.data[i];
             //build the buttons
             let deleteButton = "";
             let editButton = "";
-            let propertySelect = "";
-            //build the buttons
-            let reportButton = "";
-            if (theCrumb == "/property/") {
-                reportButton = `<a href="/property/report?id=${theData.id}" id="ep-${theData.name}-${i}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-    <i class="fas fa-eye fa-sm text-white-50"></i> Report</a>`
-            }
+            //parse the custom button
+            customButton = customButton.replaceAll("[id]",theData.id);
+            customButton = customButton.replaceAll("[name]",theData.name);
+            customButton = customButton.replaceAll("[counter]",i);
+            //parse the custom select
+            customSelect = customSelect.replaceAll("[id]",theData.id);
+            customSelect = customSelect.replaceAll("[name]",theData.name);
+            customSelect = customSelect.replaceAll("[counter]",i);
+  
 
             //check if its an admin
             if (user.isAdmin == 1) {
-
                 editButton = `<a href="${theCrumb}edit?id=${theData.id}" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-edit fa-sm text-white-50"></i> Edit</a>`
                 deleteButton = `<a href="javascript:deleteTableItem(${theData.id},'api/database/table/','${theTable}')" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-trash fa-sm text-white-50"></i> Delete</a>`
-                if (theCrumb == "/property/") {
-                    propertySelect = `<select onchange="propertySelectChange(${theData.id},this)" class="form-select" aria-label="Default select example" name="propertySelect-${i}" id="propertySelect-${i}">
-                <option value="0">Please select</option>
-                  <option value="1">Rental agreements</option>
- <option value="2">Token</option>
-  <option value="3">Owners</option>
- <option value="4">Distributions</option>
-  <option value="5">Costs</option>
-  <option value="6">Payments</option>
-
-
-</select>`
-                }
             }
 
             //set a table row array
@@ -113,14 +87,13 @@ whenDocumentReady(isReady = () => {
 
                 //check if its a hyperlink 
                 let res = isValidHttpUrl(tmpValue);
-                if (res == true)
-                {
+                if (res == true) {
                     tmpValue = `<a href="${tmpValue}" target="_blank">${tmpValue}</a>`
                 }
                 tableRow.push(tmpValue);
             }
             buildColumn = 1;
-            tableRow.push(`${reportButton} ${editButton} ${deleteButton} ${propertySelect}`);
+            tableRow.push(`${editButton} ${deleteButton} ${customButton} ${customSelect} `);
             //add the table rows
             var rowNode = table
                 .row.add(tableRow)
@@ -133,7 +106,7 @@ whenDocumentReady(isReady = () => {
 
     //get the table results for this level.
     let getTableData = () => {
-       
+
         if (foreignKeys == "")
             url = adminUrl + `database/table?checkAdmin=${checkAdmin}&tablename=${theTable}&fields=${theFields}&getOnlyTableSchema=${getOnlyTableSchema}`
         else

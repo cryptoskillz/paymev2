@@ -1,16 +1,6 @@
 GENERAL 
 
  ☐ update the readme 
- ✔ make sure payments and costs is using the ID for the where @done (22-12-02 01:57)
- ✔ make sure all tables has a name field to make lookups work neater @done (22-12-03 01:07)
- ✔ look up is always looking for a property ID we would like to improve this @done (22-12-03 01:07)
- ✔ add rental agreement @done (22-12-02 15:23)
- ✔ add property_owner @done (22-12-04 00:15)
- ✔ add property_distribution @done (22-12-04 00:15)
- ✔ add agent @done (22-12-04 03:56)
- ✔ add tennant @done (22-12-04 03:56)
- ✔ get the column rendering working in table-index.js then we can have 1 file for property indexs @done (22-12-04 00:15)
- ✔ check the looks ups on each section (costs, payments, rental agreements, tokens, owners, user, proerties,  ) @done (22-12-04 02:47)
  ☐ fix the title for tenants / agents
  ☐ create an upstream script to remove non core files
 
@@ -39,7 +29,6 @@ FUNCTIONS API
  
 SECOND LEVEL CREATES (PROPERTY COSTS)
 
- ✔ add a look up so we can put in a dropdowns for foreign fields. @done (22-12-03 01:08)
 
 
 LOOK UP
@@ -53,29 +42,21 @@ GETFORMDATA
 
 PROPERTY TOKENS
 
- ✔ if you delete and there are no properties left then show the create button @done (22-12-10 20:06)
- ✔ add edit @done (22-12-04 00:15)
- ✔ add delete @done (22-12-04 00:15)
- ✔ add minted by address @done (22-12-11 01:24)
- ✔ add minted by userid @done (22-12-11 01:24)
- ☐ move the owners to a tab in the tokens so we can bind it to a token
-
 
 CRYPTO 
 
- ✔ make it connect to meta mask on cloudflare.  UKC works and its pretty much the same code @done (22-12-10 19:33)
  ☐ test deploy on live net
  ☐ deploy live factory
- ✔ chnged contract address to factoryaddress @done (22-12-10 19:34)
  ☐ add eth
  ☐ add matic
  ☐ load the abi from an env var
- ✔ implement the switch network using chian id (I think) @done (22-12-10 19:34)
 
  PROPERTY 
 
- ☐ check the is rented as it it is showign null
- ✔ check add property is working @done (22-12-11 00:46)
+
+ TABLE INDEX JS
+
+ ☐ add look up to render out the foreign data
 
 
 

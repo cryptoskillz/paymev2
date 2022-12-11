@@ -64,7 +64,7 @@ export async function onRequestPut(context) {
             }
             //compile the query
             theQuery = theQuery + theQueryValues + theQueryWhere;
-            //console.log(theQuery);
+            console.log(theQuery);
             const info = await context.env.DB.prepare(theQuery)
                 .run();
 

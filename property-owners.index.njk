@@ -2,7 +2,7 @@
 layout: layout.njk
 permalink: /property/owners/
 crumb : /property/owner/
-fields : ["id","name","address","tokenAmount","createdAt"]
+fields : ["id","userId","propertyTokenId","tokenAmount","createdAt"]
 title : owners
 ---
 <script>
@@ -10,10 +10,11 @@ title : owners
     let theCrumb = "{{ crumb }}";
     let theTable = "property_owner";
     let theFields = "{% for field in fields %}{% if loop.last %}{{ field }}{% else %}{{ field }},{% endif %}{% endfor %}";
-    let foreignKeys = {"id":"propertyId"}
+    let foreignKeys = "";
     let getOnlyTableSchema = 0;
     let allowOnlyOne = 0;
     let checkAdmin = 0;
+        let lookUps = [{"table":"user","key":"userId","foreignKey":"","value":""},{"table":"property_token","key":"propertyTokenId","foreignKey":"","value":""}]
 </script>
 {% set theJs %}
     {% include 'admin/table-index.js' %}

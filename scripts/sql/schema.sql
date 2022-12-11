@@ -14,6 +14,7 @@ DROP TABLE IF EXISTS userAccess;
 CREATE TABLE "property" (
 	"id"	INTEGER,
 	"name"	TEXT,
+	"paymentAddress" TEXT,
 	"address_1"	TEXT,
 	"address_2"	TEXT,
 	"address_3"	TEXT,
@@ -40,6 +41,10 @@ CREATE TABLE "property" (
 	PRIMARY KEY("id" AUTOINCREMENT)
 );
 
+
+INSERT INTO "property" ("name","paymentAddress","address_1", "address_2","address_3", "address_4", "address_5", "address_6","bathrooms","bedrooms","localCost","taxesCost","adminId","currentlyRented") VALUES ('DCONDO', '0x960f470cE20Bfb519facA30b770474BBCdF78ef8','address 1', 'address 2', 'address 3', 'address 4', 'address 5', 'address 6',1,2,1800000,40000,1,1);
+INSERT INTO "property" ("name","paymentAddress","address_1", "address_2","address_3", "address_4", "address_5", "address_6","bathrooms","bedrooms","localCost","taxesCost","adminId","currentlyRented") VALUES ('DCONDO 2', '0x960f470cE20Bfb519facA30b770474BBCdF78ef8','address 1', 'address 2', 'address 3', 'address 4','address 5','address 6',1,2,1800000,40000,1,1);
+
 CREATE TABLE "property_token" (
 	"id"	INTEGER,
 	"name"	TEXT,
@@ -59,14 +64,13 @@ CREATE TABLE "property_token" (
 	PRIMARY KEY("id" AUTOINCREMENT)
 );
 
+INSERT INTO "property_token" ("name","contractAddress","blockExplorerUrl","mintedAddress","mintedUserId","contractSymbol","totalSupply","propertyId") VALUES ('dcondo001Token','0x97690a5c72122A6Ae11e5e702368774cf636E0d3','https://testnet.bscscan.com/token/0x97690a5c72122A6Ae11e5e702368774cf636E0d3','0x960f470cE20Bfb519facA30b770474BBCdF78ef8','1','DC1',1800000.00,1);
 
 
 CREATE TABLE "property_owner" (
 	"id"	INTEGER,
-	"name" TEXT,
-	"address" TEXT,
 	"tokenAmount" REAL,
-	"propertyId" INTEGER,
+	"propertyTokenId" INTEGER,
 	"userId" INTEGER,
 	"isDeleted" INTEGER DEFAULT 0,
 	"createdAt" TEXT DEFAULT CURRENT_TIMESTAMP,
@@ -75,6 +79,13 @@ CREATE TABLE "property_owner" (
 	"deletedAt" TEXT,
 	PRIMARY KEY("id" AUTOINCREMENT)
 );
+
+
+INSERT INTO "property_owner" ("tokenAmount","propertyTokenId","userId") VALUES (1000000,1,1);
+INSERT INTO "property_owner" ("tokenAmount","propertyTokenId","userId") VALUES (800000,1,2);
+INSERT INTO "property_owner" ("tokenAmount","propertyTokenId","userId") VALUES (800000,2,2);
+
+
 
 CREATE TABLE "property_distribution" (
 	"id"	INTEGER,
@@ -92,6 +103,7 @@ CREATE TABLE "property_distribution" (
 	PRIMARY KEY("id" AUTOINCREMENT)
 );
 
+INSERT INTO "property_distribution" ("name","description","amount","datePaid","propertyId","propertyOwnerId") VALUES ('cryptoskillz','',10000,'2021-05-05',1,1);
 
 CREATE TABLE "rental_agreement" (
 	"id"	INTEGER,
@@ -113,6 +125,10 @@ CREATE TABLE "rental_agreement" (
 	PRIMARY KEY("id" AUTOINCREMENT)
 );
 
+INSERT INTO "rental_agreement" ("name","amount","deposit","contract","startDate","endDate","active","agentId","propertyId","tenantId") VALUES ('dcondo1',6700,13400,'','2021-04-04','2022-04-04',0,1,1,1);
+INSERT INTO "rental_agreement" ("name","amount","deposit","contract","startDate","endDate","active","agentId","propertyId","tenantId") VALUES ('dcondo2',8000,16000,'','2022-08-01','2023-08-01',1,1,1,1);
+
+
 CREATE TABLE "rental_cost" (
 	"id"	INTEGER,
 	"type"	TEXT,
@@ -128,151 +144,6 @@ CREATE TABLE "rental_cost" (
 	"deletedAt" TEXT,
 	PRIMARY KEY("id" AUTOINCREMENT)
 );
-
-CREATE TABLE "rental_payment" (
-	"id"	INTEGER,
-	"type"	TEXT,
-	"description" TEXT,
-	"amount" REAL,
-	"datePaid" TEXT,
-	"rentalId" INTEGER,
-	"propertyId" INTEGER,
-	"isDeleted" INTEGER DEFAULT 0,
-	"createdAt" TEXT DEFAULT CURRENT_TIMESTAMP,
-	"updatedAt" TEXT,
-	"publishedAt" TEXT DEFAULT CURRENT_TIMESTAMP,
-	"deletedAt" TEXT,
-	PRIMARY KEY("id" AUTOINCREMENT)
-);
-
-
-CREATE TABLE "agent" (
-	"id"	INTEGER,
-	"name"	TEXT,
-	"email" TEXT,
-	"url" TEXT,
-	"isDeleted" INTEGER DEFAULT 0,
-	"createdAt" TEXT DEFAULT CURRENT_TIMESTAMP,
-	"updatedAt" TEXT,
-	"publishedAt" TEXT DEFAULT CURRENT_TIMESTAMP,
-	"deletedAt" TEXT,
-	PRIMARY KEY("id" AUTOINCREMENT)
-);
-
-CREATE TABLE "tenant" (
-	"id"	INTEGER,
-	"name"	TEXT,
-	"email" TEXT,
-	"phone" TEXT,
-	"isDeleted" INTEGER DEFAULT 0,
-	"createdAt" TEXT DEFAULT CURRENT_TIMESTAMP,
-	"updatedAt" TEXT,
-	"publishedAt" TEXT DEFAULT CURRENT_TIMESTAMP,
-	"deletedAt" TEXT,
-	PRIMARY KEY("id" AUTOINCREMENT)
-);
-
-CREATE TABLE "user" (
-	"id"	INTEGER,
-	"name"	TEXT,
-	"email" TEXT,
-	"phone" TEXT,
-	"username" TEXT,
-	"password" TEXT,
-	"apiSecret" TEXT,
-	"confirmed" TEXT DEFAULT 0,
-	"isBlocked" INTEGER DEFAULT 0,
-	"isAdmin" INTEGER DEFAULT 0,
-	"adminId" INTEGER,
-	"isDeleted" INTEGER DEFAULT 0,
-	"createdAt" TEXT DEFAULT CURRENT_TIMESTAMP,
-	"updatedAt" TEXT,
-	"publishedAt" TEXT DEFAULT CURRENT_TIMESTAMP,
-	"deletedAt" TEXT,
-	PRIMARY KEY("id" AUTOINCREMENT)
-);
-
-CREATE TABLE "userAccess" (
-	"id"	INTEGER,
-	"userId"	INTEGER,
-	"foreignId" INTEGER,
-	"isDeleted" INTEGER DEFAULT 0,
-	"createdAt" TEXT DEFAULT CURRENT_TIMESTAMP,
-	"updatedAt" TEXT,
-	"publishedAt" TEXT DEFAULT CURRENT_TIMESTAMP,
-	"deletedAt" TEXT,
-	PRIMARY KEY("id" AUTOINCREMENT)
-);
-
-
-
-
-
-
-INSERT INTO "property" ("name",
-						"address_1", 
-						"address_2",
-						"address_3", 
-						"address_4", 
-						"address_5", 
-						"address_6",
-						"bathrooms",
-						"bedrooms",
-						"localCost",
-						"taxesCost",
-						"adminId") VALUES 
-						('DCONDO', 
-						'address 1', 
-						'address 2', 
-						'address 3', 
-						'address 4', 
-						'address 5', 
-						'address 6',
-						1,
-						2,
-						1800000,
-						40000,
-						1
-						);
-
-INSERT INTO "property" ("name",
-						"address_1", 
-						"address_2",
-						"address_3", 
-						"address_4", 
-						"address_5", 
-						"address_6",
-						"bathrooms",
-						"bedrooms",
-						"localCost",
-						"taxesCost",
-						"adminId") VALUES 
-						('DCONDO 2', 
-						'address 1', 
-						'address 2', 
-						'address 3', 
-						'address 4', 
-						'address 5', 
-						'address 6',
-						1,
-						2,
-						1800000,
-						40000,
-						1
-						);
-
-
-
-INSERT INTO "property_token" ("name","contractAddress","blockExplorerUrl","mintedAddress","mintedUserId","contractSymbol","totalSupply","propertyId") VALUES ('dcondo001Token','0x97690a5c72122A6Ae11e5e702368774cf636E0d3','https://testnet.bscscan.com/token/0x97690a5c72122A6Ae11e5e702368774cf636E0d3','0x960f470cE20Bfb519facA30b770474BBCdF78ef8','1','DC1',1800000.00,1);
-
-INSERT INTO "property_owner" ("address","tokenAmount","propertyId","userId") VALUES ('https://shasta.tronscan.org/#/address/TFvzmpCYumneehXj963corUxYi7e2YaWXF',1000000,1,1);
-INSERT INTO "property_owner" ("address","tokenAmount","propertyId","userId") VALUES ('https://shasta.tronscan.org/#/address/TFvzmpCYumneehXj963corUxYi7e2YaWXF',800000,1,2);
-INSERT INTO "property_owner" ("address","tokenAmount","propertyId","userId") VALUES ('https://shasta.tronscan.org/#/address/TFvzmpCYumneehXj963corUxYi7e2YaWXF',800000,2,2);
-
-
-
-INSERT INTO "rental_agreement" ("name","amount","deposit","contract","startDate","endDate","active","agentId","propertyId","tenantId") VALUES ('dcondo1',6700,13400,'','2021-04-04','2022-04-04',0,1,1,1);
-INSERT INTO "rental_agreement" ("name","amount","deposit","contract","startDate","endDate","active","agentId","propertyId","tenantId") VALUES ('dcondo2',8000,16000,'','2022-08-01','2023-08-01',1,1,1,1);
 
 INSERT INTO "rental_cost" ("type","description","amount","datePaid","rentalId","propertyId") VALUES ('Management','Management',500,'2021-06-06',1,1);
 INSERT INTO "rental_cost" ("type","description","amount","datePaid","rentalId","propertyId") VALUES ('Maintenance','New keycard',200,'2021-06-06',1,1);
@@ -334,6 +205,22 @@ INSERT INTO "rental_cost" ("type","description","amount","datePaid","rentalId","
 INSERT INTO "rental_cost" ("type","description","amount","datePaid","rentalId","propertyId") VALUES ('Service','Common Area Oct - Dec 2022',3192,'2022-10-20',2,1);
 INSERT INTO "rental_cost" ("type","description","amount","datePaid","rentalId","propertyId") VALUES ('Service','Service Charge 5%',160,'2022-10-20',2,1);
 
+CREATE TABLE "rental_payment" (
+	"id"	INTEGER,
+	"type"	TEXT,
+	"description" TEXT,
+	"amount" REAL,
+	"datePaid" TEXT,
+	"rentalId" INTEGER,
+	"propertyId" INTEGER,
+	"isDeleted" INTEGER DEFAULT 0,
+	"createdAt" TEXT DEFAULT CURRENT_TIMESTAMP,
+	"updatedAt" TEXT,
+	"publishedAt" TEXT DEFAULT CURRENT_TIMESTAMP,
+	"deletedAt" TEXT,
+	PRIMARY KEY("id" AUTOINCREMENT)
+);
+
 INSERT INTO "rental_payment" ("type","description","amount","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',6700,'2021-04-02',1,1);
 INSERT INTO "rental_payment" ("type","description","amount","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',6700,'2021-05-05',1,1);
 INSERT INTO "rental_payment" ("type","description","amount","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',6700,'2021-06-06',1,1);
@@ -355,14 +242,73 @@ INSERT INTO "rental_payment" ("type","description","amount","datePaid","rentalId
 INSERT INTO "rental_payment" ("type","description","amount","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',8000,'2022-09-20',2,1);
 INSERT INTO "rental_payment" ("type","description","amount","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',8000,'2022-10-22',2,1);
 
-INSERT INTO "property_distribution" ("name","description","amount","datePaid","propertyId","propertyOwnerId") VALUES ('cryptoskillz','',10000,'2021-05-05',1,1);
+
+CREATE TABLE "agent" (
+	"id"	INTEGER,
+	"name"	TEXT,
+	"email" TEXT,
+	"url" TEXT,
+	"isDeleted" INTEGER DEFAULT 0,
+	"createdAt" TEXT DEFAULT CURRENT_TIMESTAMP,
+	"updatedAt" TEXT,
+	"publishedAt" TEXT DEFAULT CURRENT_TIMESTAMP,
+	"deletedAt" TEXT,
+	PRIMARY KEY("id" AUTOINCREMENT)
+);
 
 INSERT INTO "agent" ("name","email","url") VALUES ('Perfect Homes','','https://perfecthomes.th');
 
+CREATE TABLE "tenant" (
+	"id"	INTEGER,
+	"name"	TEXT,
+	"email" TEXT,
+	"phone" TEXT,
+	"isDeleted" INTEGER DEFAULT 0,
+	"createdAt" TEXT DEFAULT CURRENT_TIMESTAMP,
+	"updatedAt" TEXT,
+	"publishedAt" TEXT DEFAULT CURRENT_TIMESTAMP,
+	"deletedAt" TEXT,
+	PRIMARY KEY("id" AUTOINCREMENT)
+);
+
 INSERT INTO "tenant" ("name","email","phone") VALUES ('tenanat 1','tenant1@gmail.com','0123456789');
 
-INSERT INTO "user" ("name","email","phone","username","password","apiSecret","confirmed","isBlocked","isAdmin","isDeleted","adminId") VALUES ('cryptoskillz','cryptoskillz@protonmail.com','123456789','cryptoskillz','test','a7fd098f-79cf-4c37-a527-2c9079a6e6a1',1,0,1,0,0);
-INSERT INTO "user" ("name","email","phone","username","password","apiSecret","confirmed","isBlocked","isAdmin","isDeleted","adminId") VALUES ('seller 2','test@test.com','123456789','test','test','a7fd098f-79cf-4c37-a527-2c9079a6e6a1',1,0,0,0,1);
+CREATE TABLE "user" (
+	"id"	INTEGER,
+	"name"	TEXT,
+	"email" TEXT,
+	"phone" TEXT,
+	"cryptoAddress" TEXT,
+	"username" TEXT,
+	"password" TEXT,
+	"apiSecret" TEXT,
+	"confirmed" TEXT DEFAULT 0,
+	"isBlocked" INTEGER DEFAULT 0,
+	"isAdmin" INTEGER DEFAULT 0,
+	"adminId" INTEGER,
+	"isDeleted" INTEGER DEFAULT 0,
+	"createdAt" TEXT DEFAULT CURRENT_TIMESTAMP,
+	"updatedAt" TEXT,
+	"publishedAt" TEXT DEFAULT CURRENT_TIMESTAMP,
+	"deletedAt" TEXT,
+	PRIMARY KEY("id" AUTOINCREMENT)
+);
+
+INSERT INTO "user" ("name","email","phone","cryptoAddress","username","password","apiSecret","confirmed","isBlocked","isAdmin","isDeleted","adminId") VALUES ('cryptoskillz','cryptoskillz@protonmail.com','123456789','0x960f470cE20Bfb519facA30b770474BBCdF78ef8','cryptoskillz','test','a7fd098f-79cf-4c37-a527-2c9079a6e6a1',1,0,1,0,0);
+INSERT INTO "user" ("name","email","phone","cryptoAddress","username","password","apiSecret","confirmed","isBlocked","isAdmin","isDeleted","adminId") VALUES ('seller 2','test@test.com','123456789','0x960f470cE20Bfb519facA30b770474BBCdF78ef8','test','test','a7fd098f-79cf-4c37-a527-2c9079a6e6a1',1,0,0,0,1);
+
+
+CREATE TABLE "userAccess" (
+	"id"	INTEGER,
+	"userId"	INTEGER,
+	"foreignId" INTEGER,
+	"isDeleted" INTEGER DEFAULT 0,
+	"createdAt" TEXT DEFAULT CURRENT_TIMESTAMP,
+	"updatedAt" TEXT,
+	"publishedAt" TEXT DEFAULT CURRENT_TIMESTAMP,
+	"deletedAt" TEXT,
+	PRIMARY KEY("id" AUTOINCREMENT)
+);
 
 INSERT INTO "userAccess" ("userId","foreignId") VALUES (1,1);
 INSERT INTO "userAccess" ("userId","foreignId") VALUES (2,1);

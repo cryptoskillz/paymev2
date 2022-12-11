@@ -4,9 +4,10 @@ permalink: /property/owner/new/
 ---
 <script>
     let theTable = "property_owner";
-    let theFields = "propertyId,name,address,tokenAmount,userId";
-    let foreignKeys = {"id":"propertyId"}
+    let theFields = "tokenAmount,userId,propertyTokenId";
+    let foreignKeys = ""
     //set the loop up table
-    let lookUps = [{"table":"user","key":"userId","foreignKey":"","value":""}]
+
+    let lookUps = [{"table":"user","key":"userId","foreignKey":"","value":""},{"table":"property_token","key":"propertyTokenId","foreignKey":"","value":""}]
 </script>
 {% include "admin/table-new.njk" %}

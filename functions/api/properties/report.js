@@ -28,7 +28,7 @@ export async function onRequestGet(context) {
     const tokenresult = await token.first();
     //get the owners for the property
 
-    const owners = context.env.DB.prepare(`SELECT property_owner.id,property_owner.address,property_owner.tokenAmount,user.name,user.email from property_owner LEFT JOIN user ON property_owner.userId = user.id where property_owner.propertyId = ${id}`);
+    const owners = context.env.DB.prepare(`SELECT property_owner.id,property_owner.tokenAmount,user.name,user.email from property_owner LEFT JOIN user ON property_owner.userId = user.id where property_owner.propertyTokenId = ${tokenresult.id}`);
     const ownersresults = await owners.all();
     //get the owners for the  distributions
     const distributions = context.env.DB.prepare(`SELECT * from property_distribution where propertyId = ${id}`);
