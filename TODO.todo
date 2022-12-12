@@ -68,6 +68,8 @@ CRYPTO
  ☐ show a list of owners with how much they are owed and button to send payment
  ☐ record the above payments in d1
  ☐ get the current cyrpto exchange rate so we can populate the field do this as api worker
+ ✔ check the connected account address matches the payment address @done (22-12-12 23:59)
+ ☐ move the reusable crypto functions to app.js
 
 
 

@@ -7,6 +7,12 @@ let lookUpData = [];
 
 whenDocumentReady(isReady = () => {
 
+    if (typeof lookUps === 'undefined') {
+        lookUps = {};
+    } else {
+        lookUps = JSON.stringify(lookUps);
+    }
+
     //process the result from the table API call.
     let getTableDone = (res) => {
         res = JSON.parse(res);
@@ -42,7 +48,7 @@ whenDocumentReady(isReady = () => {
         getTableData();
     }
 
-    if (lookUps != "")
+    if (Object.keys(lookUps).length === 0)
     {
         lookUps = JSON.stringify(lookUps);
         //call the data

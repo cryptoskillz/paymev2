@@ -2,6 +2,7 @@
 let whenDocumentReady = (f) => {
     /in/.test(document.readyState) ? setTimeout('whenDocumentReady(' + f + ')', 9) : f()
 }
+
 //set the factory address
 //note : we want to move this to the env var
 let factoryContractAbi;

@@ -27,7 +27,7 @@ let propertySelectChange = (id, theElement) => {
 whenDocumentReady(isReady = () => {
 
     if (typeof lookUps === 'undefined') {
-        lookUps = "";
+        varlookUps = {};
     } else {
         lookUps = JSON.stringify(lookUps);
     }
