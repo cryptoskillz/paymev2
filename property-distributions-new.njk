@@ -30,11 +30,16 @@ permalink: /property/distribution/new/
 
     <div id="formInputs">
         <div class="form-group">
-            <label>Available ETH</label>
-            <input type="text" class="form-control form-control-user" name="inp-balance" id="inp-balance" aria-describedby="propertyId" value="" disabled>
+            <label>Available BNB</label>
+            <input type="text" class="form-control form-control-user" name="inp-balance" id="inp-balance" aria-describedby="balance" value="" disabled>
             <span class="text-danger d-none" id="error-balance"></span>  
         </div>
-
+         <div class="form-group">
+            <label>Current USD Value</label>
+            <input type="text" class="form-control form-control-user" name="inp-balanceUSD" id="inp-balanceUSD" aria-describedby="balanceUSD" value="" disabled>
+            <span class="text-danger d-none" id="error-balanceUSD"></span>  
+        </div>       
+    </div>
 
 <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
 

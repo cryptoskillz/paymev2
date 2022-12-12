@@ -5,6 +5,56 @@ let currentAccountAddress;
 let currentBalance = 0;
 let property;
 
+const aggregatorV3InterfaceABI = [{
+        inputs: [],
+        name: "decimals",
+        outputs: [{ internalType: "uint8", name: "", type: "uint8" }],
+        stateMutability: "view",
+        type: "function",
+    },
+    {
+        inputs: [],
+        name: "description",
+        outputs: [{ internalType: "string", name: "", type: "string" }],
+        stateMutability: "view",
+        type: "function",
+    },
+    {
+        inputs: [{ internalType: "uint80", name: "_roundId", type: "uint80" }],
+        name: "getRoundData",
+        outputs: [
+            { internalType: "uint80", name: "roundId", type: "uint80" },
+            { internalType: "int256", name: "answer", type: "int256" },
+            { internalType: "uint256", name: "startedAt", type: "uint256" },
+            { internalType: "uint256", name: "updatedAt", type: "uint256" },
+            { internalType: "uint80", name: "answeredInRound", type: "uint80" },
+        ],
+        stateMutability: "view",
+        type: "function",
+    },
+    {
+        inputs: [],
+        name: "latestRoundData",
+        outputs: [
+            { internalType: "uint80", name: "roundId", type: "uint80" },
+            { internalType: "int256", name: "answer", type: "int256" },
+            { internalType: "uint256", name: "startedAt", type: "uint256" },
+            { internalType: "uint256", name: "updatedAt", type: "uint256" },
+            { internalType: "uint80", name: "answeredInRound", type: "uint80" },
+        ],
+        stateMutability: "view",
+        type: "function",
+    },
+    {
+        inputs: [],
+        name: "version",
+        outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+        stateMutability: "view",
+        type: "function",
+    },
+]
+
+
 //add a ready function
 let whenDocumentReady = (f) => {
     /in/.test(document.readyState) ? setTimeout('whenDocumentReady(' + f + ')', 9) : f()
@@ -29,7 +79,7 @@ const isConnected = async () => {
     let tmpPaymentAddress = property.paymentAddress.toLowerCase();
     currentAccountAddress = currentAccountAddress.toLowerCase();
     if (tmpPaymentAddress != currentAccountAddress) {
-        showAlert('Payment address does not match connected Metamask', 2,0);
+        showAlert('Payment address does not match connected Metamask', 2, 0);
         return conn;
     } else {
         //check we have a current account
@@ -39,28 +89,39 @@ const isConnected = async () => {
             //set connectiont to false
             conn = false;
         } else {
-            //get the balance
-            web3.eth.getBalance(currentAccountAddress, function(error, wei) {
-                //check for an error
-                if (!error) {
-                    currentBalance = web3.utils.fromWei(wei, 'ether');
-                    document.getElementById('inp-balance').value = currentBalance;
-                }
-                else
-                {
-                    //show the error
-                    showAlert(error,2);
-                }
-            });
-            //set connection to true
-            conn = true;
+            //get the balance from Metamask
+            let balance = await web3.eth.getBalance(currentAccountAddress);
+            //convert it to something useful
+            currentBalance = await web3.utils.fromWei(balance, 'ether');
+            //set the contract address
+            const addr = "0x2514895c72f50D8bd4B4F9b1110F0D6bD2c97526";
+            //set the price contract
+            const priceFeed = new web3.eth.Contract(aggregatorV3InterfaceABI, addr);
+            //get the latest price
+            let roundData = await priceFeed.methods.latestRoundData().call();
+            //get the decimals (didn't mention this in the docs anywhere did you)
+            let decimals = await priceFeed.methods.decimals().call();
+            //convert the stupid big number
+            let currentPrice = Number((roundData.answer.toString() / Math.pow(10, decimals)).toFixed(2));
+            //get the value of the crypto in USD
+            //note : make this the default currency from the settings
+            let cyrptoValue = currentPrice / 100 * currentBalance * 100
+            //update the values
+            document.getElementById('inp-balance').value = currentBalance;
+            document.getElementById('inp-balanceUSD').value = Number(cyrptoValue.toFixed(2));
+            document.getElementById('data-header').innerHTML = `Current BNB Price $${currentPrice}`;
+            ///hide the spinner
+            document.getElementById("spinner").classList.add("d-none");
         }
+        //set connection to true
+        conn = true;
     }
-
-
-
-
 }
+
+
+
+
+
 
 const ethRequest = async () => {
     try {
@@ -78,6 +139,8 @@ const ethRequest = async () => {
 
 whenDocumentReady(isReady = () => {
     //get the payment address
+    showAlert('Please be patient we doing Blockchain stuff',1)
+    document.getElementById("spinner").classList.remove("d-none");
     property = JSON.parse(window.localStorage.currentDataItem);
 
     if (typeof window.ethereum !== 'undefined') {
