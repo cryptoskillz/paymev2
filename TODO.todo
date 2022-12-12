@@ -59,6 +59,17 @@ CRYPTO
  ☐ add look up to render out the foreign data
 
 
+ PAYMENTS AND DISTS
+
+ ☐ add paid by and exchange rate to payments and costs table
+ ☐ remove edit from dist
+ ☐ get total cost
+ ☐ get total payments
+ ☐ show a list of owners with how much they are owed and button to send payment
+ ☐ record the above payments in d1
+ ☐ get the current cyrpto exchange rate so we can populate the field do this as api worker
+
+
 
  
 

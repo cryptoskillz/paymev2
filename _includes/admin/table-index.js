@@ -106,11 +106,18 @@ whenDocumentReady(isReady = () => {
 
     //get the table results for this level.
     let getTableData = () => {
+        if (typeof lookUps === 'undefined') {
+            lookUps = "";
+        }
+        else
+        {
+            lookUps = JSON.stringify(lookUps);
+        }
 
         if (foreignKeys == "")
-            url = adminUrl + `database/table?checkAdmin=${checkAdmin}&tablename=${theTable}&fields=${theFields}&getOnlyTableSchema=${getOnlyTableSchema}`
+            url = adminUrl + `database/table?checkAdmin=${checkAdmin}&tablename=${theTable}&fields=${theFields}&getOnlyTableSchema=${getOnlyTableSchema}&theData=${lookUps}`
         else
-            url = adminUrl + `database/table?checkAdmin=${checkAdmin}&tablename=${theTable}&fields=${theFields}&getOnlyTableSchema=${getOnlyTableSchema}&id=${window.localStorage.currentDataItemId}&foreignId=${foreignKeys.id}`;
+            url = adminUrl + `database/table?checkAdmin=${checkAdmin}&tablename=${theTable}&fields=${theFields}&getOnlyTableSchema=${getOnlyTableSchema}&id=${window.localStorage.currentDataItemId}&foreignId=${foreignKeys.id}&lookUps=${lookUps}`;
         xhrcall(1, url, "", "json", "", getTableDone, token);
     }
 

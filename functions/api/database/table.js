@@ -179,6 +179,8 @@ export async function onRequestPost(context) {
     }
 }
 
+
+// 
 //get the records
 export async function onRequestGet(context) {
     //build the paramaters
@@ -196,14 +198,19 @@ export async function onRequestGet(context) {
     if (theToken.payload.isAdmin == 1) {
         let query;
         let queryResults;
+        let lookUps = "";
         //get the search paramaters
         const { searchParams } = new URL(request.url);
         let checkAdmin = 0;
-        if (searchParams.get('checkAdmin') != null)
-        {
+        if (searchParams.get('checkAdmin') != null) {
             checkAdmin = searchParams.get('checkAdmin');
         }
-
+        if (searchParams.get('lookUps') != null) {
+            lookUps = searchParams.get('lookUps');
+            lookUps = JSON.parse(lookUps);
+        }
+        //store the join
+        let theJoin = "";
         //get the table name
         let tableName = searchParams.get('tablename');
         //get the table name
@@ -226,6 +233,33 @@ export async function onRequestGet(context) {
         queryResults = await query.all();
         //we may only want a few fields and if so then they front end would have passed them up
         let tmp = fields.split(",");
+        let fieldsFull = [];
+        
+        for (var i = 0; i < tmp.length; ++i) {
+
+            //check if its in the look up
+            //if (tmp[i] == )
+            let foundLookUp = "";
+            let tmpField = `${tableName}.${tmp[i]}`
+            for (var i2 = 0; i2 < lookUps.length; ++i2) {
+                //console.log(i2)
+                //console.log(lookUps[i2])
+                //console.log(tmp[i])
+                if (tmp[i] == lookUps[i2].key)
+                {
+                    //this is not working
+                    //tmpField = `${lookUps[i2].table}.name as ${tmp[i]}`;
+                    theJoin = `LEFT JOIN ${lookUps[i2].table} ON ${tableName}.${tmp[i]} = ${lookUps[i2].table}.id`
+                    //console.log(theJoin);
+                    break;
+                }
+            }
+            //console.log(tmpField)
+            fieldsFull.push(tmpField)
+            
+        }
+        fieldsFull = fieldsFull.toString();
+        //build the schema
         //check if there are no fields
         if (tmp.length == 1) {
             //set the schema
@@ -244,32 +278,32 @@ export async function onRequestGet(context) {
             //add cheks to the return array
             queryFin.schema = schemaResults;
         }
+        
         //check if they also want the data
         if (searchParams.get('getOnlyTableSchema') == 0) {
             //build the where statement if they sent up and id
-            let sqlWhere = "where isDeleted = 0 ";
+            let sqlWhere = `where ${tableName}.isDeleted = 0 `;
             if ((recordId != "") && (foreignId == ""))
                 sqlWhere = sqlWhere + `and id = ${recordId}`
             else {
                 if (foreignId != "")
-                    sqlWhere = sqlWhere + `and ${foreignId} = ${recordId}`
+                    sqlWhere = sqlWhere + `and ${tableName}.${foreignId} = ${recordId}`
             }
 
-            if (checkAdmin != 0)
-            {
+            if (checkAdmin != 0) {
                 sqlWhere = sqlWhere + `and adminId = ${theToken.payload.id}`
             }
             //debug
             //console.log(recordId)
             //console.log(foreignId)
-            console.log(`SELECT ${fields} from ${tableName} ${sqlWhere}`)
+            console.log(`SELECT ${fieldsFull} from ${tableName} ${theJoin} `)
             //process the fields
             let tmp = fields.split(",");
             //not we dont want to show the isDeleted flag if there. 
             //console.log(tmp.length)
             if (tmp.length == 1) {
                 //console.log(`SELECT * from ${tableName} ${sqlWhere}`)
-                query = context.env.DB.prepare(`SELECT * from ${tableName} ${sqlWhere} `);
+                query = context.env.DB.prepare(`SELECT * from ${tableName} ${theJoin} ${sqlWhere} `);
             } else {
                 let fields = "";
                 for (var i = 0; i < tmp.length; ++i) {
@@ -279,7 +313,7 @@ export async function onRequestGet(context) {
                         fields = fields + "," + tmp[i]
                 }
 
-                let sql = `SELECT ${fields} from ${tableName} ${sqlWhere}`
+                let sql = `SELECT ${fieldsFull} from ${tableName} ${sqlWhere}`
                 query = context.env.DB.prepare(sql);
             }
 

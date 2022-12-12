@@ -86,7 +86,7 @@ whenDocumentReady(isReady = () => {
             total = total + tmp.amount;
             let famount = formatCurencyBaht(tmp.amount);
             var rowNode = table
-                .row.add([tmp.id, tmp.type, tmp.description,famount,tmp.datePaid])
+                .row.add([tmp.id, tmp.type, tmp.name,famount,tmp.datePaid])
                 .draw()
                 .node().id = tmp.id;
         }
@@ -103,7 +103,7 @@ whenDocumentReady(isReady = () => {
             total = total + tmp.amount;
             let famount = formatCurencyBaht(tmp.amount);
             var rowNode = table
-                .row.add([tmp.id, tmp.type, tmp.description,famount,tmp.datePaid])
+                .row.add([tmp.id, tmp.type, tmp.name,famount,tmp.datePaid])
                 .draw()
                 .node().id = tmp.id;
         }
