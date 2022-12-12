@@ -49,6 +49,16 @@ whenDocumentReady(isReady = () => {
             localLookupField = "";
         }
 
+        if (typeof hideEdit === 'undefined') {
+            hideEdit = "";
+        }
+
+        if (typeof hideDelete === 'undefined') {
+            hideDelete = "";
+        }
+
+        
+
 
 
         // customButton = "";
@@ -83,6 +93,11 @@ whenDocumentReady(isReady = () => {
             if (user.isAdmin == 1) {
                 editButton = `<a href="${theCrumb}edit?id=${theData.id}" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-edit fa-sm text-white-50"></i> Edit</a>`
                 deleteButton = `<a href="javascript:deleteTableItem(${theData.id},'api/database/table/','${theTable}')" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-trash fa-sm text-white-50"></i> Delete</a>`
+                if (hideEdit == 1)
+                    editButton = "";
+                if (hideDelete == 1)
+                    deleteButton = "";                
+
             }
 
             //set a table row array

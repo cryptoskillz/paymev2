@@ -64,7 +64,7 @@ export async function onRequestPut(context) {
             }
             //compile the query
             theQuery = theQuery + theQueryValues + theQueryWhere;
-            console.log(theQuery);
+            //console.log(theQuery);
             const info = await context.env.DB.prepare(theQuery)
                 .run();
 
@@ -205,8 +205,10 @@ export async function onRequestGet(context) {
         if (searchParams.get('checkAdmin') != null) {
             checkAdmin = searchParams.get('checkAdmin');
         }
-        if (searchParams.get('lookUps') != null) {
+        console.log(searchParams.get('lookUps'))
+        if ((searchParams.get('lookUps') != null) && (searchParams.get('lookUps') != "")){
             lookUps = searchParams.get('lookUps');
+            console.log(lookUps);
             lookUps = JSON.parse(lookUps);
         }
         //store the join
