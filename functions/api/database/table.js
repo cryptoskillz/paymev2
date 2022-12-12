@@ -291,12 +291,12 @@ export async function onRequestGet(context) {
             }
 
             if (checkAdmin != 0) {
-                sqlWhere = sqlWhere + `and adminId = ${theToken.payload.id}`
+                sqlWhere = sqlWhere + `and ${tableName}.adminId = ${theToken.payload.id}`
             }
             //debug
             //console.log(recordId)
             //console.log(foreignId)
-            console.log(`SELECT ${fieldsFull} from ${tableName} ${theJoin} `)
+            console.log(`SELECT ${fieldsFull} from ${tableName} ${theJoin} ${sqlWhere}`)
             //process the fields
             let tmp = fields.split(",");
             //not we dont want to show the isDeleted flag if there. 

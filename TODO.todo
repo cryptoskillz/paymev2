@@ -61,7 +61,7 @@ CRYPTO
 
  PAYMENTS AND DISTS
 
- ☐ add paid by and exchange rate to payments and costs table
+ ✔ add paid by and exchange rate to payments and costs table @done (22-12-12 16:31)
  ☐ remove edit from dist
  ☐ get total cost
  ☐ get total payments

@@ -26,6 +26,12 @@ let propertySelectChange = (id, theElement) => {
 
 whenDocumentReady(isReady = () => {
 
+    if (typeof lookUps === 'undefined') {
+        lookUps = "";
+    } else {
+        lookUps = JSON.stringify(lookUps);
+    }
+
     let getTableDone = (res) => {
 
         if (typeof customButton === 'undefined') {
@@ -34,7 +40,17 @@ whenDocumentReady(isReady = () => {
         if (typeof customSelect === 'undefined') {
             customSelect = "";
         }
-        
+
+        if (typeof localLookUp === 'undefined') {
+            localLookUp = "";
+        }
+
+        if (typeof localLookupField === 'undefined') {
+            localLookupField = "";
+        }
+
+
+
         // customButton = "";
         //parse json
         res = JSON.parse(res)
@@ -54,14 +70,14 @@ whenDocumentReady(isReady = () => {
             let deleteButton = "";
             let editButton = "";
             //parse the custom button
-            customButton = customButton.replaceAll("[id]",theData.id);
-            customButton = customButton.replaceAll("[name]",theData.name);
-            customButton = customButton.replaceAll("[counter]",i);
+            customButton = customButton.replaceAll("[id]", theData.id);
+            customButton = customButton.replaceAll("[name]", theData.name);
+            customButton = customButton.replaceAll("[counter]", i);
             //parse the custom select
-            customSelect = customSelect.replaceAll("[id]",theData.id);
-            customSelect = customSelect.replaceAll("[name]",theData.name);
-            customSelect = customSelect.replaceAll("[counter]",i);
-  
+            customSelect = customSelect.replaceAll("[id]", theData.id);
+            customSelect = customSelect.replaceAll("[name]", theData.name);
+            customSelect = customSelect.replaceAll("[counter]", i);
+
 
             //check if its an admin
             if (user.isAdmin == 1) {
@@ -90,6 +106,17 @@ whenDocumentReady(isReady = () => {
                 if (res == true) {
                     tmpValue = `<a href="${tmpValue}" target="_blank">${tmpValue}</a>`
                 }
+
+                //check if it is a local look up
+                if (key == localLookupField) {
+                    //loop through the local url
+                    for (var i2 = 0; i2 < localLookUp.length; ++i2) {
+                        let tData2 = localLookUp[i2];
+                        if (tData2.lookValue = tmpValue)
+                            tmpValue = tData2.replaceValue
+                        //console.log(tData2)
+                    }
+                }
                 tableRow.push(tmpValue);
             }
             buildColumn = 1;
@@ -106,13 +133,7 @@ whenDocumentReady(isReady = () => {
 
     //get the table results for this level.
     let getTableData = () => {
-        if (typeof lookUps === 'undefined') {
-            lookUps = "";
-        }
-        else
-        {
-            lookUps = JSON.stringify(lookUps);
-        }
+
 
         if (foreignKeys == "")
             url = adminUrl + `database/table?checkAdmin=${checkAdmin}&tablename=${theTable}&fields=${theFields}&getOnlyTableSchema=${getOnlyTableSchema}&theData=${lookUps}`
@@ -133,7 +154,7 @@ whenDocumentReady(isReady = () => {
     //check if we have a current data item 
     if (window.localStorage.currentDataItem == "") {
         //build the json to get the main record from the main table so we can get the foreign ids.
-        url = adminUrl + `database/table?tablename=${window.localStorage.mainTable}&fields=&getOnlyTableSchema=${getOnlyTableSchema}&id=${window.localStorage.currentDataItemId}&foreignId=`
+        url = adminUrl + `database/table?tablename=${window.localStorage.mainTable}&fields=&getOnlyTableSchema=${getOnlyTableSchema}&id=${window.localStorage.currentDataItemId}&foreignId=&theData=${lookUps}`
         xhrcall(1, url, "", "json", "", getMainTableDone, token)
     } else {
         //build the json

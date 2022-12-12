@@ -228,6 +228,17 @@ INSERT INTO "payment_types" ("name","symbol") VALUES ('TETHER','TUSD');
 INSERT INTO "payment_types" ("name","symbol") VALUES ('USDC','USDC');
 
 
+CREATE TABLE "yesno_lookup" (
+	"id" INTEGER,
+	"name" TEXT,
+	PRIMARY KEY("id" AUTOINCREMENT)
+);
+
+INSERT INTO "yesno_lookup" ("name") VALUES ('Yes');
+INSERT INTO "yesno_lookup" ("name") VALUES ('No');
+
+
+
 CREATE TABLE "rental_payment" (
 	"id"	INTEGER,
 	"type"	TEXT,
