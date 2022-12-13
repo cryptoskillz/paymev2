@@ -76,7 +76,9 @@ CRYPTO
  ☐ add a custom payment amount
  ☐ add the ability to remove uses from payment (this may confuse things will think about)
  ☐ remove delete button 
- ☐ send out the payment
+ ✔ send out the payment @done (22-12-14 04:04)
+ ☐ showalert for each transacction
+ ☐ disable pay button
 
 
 

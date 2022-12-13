@@ -4,6 +4,7 @@ let web3 = new Web3(Web3.givenProvider || RPCUrl);
 let currentAccountAddress;
 let currentBalance = 0;
 let property;
+var disResults;
 
 const aggregatorV3InterfaceABI = [{
         inputs: [],
@@ -70,6 +71,7 @@ const getAccounts = async () => {
 
 //check if we are connected to metamask and if not then show the connect meta button
 const isConnected = async (disResults) => {
+    console.log(disResults)
     //set conneciton var
     let conn = false;
     //call ethrequest
@@ -120,9 +122,9 @@ const isConnected = async (disResults) => {
             totalToPayUSD = cryptoValue - totalToPayUSD;
 
             let totalToPayUSDf = formatCurencyUSD(totalToPayUSD);
-            console.log(totalToPay)
+            //console.log(totalToPay)
             if (disResults.totalLeft > cryptoValue) {
-                showAlert("There is less funds in the account the total left so we are going to use the whole balance", 2, 0)
+                showAlert("There is less funds in the account than the total owed so we are going to use the whole balance", 2, 0)
             }
             let table = `<table class="table">`
             table = addTableRow("Current BNB price", formatCurencyUSD(currentPrice), table);
@@ -152,10 +154,10 @@ const isConnected = async (disResults) => {
                 let ownerAmount = totalToPay / 100 * per;
                 ownerAmount = totalToPay - ownerAmount;
 
-                let ownerToPayUSD = totalToPayUSD / 100  * per
+                let ownerToPayUSD = totalToPayUSD / 100 * per
                 let ownerToPayUSDf = formatCurencyUSD(ownerToPayUSD);
                 //ownerToPayUSD = currentPrice - ownerToPayUSD;
-
+                disResults.owners[i].payAmount = ownerAmount;
                 //console.log(theData)
                 var rowNode = table
                     .row.add([theData.name, theData.email, theData.cryptoAddress,
@@ -165,6 +167,8 @@ const isConnected = async (disResults) => {
 
             }
             table.columns.adjust();
+
+            window.localStorage.distributions = JSON.stringify(disResults);
 
             document.getElementById('showBody').classList.remove('d-none');
             document.getElementById("spinner").classList.add("d-none");
@@ -188,13 +192,58 @@ const ethRequest = async () => {
 }
 
 
+const ethRequestSend = async (toAddress, fromAddress, theValue) => {
+    try {
+        const transactionParameters = {
+            from: fromAddress,
+            to: toAddress,
+            value: theValue,
+        };
+
+        // txHash is a hex string
+        // As with any RPC call, it may throw an error
+        const txHash = await ethereum.request({
+            method: 'eth_sendTransaction',
+            params: [transactionParameters],
+        });
+        return true;
+    } catch (e) {
+        //show the error (usually user hitting the reject button on metamask)
+        showAlert(e.message, 2);
+        return false;
+    }
+
+}
+
+
+document.getElementById('btn-pay').addEventListener('click', async function() {
+    currentAccountAddress = await ethRequest();
+    //console.log(currentAccountAddress)
+    disResults = window.localStorage.distributions;
+    disResults = JSON.parse(disResults)
+    for (var i = 0; i < disResults.owners.length; ++i) {
+        let toAddress = disResults.owners[i].cryptoAddress;
+        let theValue = disResults.owners[i].payAmount;
+        theValue = await web3.utils.toWei(String(theValue), 'ether');
+        theValue = await web3.utils.toHex(theValue)
+        //console.log(toAddress)
+        //console.log(fromAddress)
+        //console.log(theValue)
+        let res = await ethRequestSend(toAddress, currentAccountAddress, theValue);
+        console.log(res)
+    }
+
+})
+
+
+
 whenDocumentReady(isReady = () => {
 
     //process the data item.
     let getMainTableDone = (disResults) => {
         //store it
         disResults = JSON.parse(disResults);
-        console.log(disResults);
+        //console.log(disResults);
         property = JSON.parse(window.localStorage.currentDataItem);
         if (typeof window.ethereum !== 'undefined') {
             //console.log('MetaMask is installed!');
