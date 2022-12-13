@@ -10,7 +10,7 @@ DROP TABLE IF EXISTS tenant;
 DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS userAccess;
 DROP TABLE IF EXISTS payment_types;
-
+DROP TABLE IF EXISTS yesno_lookup;
 
 CREATE TABLE "property" (
 	"id"	INTEGER,
@@ -28,8 +28,10 @@ CREATE TABLE "property" (
 	"internationalCurrency" REAL,
 	"cryptoCurrency" REAL,
 	"imageUrl" TEXT,
-	"taxesCost" REAL,
-	"suggestedRentalPrice" REAL,
+	"LocalTaxesCost" REAL,
+	"internationalTaxesCost" REAL,
+	"localSuggestedRentalPrice" REAL,
+	"internationalSuggestedRentalPrice" REAL,
 	"internationalCost" REAL,
 	"localCost" REAL,
 	"currentlyRented" INTEGER,
@@ -43,8 +45,8 @@ CREATE TABLE "property" (
 );
 
 
-INSERT INTO "property" ("name","paymentAddress","address_1", "address_2","address_3", "address_4", "address_5", "address_6","bathrooms","bedrooms","localCost","taxesCost","adminId","currentlyRented") VALUES ('DCONDO', '0x960f470cE20Bfb519facA30b770474BBCdF78ef8','address 1', 'address 2', 'address 3', 'address 4', 'address 5', 'address 6',1,2,1800000,40000,1,1);
-INSERT INTO "property" ("name","paymentAddress","address_1", "address_2","address_3", "address_4", "address_5", "address_6","bathrooms","bedrooms","localCost","taxesCost","adminId","currentlyRented") VALUES ('DCONDO 2', '0x960f470cE20Bfb519facA30b770474BBCdF78ef8','address 1', 'address 2', 'address 3', 'address 4','address 5','address 6',1,2,1800000,40000,1,1);
+INSERT INTO "property" ("name","paymentAddress","address_1", "address_2","address_3", "address_4", "address_5", "address_6","bathrooms","bedrooms","localCurrency","internationalCurrency","localCost","internationalCost","LocalTaxesCost","internationalTaxesCost","adminId","localSuggestedRentalPrice","internationalSuggestedRentalPrice","currentlyRented") VALUES ('DCONDO', '0x960f470cE20Bfb519facA30b770474BBCdF78ef8','address 1', 'address 2', 'address 3', 'address 4', 'address 5', 'address 6',1,2,'฿','$',1800000,52087,40000,1157,1,8000,231,1);
+INSERT INTO "property" ("name","paymentAddress","address_1", "address_2","address_3", "address_4", "address_5", "address_6","bathrooms","bedrooms","localCurrency","internationalCurrency","localCost","internationalCost","LocalTaxesCost","internationalTaxesCost","adminId","localSuggestedRentalPrice","internationalSuggestedRentalPrice","currentlyRented") VALUES ('DCONDO 2', '0x960f470cE20Bfb519facA30b770474BBCdF78ef8','address 1', 'address 2', 'address 3', 'address 4','address 5','address 6',1,2,'฿','$',1800000,52087,40000,1157,1,8000,231,1);
 
 CREATE TABLE "property_token" (
 	"id"	INTEGER,
@@ -92,7 +94,12 @@ CREATE TABLE "property_distribution" (
 	"id"	INTEGER,
 	"name"	TEXT,
 	"description" TEXT,
-	"amount" REAL,
+	"amountLocal" REAL,
+	"amountInternational" REAL,
+	"paidBy" TEXT DEFAULT 1,
+	"BTCExchangeRate" REAL DEFAULT 0,
+	"ETHExchangeRate" REAL DEFAULT 0,
+	"BNBExchnageRate" REAL DEFAULT 0,
 	"datePaid" TEXT,
 	"propertyId" INTEGER,
 	"propertyOwnerId" INTEGER,
@@ -104,7 +111,7 @@ CREATE TABLE "property_distribution" (
 	PRIMARY KEY("id" AUTOINCREMENT)
 );
 
-INSERT INTO "property_distribution" ("name","description","amount","datePaid","propertyId","propertyOwnerId") VALUES ('cryptoskillz','',10000,'2021-05-05',1,1);
+INSERT INTO "property_distribution" ("name","description","amountLocal","amountInternational","paidBy","datePaid","propertyId","propertyOwnerId") VALUES ('cryptoskillz','',10000,289,6,'2021-05-05',1,1);
 
 CREATE TABLE "rental_agreement" (
 	"id"	INTEGER,
@@ -126,7 +133,7 @@ CREATE TABLE "rental_agreement" (
 	PRIMARY KEY("id" AUTOINCREMENT)
 );
 
-INSERT INTO "rental_agreement" ("name","amount","deposit","contract","startDate","endDate","active","agentId","propertyId","tenantId") VALUES ('dcondo1',6700,13400,'','2021-04-04','2022-04-04',0,1,1,1);
+INSERT INTO "rental_agreement" ("name","amount","deposit","contract","startDate","endDate","active","agentId","propertyId","tenantId") VALUES ('dcondo1',6700,194,'','2021-04-04','2022-04-04',0,1,1,1);
 INSERT INTO "rental_agreement" ("name","amount","deposit","contract","startDate","endDate","active","agentId","propertyId","tenantId") VALUES ('dcondo2',8000,16000,'','2022-08-01','2023-08-01',1,1,1,1);
 
 
@@ -134,8 +141,8 @@ CREATE TABLE "rental_cost" (
 	"id"	INTEGER,
 	"type"	TEXT,
 	"name" TEXT,
-	"amount" REAL,
-	"datePaid" TEXT,
+	"amountLocal" REAL,
+	"amountInternational" REAL,	"datePaid" TEXT,
 	"paidBy" TEXT DEFAULT 1,
 	"BTCExchangeRate" REAL DEFAULT 0,
 	"ETHExchangeRate" REAL DEFAULT 0,
@@ -150,65 +157,65 @@ CREATE TABLE "rental_cost" (
 	PRIMARY KEY("id" AUTOINCREMENT)
 );
 
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Management','Management',500,'2021-06-06',1,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Maintenance','New keycard',200,'2021-06-06',1,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Maintenance','Service Charge 10%',20,'2021-06-06',1,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Management','Management',500,'2021-07-05',1,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Maintenance','A circuit board digital door lock',3000,'2021-07-05',1,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Maintenance','Tile foolr repair',1000,'2021-07-05',1,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Service','Service Charge 10%',400,'2021-07-05',1,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Management','Management',500,'2021-08-05',1,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Service','Common Area Jul-Sep 2021',4091,'2021-08-05',1,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Service','Service Charge 5%',205,'2021-08-05',1,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Management','Management',500,'2021-09-05',1,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Management','Management',500,'2021-10-05',1,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Management','Management',500,'2021-11-05',1,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Management','Management',500,'2021-12-10',1,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Service','Common Area Oct-Dec 2021',4091,'2021-12-10',1,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Service','Service Charge 5%',205,'2021-1210',1,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Misc','The waffles and drinks',985,'2021-12-10',1,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Management','Management',500,'2022-01-11',1,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Service','New Water heater',3500,'2022-01-11',1,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Service','Service Charge 10%',350,'2022-01-11',1,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Management','Management',500,'2022-02-14',1,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Service','Common Area Jan - Mar 2022',4091,'2022-02-14',1,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Service','Service Charge 5%',205,'2022-02-14',1,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Management','Management',500,'2022-03-10',1,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Management','Management',500,'2022-04-11',1,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Management','Management',500,'2022-05-10',1,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Service','Finders Fee for renew 12 months',3350,'2022-05-10',1,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Service','Common Area Apr - Jun 2022',4091,'2022-05-10',1,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Service','Building insurance 2022',335,'2022-05-10',1,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Service','Lift Mantenance 2022',543,'2022-05-10',1,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Service','Service Charge 5%',249,'2022-05-10',1,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Management','Management',500,'2022-06-13',1,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Management','Management',500,'2022-07-08',1,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Management','Management',500,'2022-08-08',1,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Service','Common Area Jul - Sep 2022',500,'2022-08-08',1,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Service','Service Charge 5%',500,'2022-08-08',1,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Management','Management',500,'2022-08-31',2,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Service','Finders Fee',8000,'2022-08-31',2,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Service','Immigration',500,'2022-08-31',2,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Management','360 Tour and 1st Year Hosting',1000,'2022-08-31',2,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Management','Cleaning Room ',700,'2022-08-31',2,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Management','Cleaning Bedsheet',350,'2022-08-31',2,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Management','Repairs',1760,'2022-08-31',2,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Management','Dining set',395,'2022-08-31',2,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Service','Electric Bill Jun - Jul 2022',472,'2022-08-31',2,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Service','Water Bill Apr, Jun - Jul 2022',125,'2022-08-31',2,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Service','Service Charge 10% ',275,'2022-08-31',2,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Management','Management',500,'2022-09-20',2,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Service','Quick Cleaning Room',300,'2022-09-20',2,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Service','Aircon clean 1 Unit',700,'2022-09-20',2,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Management','New bedsheet set+Delivery to tenant',1781,'2022-09-20',2,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Management','Matress protector',480,'2022-09-20',2,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Management','Repair shower',450,'2022-09-20',2,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Management','Repair shower',1600,'2022-09-20',2,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Service','Electric Bill Aug 2022',97,'2022-09-20',2,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Service','Service Charge 10% ',441,'2022-09-20',2,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Management','Management',500,'2022-10-20',2,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Service','Common Area Oct - Dec 2022',3192,'2022-10-20',2,1);
-INSERT INTO "rental_cost" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('Service','Service Charge 5%',160,'2022-10-20',2,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Management','Management',500,14,'2021-06-06',1,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Maintenance','New keycard',200,20,'2021-06-06',1,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Maintenance','Service Charge 10%',20,1,'2021-06-06',1,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Management','Management',500,14,'2021-07-05',1,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Maintenance','A circuit board digital door lock',3000,87,'2021-07-05',1,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Maintenance','Tile foolr repair',1000,29,'2021-07-05',1,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Service','Service Charge 10%',400,11,'2021-07-05',1,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Management','Management',500,14,'2021-08-05',1,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Service','Common Area Jul-Sep 2021',4091,118,'2021-08-05',1,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Service','Service Charge 5%',205,6,'2021-08-05',1,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Management','Management',500,14,'2021-09-05',1,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Management','Management',500,14,'2021-10-05',1,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Management','Management',500,14,'2021-11-05',1,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Management','Management',500,14,'2021-12-10',1,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Service','Common Area Oct-Dec 2021',4091,118,'2021-12-10',1,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Service','Service Charge 5%',205,6,'2021-1210',1,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Misc','The waffles and drinks',985,26,'2021-12-10',1,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Management','Management',500,14,'2022-01-11',1,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Service','New Water heater',3500,101,'2022-01-11',1,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Service','Service Charge 10%',350,10,'2022-01-11',1,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Management','Management',500,14,'2022-02-14',1,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Service','Common Area Jan - Mar 2022',4091,118,'2022-02-14',1,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Service','Service Charge 5%',205,6,'2022-02-14',1,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Management','Management',500,14,'2022-03-10',1,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Management','Management',500,14,'2022-04-11',1,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Management','Management',500,14,'2022-05-10',1,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Service','Finders Fee for renew 12 months',3350,97,'2022-05-10',1,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Service','Common Area Apr - Jun 2022',4091,118,'2022-05-10',1,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Service','Building insurance 2022',335,9,'2022-05-10',1,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Service','Lift Mantenance 2022',543,16,'2022-05-10',1,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Service','Service Charge 5%',249,7,'2022-05-10',1,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Management','Management',500,14,'2022-06-13',1,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Management','Management',500,14,'2022-07-08',1,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Management','Management',500,14,'2022-08-08',1,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Service','Common Area Jul - Sep 2022',500,14,'2022-08-08',1,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Service','Service Charge 5%',500,14,'2022-08-08',1,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Management','Management',500,14,'2022-08-31',2,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Service','Finders Fee',8000,231,'2022-08-31',2,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Service','Immigration',500,14,'2022-08-31',2,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Management','360 Tour and 1st Year Hosting',1000,29,'2022-08-31',2,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Management','Cleaning Room ',700,20,'2022-08-31',2,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Management','Cleaning Bedsheet',350,10,'2022-08-31',2,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Management','Repairs',1760,51,'2022-08-31',2,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Management','Dining set',395,11,'2022-08-31',2,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Service','Electric Bill Jun - Jul 2022',472,13,'2022-08-31',2,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Service','Water Bill Apr, Jun - Jul 2022',125,3,'2022-08-31',2,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Service','Service Charge 10% ',275,8,'2022-08-31',2,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Management','Management',500,14,'2022-09-20',2,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Service','Quick Cleaning Room',300,9,'2022-09-20',2,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Service','Aircon clean 1 Unit',700,20,'2022-09-20',2,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Management','New bedsheet set+Delivery to tenant',1781,52,'2022-09-20',2,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Management','Matress protector',480,14,'2022-09-20',2,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Management','Repair shower',450,13,'2022-09-20',2,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Management','Repair shower',1600,46,'2022-09-20',2,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Service','Electric Bill Aug 2022',97,3,'2022-09-20',2,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Service','Service Charge 10% ',441,13,'2022-09-20',2,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Management','Management',500,14,'2022-10-20',2,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Service','Common Area Oct - Dec 2022',3192,92,'2022-10-20',2,1);
+INSERT INTO "rental_cost" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('Service','Service Charge 5%',160,5,'2022-10-20',2,1);
 
 CREATE TABLE "payment_types" (
 	"id" INTEGER,
@@ -243,7 +250,8 @@ CREATE TABLE "rental_payment" (
 	"id"	INTEGER,
 	"type"	TEXT,
 	"name" TEXT,
-	"amount" REAL,
+	"amountLocal" REAL,
+	"amountInternational" REAL,
 	"datePaid" TEXT,
 	"paidBy" TEXT DEFAULT 1,
 	"BTCExchangeRate" REAL DEFAULT 0,
@@ -259,26 +267,26 @@ CREATE TABLE "rental_payment" (
 	PRIMARY KEY("id" AUTOINCREMENT)
 );
 
-INSERT INTO "rental_payment" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',6700,'2021-04-02',1,1);
-INSERT INTO "rental_payment" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',6700,'2021-05-05',1,1);
-INSERT INTO "rental_payment" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',6700,'2021-06-06',1,1);
-INSERT INTO "rental_payment" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',6700,'2021-07-05',1,1);
-INSERT INTO "rental_payment" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',6700,'2021-08-05',1,1);
-INSERT INTO "rental_payment" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',6700,'2021-09-02',1,1);
-INSERT INTO "rental_payment" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',6700,'2021-10-05',1,1);
-INSERT INTO "rental_payment" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',6700,'2021-11-05',1,1);
-INSERT INTO "rental_payment" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',6700,'2021-12-10',1,1);
-INSERT INTO "rental_payment" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',6700,'2022-01-11',1,1);
-INSERT INTO "rental_payment" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',6700,'2022-02-14',1,1);
-INSERT INTO "rental_payment" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',6700,'2022-03-10',1,1);
-INSERT INTO "rental_payment" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',6700,'2022-04-11',1,1);
-INSERT INTO "rental_payment" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',6700,'2022-06-13',1,1);
-INSERT INTO "rental_payment" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',6700,'2022-07-08',1,1);
-INSERT INTO "rental_payment" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',6700,'2022-07-08',1,1);
-INSERT INTO "rental_payment" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',6700,'2022-07-09',1,1);
-INSERT INTO "rental_payment" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',8000,'2022-08-31',2,1);
-INSERT INTO "rental_payment" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',8000,'2022-09-20',2,1);
-INSERT INTO "rental_payment" ("type","name","amount","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',8000,'2022-10-22',2,1);
+INSERT INTO "rental_payment" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',6700,194,'2021-04-02',1,1);
+INSERT INTO "rental_payment" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',6700,194,'2021-05-05',1,1);
+INSERT INTO "rental_payment" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',6700,194,'2021-06-06',1,1);
+INSERT INTO "rental_payment" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',6700,194,'2021-07-05',1,1);
+INSERT INTO "rental_payment" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',6700,194,'2021-08-05',1,1);
+INSERT INTO "rental_payment" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',6700,194,'2021-09-02',1,1);
+INSERT INTO "rental_payment" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',6700,194,'2021-10-05',1,1);
+INSERT INTO "rental_payment" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',6700,194,'2021-11-05',1,1);
+INSERT INTO "rental_payment" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',6700,194,'2021-12-10',1,1);
+INSERT INTO "rental_payment" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',6700,194,'2022-01-11',1,1);
+INSERT INTO "rental_payment" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',6700,194,'2022-02-14',1,1);
+INSERT INTO "rental_payment" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',6700,194,'2022-03-10',1,1);
+INSERT INTO "rental_payment" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',6700,194,'2022-04-11',1,1);
+INSERT INTO "rental_payment" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',6700,194,'2022-06-13',1,1);
+INSERT INTO "rental_payment" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',6700,194,'2022-07-08',1,1);
+INSERT INTO "rental_payment" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',6700,194,'2022-07-08',1,1);
+INSERT INTO "rental_payment" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',6700,194,'2022-07-09',1,1);
+INSERT INTO "rental_payment" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',8000,231,'2022-08-31',2,1);
+INSERT INTO "rental_payment" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',8000,231,'2022-09-20',2,1);
+INSERT INTO "rental_payment" ("type","name","amountLocal","amountInternational","datePaid","rentalId","propertyId") VALUES ('rental payment','rental payment',8000,231,'2022-10-22',2,1);
 
 
 CREATE TABLE "agent" (

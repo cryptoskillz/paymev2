@@ -27,10 +27,11 @@ let propertySelectChange = (id, theElement) => {
 whenDocumentReady(isReady = () => {
 
     if (typeof lookUps === 'undefined') {
-        varlookUps = {};
+        var lookUps = "";
     } else {
         lookUps = JSON.stringify(lookUps);
     }
+    console.log(lookUps);
 
     let getTableDone = (res) => {
 
@@ -56,10 +57,6 @@ whenDocumentReady(isReady = () => {
         if (typeof hideDelete === 'undefined') {
             hideDelete = "";
         }
-
-        
-
-
 
         // customButton = "";
         //parse json

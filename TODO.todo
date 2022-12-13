@@ -3,6 +3,7 @@ GENERAL
  ☐ update the readme 
  ☐ fix the title for tenants / agents
  ☐ create an upstream script to remove non core files
+ ☐ add a view button to each index
 
 TABLES
 
@@ -62,14 +63,21 @@ CRYPTO
  PAYMENTS AND DISTS
 
  ✔ add paid by and exchange rate to payments and costs table @done (22-12-12 16:31)
- ☐ remove edit from dist
- ☐ get total cost
- ☐ get total payments
- ☐ show a list of owners with how much they are owed and button to send payment
+ ✔ remove edit from dist @done (22-12-13 02:17)
+ ✔ get total cost @done (22-12-14 01:00)
+ ✔ get total payments @done (22-12-14 01:00)
+ ✔ show a list of owners with how much they are owed and button to send payment @done (22-12-14 01:00)
  ☐ record the above payments in d1
- ☐ get the current cyrpto exchange rate so we can populate the field do this as api worker
+ ✔ get the current cyrpto exchange rate so we can populate the field do this as api worker @done (22-12-13 02:17)
  ✔ check the connected account address matches the payment address @done (22-12-12 23:59)
  ☐ move the reusable crypto functions to app.js
+ ✔ add a setting to leave a percentage in the account @done (22-12-14 01:00)
+ ☐ make it update on change
+ ☐ add a custom payment amount
+ ☐ add the ability to remove uses from payment (this may confuse things will think about)
+ ☐ remove delete button 
+ ☐ send out the payment
+
 
 
 

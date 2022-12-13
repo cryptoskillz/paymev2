@@ -69,7 +69,7 @@ const getAccounts = async () => {
 
 
 //check if we are connected to metamask and if not then show the connect meta button
-const isConnected = async () => {
+const isConnected = async (disResults) => {
     //set conneciton var
     let conn = false;
     //call ethrequest
@@ -107,21 +107,72 @@ const isConnected = async () => {
             //note : make this the default currency from the settings
             let cyrptoValue = currentPrice / 100 * currentBalance * 100
             //update the values
-            document.getElementById('inp-balance').value = currentBalance;
-            document.getElementById('inp-balanceUSD').value = Number(cyrptoValue.toFixed(2));
-            document.getElementById('data-header').innerHTML = `Current BNB Price $${currentPrice}`;
-            ///hide the spinner
+            cryptoValue = Number(cyrptoValue.toFixed(2));
+            let cyrptoValuef = formatCurencyUSD(cryptoValue);
+            let totalCostsf = formatCurencyUSD(disResults.totalCosts);
+            let totalPaymentsf = formatCurencyUSD(disResults.totalPayments);
+            let totalDistf = formatCurencyUSD(disResults.totalDistributions);
+            let totalLeftf = formatCurencyUSD(disResults.totalLeft);
+            let perToLeave = document.getElementById('inp-perLeave').value;
+            let totalToPay = currentBalance / 100 * perToLeave;
+            totalToPay = currentBalance - totalToPay
+            let totalToPayUSD = cryptoValue / 100 * perToLeave
+            totalToPayUSD = cryptoValue - totalToPayUSD;
+
+            let totalToPayUSDf = formatCurencyUSD(totalToPayUSD);
+            console.log(totalToPay)
+            if (disResults.totalLeft > cryptoValue) {
+                showAlert("There is less funds in the account the total left so we are going to use the whole balance", 2, 0)
+            }
+            let table = `<table class="table">`
+            table = addTableRow("Current BNB price", formatCurencyUSD(currentPrice), table);
+            table = addTableRow("Token", `<a href="${disResults.token.blockExplorerUrl}" target="_blank">${disResults.token.name}</a>`, table);
+            table = addTableRow("Available BNB", `${currentBalance} (${cyrptoValuef})`, table);
+            table = addTableRow("Total Costs", totalCostsf, table);
+            table = addTableRow("Total Payments", totalPaymentsf, table);
+            table = addTableRow("Total Distributions", totalDistf, table);
+            table = addTableRow("Total Left", totalLeftf, table);
+            table = addTableRow("Total To Pay", ` ${totalToPay.toFixed(8)} (${totalToPayUSDf})`, table);
+            table = table + "</table>";
+            //console.log(table)
+            let theTable = document.getElementById("dist-table");
+            theTable.innerHTML = table;
+
+
+
+
+            table = $('#owners-table').DataTable();
+            for (var i = 0; i < disResults.owners.length; ++i) {
+                let theData = disResults.owners[i];
+                let per = theData.tokenAmount / disResults.token.totalSupply;
+                per = per * 100
+                per = Math.round(per);
+
+                //work out the amount of eth they getting
+                let ownerAmount = totalToPay / 100 * per;
+                ownerAmount = totalToPay - ownerAmount;
+
+                let ownerToPayUSD = totalToPayUSD / 100  * per
+                let ownerToPayUSDf = formatCurencyUSD(ownerToPayUSD);
+                //ownerToPayUSD = currentPrice - ownerToPayUSD;
+
+                //console.log(theData)
+                var rowNode = table
+                    .row.add([theData.name, theData.email, theData.cryptoAddress,
+                        `${theData.tokenAmount} (${per}%)`, `${ownerAmount.toFixed(8)} (${ownerToPayUSDf})`
+                    ])
+                    .draw()
+
+            }
+            table.columns.adjust();
+
+            document.getElementById('showBody').classList.remove('d-none');
             document.getElementById("spinner").classList.add("d-none");
         }
         //set connection to true
         conn = true;
     }
 }
-
-
-
-
-
 
 const ethRequest = async () => {
     try {
@@ -138,19 +189,23 @@ const ethRequest = async () => {
 
 
 whenDocumentReady(isReady = () => {
-    //get the payment address
-    showAlert('Please be patient we doing Blockchain stuff',1)
-    document.getElementById("spinner").classList.remove("d-none");
-    property = JSON.parse(window.localStorage.currentDataItem);
 
-    if (typeof window.ethereum !== 'undefined') {
-        //console.log('MetaMask is installed!');
-        let res = isConnected();
-        document.getElementById('showBody').classList.remove('d-none');
-    } else {
-        showAlert('Please connect Metamask', 2, 1);
+    //process the data item.
+    let getMainTableDone = (disResults) => {
+        //store it
+        disResults = JSON.parse(disResults);
+        console.log(disResults);
+        property = JSON.parse(window.localStorage.currentDataItem);
+        if (typeof window.ethereum !== 'undefined') {
+            //console.log('MetaMask is installed!');
+            let res = isConnected(disResults);
+
+        } else {
+            showAlert('Please connect Metamask', 2, 1);
+        }
     }
-
-
-
+    document.getElementById("spinner").classList.remove("d-none");
+    showAlert('Please be patient we doing Blockchain stuff', 1)
+    url = adminUrl + `properties/distributions?id=${window.localStorage.currentDataItemId}`
+    xhrcall(1, url, "", "json", "", getMainTableDone, token);
 });

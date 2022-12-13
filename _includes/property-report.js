@@ -13,10 +13,7 @@ whenDocumentReady(isReady = () => {
     document.getElementById('showBody').classList.remove('d-none')
 
 
-    let addTableRow = (name, value, table) => {
-        table = table + `<tr><th scope="row">${name}:</th><td>${value}</td></tr>`
-        return (table)
-    }
+
 
     //get the main property details
     let propertyDone = (res) => {
@@ -24,13 +21,14 @@ whenDocumentReady(isReady = () => {
         //debug
         //console.log(res);
         //console.log(res.agreements.length);
+        formatCurencyUSD
 
         //main property details
         let table = `<table class="table">`
         table = addTableRow("Name", res.property.name, table);
-        table = addTableRow("Cost", res.property.localCost, table);
-        table = addTableRow("Taxes", res.property.taxesCost, table);
-        table = addTableRow("Currency", "฿", table);
+        table = addTableRow("Cost", formatCurencyUSD(res.property.internationalCost), table);
+        table = addTableRow("Taxes", formatCurencyUSD(res.property.internationalTaxesCost), table);
+        table = addTableRow("Currency",res.property.internationalCurrency, table);
         table = addTableRow("Contract", `<a href="${res.token.blockExplorerUrl}" target="_blank">${res.token.contractAddress}</a>`, table);
         table = table + "</table>";
         table = table + "</table>";
@@ -60,13 +58,13 @@ whenDocumentReady(isReady = () => {
             //get the owner
             let owner = res.owners[i];
             //set the percentage
-            let per = owner.amount / res.token.totalSupply;
+            let per = owner.tokenAmount / res.token.totalSupply;
             per = per *100
             per = Math.round(per);
             //build the address
             let address = `<a href="${owner.address}" target="_blank">view</a>`
             //format the currency 
-            let famount = formatCurencyBaht(owner.tokenAmount);
+            let famount = owner.tokenAmount;
             //set the amount
             let amount = `${famount} (${per}%)`
             //add the table row
@@ -83,8 +81,8 @@ whenDocumentReady(isReady = () => {
         let nettotal = 0;
         for (var i = 0; i < res.payments.length; ++i) {
             let tmp = res.payments[i];
-            total = total + tmp.amount;
-            let famount = formatCurencyBaht(tmp.amount);
+            total = total + tmp.amountInternational;
+            let famount = formatCurencyUSD(tmp.amountInternational);
             var rowNode = table
                 .row.add([tmp.id, tmp.type, tmp.name,famount,tmp.datePaid])
                 .draw()
@@ -92,7 +90,7 @@ whenDocumentReady(isReady = () => {
         }
         table.columns.adjust();
         //update the total
-        document.getElementById("paidintotal").innerHTML = formatCurencyBaht(total);
+        document.getElementById("paidintotal").innerHTML = formatCurencyUSD(total);
         //reset the total
         nettotal = total;
         total = 0;
@@ -100,8 +98,8 @@ whenDocumentReady(isReady = () => {
         table = $('#paidouttable').DataTable();
         for (var i = 0; i < res.costs.length; ++i) {
             let tmp = res.costs[i];
-            total = total + tmp.amount;
-            let famount = formatCurencyBaht(tmp.amount);
+            total = total + tmp.amountInternational;
+            let famount = formatCurencyUSD(tmp.amountInternational);
             var rowNode = table
                 .row.add([tmp.id, tmp.type, tmp.name,famount,tmp.datePaid])
                 .draw()
@@ -109,7 +107,7 @@ whenDocumentReady(isReady = () => {
         }
         table.columns.adjust();
         //update the total
-        document.getElementById("paidouttotal").innerHTML = formatCurencyBaht(total);
+        document.getElementById("paidouttotal").innerHTML = formatCurencyUSD(total);
         nettotal = nettotal-total;
         total = 0;
 
@@ -121,8 +119,8 @@ whenDocumentReady(isReady = () => {
         table = $('#disttable').DataTable();
         for (var i = 0; i < res.distributions.length; ++i) {
             let tmp = res.distributions[i];
-            total = total + tmp.amount;
-            let famount = formatCurencyBaht(tmp.amount);
+            total = total + tmp.amountInternational;
+            let famount = formatCurencyUSD(tmp.amountInternational);
             var rowNode = table
                 .row.add([tmp.id, tmp.name, tmp.description,famount,tmp.datePaid])
                 .draw()
@@ -130,9 +128,9 @@ whenDocumentReady(isReady = () => {
         }
         table.columns.adjust();
         //update the total
-        document.getElementById("totaldist").innerHTML = formatCurencyBaht(total);
+        document.getElementById("totaldist").innerHTML = formatCurencyUSD(total);
         nettotal = nettotal - total;
-        document.getElementById("totalleft").innerHTML = formatCurencyBaht(nettotal);
+        document.getElementById("totalleft").innerHTML = formatCurencyUSD(nettotal);
         //show it
         document.getElementById("propertydiv").classList.remove("d-none");
 

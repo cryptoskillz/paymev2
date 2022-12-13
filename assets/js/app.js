@@ -76,6 +76,11 @@ let checkElement = (element) => {
 START OF TABLE PROCESSING FUCNTIONS
 */
 
+let addTableRow = (name, value, table) => {
+    table = table + `<tr><th scope="row">${name}:</th><td>${value}</td></tr>`
+    return (table)
+}
+
 let clearFormData = () => {
     let theElements = document.getElementsByClassName('form-control-user');
     //loop through the elements
@@ -85,13 +90,13 @@ let clearFormData = () => {
 }
 
 let isValidHttpUrl = (string) => {
-  let url;
-  try {
-    url = new URL(string);
-  } catch (_) {
-    return false;
-  }
-  return true;
+    let url;
+    try {
+        url = new URL(string);
+    } catch (_) {
+        return false;
+    }
+    return true;
 }
 
 
@@ -104,6 +109,10 @@ let buildFormElement = (theData, theValues = "") => {
     let theType = "text";
     let required = "required"
     let visible = "";
+    if (typeof foreignKeys === 'undefined') {
+        foreignKeys = "";
+    }
+
     //console.log(theData);
     //console.log(theValues)
     //set the value
@@ -216,7 +225,7 @@ let buildFormElement = (theData, theValues = "") => {
     }
 
     //add a space before each upper case as we use camel case in the sql 
-    let theTitle  = theData.name;
+    let theTitle = theData.name;
     theTitle = theTitle.replace(/([a-z])([A-Z])/g, '$1 $2');
     //captalise the element
     theTitle = theTitle.charAt(0).toUpperCase() + theTitle.slice(1);
@@ -367,6 +376,16 @@ let formatCurencyBaht = (code) => {
     return (currency)
 }
 
+let formatCurencyUSD = (code) => {
+    const formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 2
+    })
+    let currency = formatter.format(code)
+    return (currency)
+}
+
 
 /*
 This function handles the input of a create form
@@ -393,7 +412,7 @@ if (checkElement("btn-create") == true) {
                 tableData: theJson,
             }
             let bodyObjectJson = JSON.stringify(bodyObj);
-        
+
             //check we have valid data to submit
 
             //post the record
@@ -693,7 +712,7 @@ let checkLogin = () => {
             //check admin stuff
             if (user.isAdmin == 1) {
                 //if (checkElement("btn-create-cy") == true)
-                   // document.getElementById('btn-create-cy').classList.remove("d-none");
+                // document.getElementById('btn-create-cy').classList.remove("d-none");
                 document.getElementById("navadmin").classList.remove("d-none")
             }
             //check the user is logged in some one could spoof this so we could do a valid jwt check here 
