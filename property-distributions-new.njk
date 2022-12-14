@@ -38,10 +38,14 @@ permalink: /property/distribution/new/
     <div id="formInputs">
         <div class="form-group">
             <label>% to leave for future payments</label>
-            <input type="text" class="form-control form-control-user" name="inp-perLeave" id="inp-perLeave" aria-describedby="perLeave" value="10" placeholder="Enter a %" disabled>
+            <input type="text" class="form-control form-control-user" name="inp-perLeave" id="inp-perLeave" aria-describedby="perLeave" value="10" placeholder="Enter a %" >
             <span class="text-danger d-none" id="error-balance"></span>  
         </div>
-           
+         <div class="form-group">
+            <label>Use a Custom BNB Amount</label>
+            <input type="text" class="form-control form-control-user" name="inp-customAmount" id="inp-customAmount" aria-describedby="customAmount" value="0" placeholder="Enter a custom amount" >
+            <span class="text-danger d-none" id="error-customAmount"></span>  
+        </div>          
     </div>
 
         <div class="card shadow mb-4">

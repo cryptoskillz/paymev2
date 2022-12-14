@@ -77,11 +77,12 @@ CRYPTO
  ✔ remove delete button @done (22-12-14 18:34)
  ✔ send out the payment @done (22-12-14 04:04)
  ✔ showalert for each transacction @done (22-12-14 18:35)
+ ✔ make it update on change @done (22-12-14 19:34)
+ ✔ add a custom payment amount @done (22-12-14 19:34)
 
 next version
 
- ☐ make it update on change
- ☐ add a custom payment amount
+
  ☐ trap the amount if it is too small
 
 
