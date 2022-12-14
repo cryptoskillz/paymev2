@@ -2,7 +2,7 @@
 layout: layout.njk
 permalink: /property/distributions/
 crumb : /property/distribution/
-fields : ["id","name","amount","datePaid","createdAt"]
+fields : ["id","name","amountInternational","datePaid","createdAt"]
 title : distributions
 ---
 <script>
@@ -14,8 +14,12 @@ title : distributions
     let checkAdmin = 0;
     let getOnlyTableSchema = 0;
     let allowOnlyOne = 0;
+    let hideEdit = 1;
+    let hideDelete = 1;
+    let formatFields = [{"field":"amountInternational","function":"formatCurencyUSD(tmpValue)","columnName":"Amount"}]
 </script>
 {% set theJs %}
     {% include 'admin/table-index.js' %}
 {% endset %}
 {%  include "admin/table-index.njk" %}
+
