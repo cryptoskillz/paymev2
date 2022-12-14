@@ -4,8 +4,8 @@ permalink: /property/cost/edit/
 ---
 <script>
     let theTable = "rental_cost";
-    let theFields = "id,description,amount,datePaid,rentalId";
+    let theFields = "id,name,amount,datePaid,paidBy,BTCExchangeRate,ETHExchangeRate,BNBExchnageRate,rentalId";
     let foreignKeys = "";
-    let lookUps = [{"table":"rental_agreement","key":"rentalId","foreignKey":"","value":""}]
+    let lookUps = [{"table":"rental_agreement","key":"rentalId","foreignKey":"propertyId","value":window.localStorage.currentDataItemId},{"table":"payment_types","key":"paidBy","foreignKey":"","value":""}]
 </script>
 {% include "admin/table-edit.njk" %}

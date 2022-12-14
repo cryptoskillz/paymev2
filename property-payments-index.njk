@@ -2,7 +2,7 @@
 layout: layout.njk
 permalink: /property/payments/
 crumb : /property/payment/
-fields : ["id","description","amount","datePaid","createdAt"]
+fields : ["id","name","amount","paidBy","datePaid","createdAt"]
 title : payments
 ---
 <script>
@@ -14,6 +14,7 @@ title : payments
     let checkAdmin = 0;
     let getOnlyTableSchema = 0;
     let allowOnlyOne = 0;
+    let lookUps = [{"table":"payment_types","key":"paidBy","foreignKey":"name","value":""}]
 </script>
 {% set theJs %}
     {% include 'admin/table-index.js' %}
