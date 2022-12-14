@@ -158,6 +158,7 @@ const isConnected = async (disResults) => {
                 let ownerToPayUSDf = formatCurencyUSD(ownerToPayUSD);
                 //ownerToPayUSD = currentPrice - ownerToPayUSD;
                 disResults.owners[i].payAmount = ownerAmount;
+                disResults.owners[i].payAmountInternational = ownerToPayUSD;
                 //console.log(theData)
                 var rowNode = table
                     .row.add([theData.name, theData.email, theData.cryptoAddress,
@@ -169,9 +170,9 @@ const isConnected = async (disResults) => {
             table.columns.adjust();
 
             window.localStorage.distributions = JSON.stringify(disResults);
-
             document.getElementById('showBody').classList.remove('d-none');
             document.getElementById("spinner").classList.add("d-none");
+            document.getElementById('btn-pay').disabled = false;
         }
         //set connection to true
         conn = true;
@@ -206,17 +207,18 @@ const ethRequestSend = async (toAddress, fromAddress, theValue) => {
             method: 'eth_sendTransaction',
             params: [transactionParameters],
         });
-        return true;
+        return {"status":"ok","hash":`${txHash}`};
     } catch (e) {
         //show the error (usually user hitting the reject button on metamask)
-        showAlert(e.message, 2);
-        return false;
+        return {"status":"error","hash":""};
+    
     }
 
 }
 
 
 document.getElementById('btn-pay').addEventListener('click', async function() {
+    //document.getElementById('btn-pay').disabled = true;
     currentAccountAddress = await ethRequest();
     //console.log(currentAccountAddress)
     disResults = window.localStorage.distributions;
@@ -224,14 +226,34 @@ document.getElementById('btn-pay').addEventListener('click', async function() {
     for (var i = 0; i < disResults.owners.length; ++i) {
         let toAddress = disResults.owners[i].cryptoAddress;
         let theValue = disResults.owners[i].payAmount;
+
         theValue = await web3.utils.toWei(String(theValue), 'ether');
         theValue = await web3.utils.toHex(theValue)
         //console.log(toAddress)
         //console.log(fromAddress)
         //console.log(theValue)
         let res = await ethRequestSend(toAddress, currentAccountAddress, theValue);
-        console.log(res)
+        //console.log(res)
+        if (res.hash != "")
+        {
+            property = JSON.parse(window.localStorage.currentDataItem);
+            theDate= getTodatsDate();
+            let theJson ={"name":`${disResults.owners[i].name}`,"amountInternational":`${disResults.owners[i].payAmountInternational}`,"amountCrypto":`${disResults.owners[i].payAmount}`,"hash":`${res.hash}`,"paidBy":6,"propertyId":property.id,"propertyOwnerId":`${disResults.owners[i].id}`,"datePaid":theDate}
+             let bodyObj = {
+                table: "property_distribution",
+                tableData: theJson,
+            }
+            let bodyObjectJson = JSON.stringify(bodyObj);
+
+            let xhrDone = (res) => {
+                console.log(res)
+                showAlert(res.message, 1, 0, 1);
+            }
+            //post the record
+            xhrcall(0, `api/database/table/`, bodyObjectJson, "json", "", xhrDone, token)
+        }
     }
+    //document.getElementById('btn-pay').disabled = false;
 
 })
 

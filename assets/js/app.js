@@ -100,6 +100,34 @@ let isValidHttpUrl = (string) => {
 }
 
 
+let getTodatsDate = () => {
+    var d = new Date();
+    //console.log(d)
+    let theDay = d.getDate();
+    if (theDay < 10)
+        theDay = `0${theDay}`
+
+    let theMonth = d.getMonth() + 1;
+    if (theMonth < 10)
+        theMonth = `0${theMonth}`
+
+
+    let theHours = d.getHours();
+    if (theHours < 10)
+        theHours = `0${theHours}`
+
+
+    let theMinutes = d.getMinutes();
+    if (theMinutes < 10)
+        theMinutes = `0${theMinutes}`
+
+    let theSeconds = d.getSeconds();
+    if (theSeconds < 10)
+        theSeconds = `0${theSeconds}`
+
+    return (`${d.getFullYear()}-${theMonth}-${theDay} ${theHours}:${theMinutes} ${theSeconds}`)
+}
+
 /*
 This funtion handles the building of the form
 */

@@ -149,7 +149,7 @@ async function deployIt() {
         document.getElementById("btn-create").classList.remove('d-none');
         showAlert("Contract deployed", 1, 1);
     } catch (e) {
-        document.getElementById('btn-token-deploy').disabled = false;
+        document.getElementById('btn-pay').disabled = false;
         showAlert(e.message, 2);
         //console.error(e);
     } finally {}

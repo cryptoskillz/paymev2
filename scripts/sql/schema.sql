@@ -96,6 +96,8 @@ CREATE TABLE "property_distribution" (
 	"description" TEXT,
 	"amountLocal" REAL,
 	"amountInternational" REAL,
+	"amountCrypto" REAL,
+	"hash" TEXT,
 	"paidBy" TEXT DEFAULT 1,
 	"BTCExchangeRate" REAL DEFAULT 0,
 	"ETHExchangeRate" REAL DEFAULT 0,
