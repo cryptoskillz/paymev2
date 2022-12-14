@@ -106,6 +106,7 @@ whenDocumentReady(isReady = () => {
                 if (hideDelete == 1)
                     deleteButton = "";
 
+
             }
 
             //set a table row array
@@ -139,12 +140,14 @@ whenDocumentReady(isReady = () => {
                 }
 
 
+
                 for (var i2 = 0; i2 < formatFields.length; ++i2) {
                     if (key == formatFields[i2].field) {
                         //console.log(formatFields[i2])
                         tmpValue = eval(formatFields[i2].function)
                     }
                 }
+
 
                 tableRow.push(tmpValue);
             }

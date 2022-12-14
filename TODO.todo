@@ -3,6 +3,9 @@ GENERAL
  ☐ update the readme 
  ☐ fix the title for tenants / agents
  ☐ create an upstream script to remove non core files
+ ☐ add a view button to each index
+ ☐ move the reusable crypto functions to app.js
+
 
 TABLES
 
@@ -57,6 +60,31 @@ CRYPTO
  TABLE INDEX JS
 
  ☐ add look up to render out the foreign data
+
+
+ PAYMENTS AND DISTS
+
+ ✔ add paid by and exchange rate to payments and costs table @done (22-12-12 16:31)
+ ✔ remove edit from dist @done (22-12-13 02:17)
+ ✔ get total cost @done (22-12-14 01:00)
+ ✔ get total payments @done (22-12-14 01:00)
+ ✔ show a list of owners with how much they are owed and button to send payment @done (22-12-14 01:00)
+ ✔ record the above payments in d1 @done (22-12-14 18:34)
+ ✔ get the current cyrpto exchange rate so we can populate the field do this as api worker @done (22-12-13 02:17)
+ ✔ check the connected account address matches the payment address @done (22-12-12 23:59)
+ ✔ add a setting to leave a percentage in the account @done (22-12-14 01:00)
+ ✔ add the ability to remove uses from payment (this may confuse things will think about) @done (22-12-14 18:34)
+ ✔ remove delete button @done (22-12-14 18:34)
+ ✔ send out the payment @done (22-12-14 04:04)
+ ✔ showalert for each transacction @done (22-12-14 18:35)
+ ✔ make it update on change @done (22-12-14 19:34)
+ ✔ add a custom payment amount @done (22-12-14 19:34)
+
+next version
+
+
+ ☐ trap the amount if it is too small
+
 
 
 

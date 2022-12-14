@@ -27,6 +27,8 @@ title :
                 <option value="/property/costs/">Costs</option>
                 <option value="/property/payments/">Payments</option>
         </select>`;
+    let localLookupField = "currentlyRented";
+    let localLookUp = [{"lookValue":0,"replaceValue":"no"},{"lookValue":1,"replaceValue":"yes"}]
 </script>
 {% set theJs %}
     {% include 'admin/table-index.js' %}

@@ -4,8 +4,8 @@ permalink: /property/payment/new/
 ---
 <script>
     let theTable = "rental_payment";
-    let theFields = "propertyId,type,description,amount,datePaid,rentalId";
+    let theFields = "propertyId,name,amount,datePaid,paidBy,BTCExchangeRate,ETHExchangeRate,BNBExchnageRate,rentalId";
     let foreignKeys = {"id":"propertyId"}
-    let lookUps = [{"table":"rental_agreement","key":"rentalId","foreignKey":"propertyId","value":window.localStorage.currentDataItemId}]
+    let lookUps = [{"table":"rental_agreement","key":"rentalId","foreignKey":"propertyId","value":window.localStorage.currentDataItemId},{"table":"payment_types","key":"paidBy","foreignKey":"","value":""}]
 </script>
 {% include "admin/table-new.njk" %}

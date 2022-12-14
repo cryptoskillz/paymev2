@@ -179,6 +179,7 @@ const updateValues = async (disResults, customValue = 0) => {
 //check if we are connected to metamask and if not then show the connect meta button
 const isConnected = async (disResults) => {
     //console.log(disResults)
+
     //set conneciton var
     let conn = false;
     //call ethrequest
@@ -247,7 +248,7 @@ const ethRequestSend = async (toAddress, fromAddress, theValue) => {
 
 
 document.getElementById('inp-perLeave').addEventListener('keyup', async function() {
-    console.log(this.value);
+
     if (this.value < 101) {
         disResults = window.localStorage.distributions;
         disResults = JSON.parse(disResults)
@@ -260,17 +261,12 @@ document.getElementById('inp-perLeave').addEventListener('keyup', async function
 })
 
 document.getElementById('inp-customAmount').addEventListener('blur', async function() {
-    console.log(this.value)
-    let updateIt = 1;
-    if (this.value == 0)
-        updateIt = 0
-
-    if (updateIt == 1) {
-        disResults = window.localStorage.distributions;
-        disResults = JSON.parse(disResults)
-        updateValues(disResults, this.value)
-    }
+    disResults = window.localStorage.distributions;
+    disResults = JSON.parse(disResults)
+    updateValues(disResults, document.getElementById('inp-customAmount').value)
 })
+
+
 
 document.getElementById('btn-pay').addEventListener('click', async function() {
     //document.getElementById('btn-pay').disabled = true;
