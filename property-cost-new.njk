@@ -4,7 +4,7 @@ permalink: /property/cost/new/
 ---
 <script>
     let theTable = "rental_cost";
-    let theFields = "propertyId,name,amount,datePaid,paidBy,BTCExchangeRate,ETHExchangeRate,BNBExchnageRate,rentalId";    
+    let theFields = "propertyId,name,amountInternational,datePaid,paidBy,BTCExchangeRate,ETHExchangeRate,BNBExchnageRate,rentalId";    
     let foreignKeys = {"id":"propertyId"}
     let lookUps = [{"table":"rental_agreement","key":"rentalId","foreignKey":"propertyId","value":window.localStorage.currentDataItemId},{"table":"payment_types","key":"paidBy","foreignKey":"","value":""}]
 </script>

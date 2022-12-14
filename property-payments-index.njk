@@ -2,7 +2,8 @@
 layout: layout.njk
 permalink: /property/payments/
 crumb : /property/payment/
-fields : ["id","name","amount","paidBy","datePaid","createdAt"]
+fields : ["id","name","amountInternational","paidBy","datePaid","createdAt"]
+headerFields : ["id","Name","Amount","Paid By","Date Paid","Created At"]
 title : payments
 ---
 <script>
@@ -15,6 +16,7 @@ title : payments
     let getOnlyTableSchema = 0;
     let allowOnlyOne = 0;
     let lookUps = [{"table":"payment_types","key":"paidBy","foreignKey":"name","value":""}]
+    let formatFields = [{"field":"amountInternational","function":"formatCurencyUSD(tmpValue)"}]
 </script>
 {% set theJs %}
     {% include 'admin/table-index.js' %}
