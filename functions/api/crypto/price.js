@@ -21,11 +21,12 @@ export async function onRequestGet(context) {
         const cryptocurrencies = searchParams.get('cryptocurrencies');
         const fiatcurrencies = searchParams.get('fiatcurrencies');
         let theUrl = `https://api.coingecko.com/api/v3/simple/price?ids=${cryptocurrencies}&vs_currencies=${fiatcurrencies}`
-        const response = await fetch(theUrl);
-        const price = await response.json();
+        const theResponse = await fetch(theUrl);
+        const price = await theResponse.json();
         return new Response(JSON.stringify(price), { status: 200 });
     } catch (error) {
         console.error(error);
+        theJson = {"error":`${error}`,"url":`${theUrl}`,"response":`${theResponse}`}
         return new Response(JSON.stringify(theUrl), { status: 400 });
     }
 
