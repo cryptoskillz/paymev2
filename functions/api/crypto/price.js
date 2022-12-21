@@ -21,8 +21,6 @@ export async function onRequestGet(context) {
         theResponse = await fetch(theUrl);
         price = await theResponse.json();
         return new Response(JSON.stringify(price), { status: 200 });
-        
-
 
     } catch (error) {
         theJson = {"url":`${theUrl}`,"response":`${price}`}
