@@ -1,10 +1,3 @@
-async function getCryptocurrencyPrice(cryptocurrency) {
-    const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${cryptocurrency}&vs_currencies=usd`);
-    const data = await response.json();
-    return data[cryptocurrency].usd;
-}
-
-
 export async function onRequestGet(context) {
     //build the paramaters
     const {
@@ -19,7 +12,7 @@ export async function onRequestGet(context) {
         const { searchParams } = new URL(request.url);
         //get the tables cryptocurrencies 
         const cryptocurrencies = searchParams.get('cryptocurrencies');
-        const fiatcurrencies = searchParams.get('fiatcurrencies');
+        const fiatcurrencies = searchParams.get('fiatcurrencies');cryptocurrencies
         let theUrl = `https://api.coingecko.com/api/v3/simple/price?ids=${cryptocurrencies}&vs_currencies=${fiatcurrencies}`
         const theResponse = await fetch(theUrl);
         const price = await theResponse.json();
