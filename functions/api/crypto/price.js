@@ -15,13 +15,19 @@ export async function onRequestGet(context) {
         next, // used for middleware or to fetch assets
         data, // arbitrary space for passing data between middlewares
     } = context;
-    const { searchParams } = new URL(request.url);
-    //get the tables
-    const cryptocurrencies = searchParams.get('cryptocurrencies');
-    const faitcurrencies = searchParams.get('fiatcurrencies');
-    //const apimethod = searchParams.get('simpleprice');
-    //const currency = "usd";
-    const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${cryptocurrencies}&vs_currencies=${faitcurrencies}`);
-    const price = await response.json();
-    return new Response(JSON.stringify(price), { status: 200 });
+    try {
+        const { searchParams } = new URL(request.url);
+        //get the tables
+        const cryptocurrencies = searchParams.get('cryptocurrencies');
+        const faitcurrencies = searchParams.get('fiatcurrencies');
+        //const apimethod = searchParams.get('simpleprice');
+        //const currency = "usd";
+        const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${cryptocurrencies}&vs_currencies=${faitcurrencies}`);
+        const price = await response.json();
+        return new Response(JSON.stringify(price), { status: 200 });
+    } catch (error) {
+        console.error(error);
+        return new Response(JSON.stringify(error), { status: 200 });
+    }
+
 }
