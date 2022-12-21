@@ -26,7 +26,7 @@ echo "killing rouge wrangler"
 echo "starting wrangler"
 
 
-wrangler pages dev _site --node-compat --d1=PAYME --persist --binding SECRET=fdfdf  --kv=kvdata --local --live-reload  &
+wrangler pages dev _site  --d1=PAYME --persist --binding SECRET=fdfdf  --kv=kvdata --local --live-reload  &
 
 if [[ $ELEVENTY_ENV == 'cypress' ]]
 then
