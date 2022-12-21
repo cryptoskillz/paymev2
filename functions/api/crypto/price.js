@@ -19,8 +19,8 @@ export async function onRequestGet(context) {
     //get the tables
     const cryptocurrencies = searchParams.get('cryptocurrencies');
     const faitcurrencies = searchParams.get('fiatcurrencies');
-    const apimethod = searchParams.get('simpleprice');
-    const currency = "usd";
+    //const apimethod = searchParams.get('simpleprice');
+    //const currency = "usd";
     const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${cryptocurrencies}&vs_currencies=${faitcurrencies}`);
     const price = await response.json();
     return new Response(JSON.stringify(price), { status: 200 });

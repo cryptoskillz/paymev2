@@ -1,5 +1,5 @@
 [[ d1_databases ]]
 binding = "DB" # i.e. available in your Worker on env.DB
-database_name = "database"
-database_id = "fd43ef25-73e3-4c1d-88ca-0ffddb1ad6d7"
+database_name = "payme"
+database_id = "1ab242c2-0019-4311-9be6-e0ed20596d65"
 node_compat = true

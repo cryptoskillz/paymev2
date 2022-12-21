@@ -322,7 +322,7 @@ let checkElement = (element) => {
          //set the api vars
          //note: move this to the env var 
          //let apiUrl = "http://localhost:8788/api/"
-         let method = "crypto/price/?cryptocurrencies=bitcoin,ethereum&fiatcurrencies=usd&method=simpleprice"
+         let method = "crypto/price/?cryptocurrencies=bitcoin,ethereum&fiatcurrencies=usd"
          //do a xhrcall to get the price 
          xhrcall(1, apiUrl + method, '', '', '', priceDone, '', '');
 

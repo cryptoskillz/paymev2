@@ -30,7 +30,7 @@ CREATE TABLE `crypto_payments` (
   PRIMARY KEY("id" AUTOINCREMENT)
 );
 
-INSERT INTO "crypto_payments" ("userId","orderId","productName","amountUsd","amountCurrency") VALUES (1,'0d4e2f3d-1a24-919c-e8ef-915b4e598d7f','rental payment 1','50','$');
+INSERT INTO "crypto_payments" ("userId","orderId","productName","amountUsd","amountCurrency","paymentId") VALUES (1,'0d4e2f3d-1a24-919c-e8ef-915b4e598d7f','rental payment 1','50','$','023424d-1a24-919c-e8ef-915b4e22');
 
 CREATE TABLE "user" (
 	"id"	INTEGER,
