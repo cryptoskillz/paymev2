@@ -1,0 +1,239 @@
+---
+title : payment
+---
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Checkout Payment!</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link href="/assets/css/fontawesome/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/payment.css">
+</head>
+<body class="multicoin-body">
+<script type="text/javascript">
+    const apiUrl = "{{env.APIURL}}";
+</script>
+    <div id="root" class="container">
+        <div class="row justify-content-md-center mt-5">
+            <!-- payment type modal -->
+            <div class="col-lg-6 col-sm-12 col-md-6 col-md-auto d-none" id="payment-select-method">
+                <div class="d-flex bd-highlight">
+                    <div class="p-2 w-100 bd-highlight font-weight-bold divcompanyname">Company Name</div>
+                </div>
+                <div class="card shadow-sm">
+                    <h5 class="card-header bg-white p-1">
+                        <div class="d-flex bd-highlight mb-3">
+                            <div class="p-2 bd-highlight font-weight-light h6 order-detail" ></div>
+                            <div class="ml-auto p-2 bd-highlight font-weight-light order-amount"></div>
+                        </div>
+                    </h5>
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Select payment method</h5>
+                        <ul class="list-group" id="payment-method-ul">
+
+                        </ul>
+                        <div class="form-group m-3">
+                            <button class="btn btn-primary btn-block" id="btn-method-submit" disabled>SELECT</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- payment currency modal -->
+            <div class="col-lg-6 col-sm-12 col-md-6 col-md-auto d-none" id="payment-select-currency">
+                <div class="d-flex bd-highlight">
+                    <div class="p-2 w-100 bd-highlight font-weight-bold divcompanyname">Company Name</div>
+                </div>
+                <div class="card shadow-sm">
+                    <h5 class="card-header bg-white p-1">
+                        <div class="d-flex bd-highlight mb-3">
+                            <div class="p-2 bd-highlight font-weight-light h6 order-detail"></div>
+                            <div class="ml-auto p-2 bd-highlight font-weight-light order-amount" ></div>
+                        </div>
+                    </h5>
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Select payment currency</h5>
+                       <ul class="list-group" id="payment-currency-ul">
+
+                        </ul>
+                        <div class="form-group m-3">
+                            <button class="btn btn-primary btn-block" id="btn-currency-submit" disabled >PAY</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- payment qr code -->
+            <div class="col-lg-6 col-sm-12 col-md-6 col-md-auto d-none" id="payment-qr-code">
+                <div class="d-flex bd-highlight">
+                    <div class="p-2 w-100 bd-highlight font-weight-bold divcompanyname">Company Name</div>
+                </div>
+                <div class="card shadow-sm">
+                    <h5 class="card-header bg-white p-1">
+                        <div class="d-flex bd-highlight mb-3">
+                            <div class="p-2 bd-highlight font-weight-light h6 order-detail"></div>
+                            <div class="ml-auto p-2 bd-highlight font-weight-light order-amount" ></div>
+                            <div class="p-2 bd-highlight"><img src="" class="icon-sm qrcryptoicon"></div>
+                        </div>
+                    </h5>
+                    <div class="card-body count-holder text-center display-4 t-x2 m-0 p-0" id="countdown">
+                    </div>
+                    <div class="card-body">
+                        <div class="text-center" id="invoice-qr-code"><img src="" class="grcode-modal d-none" id="qrcryptoimage"></div>
+                        <div class="send-amount mt-3">
+                            <div>Send the indicated amount to the address below</div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text" id="qrcryptosymbol"></div>
+                                </div>
+                                <input type="text" class="form-control text-center" id="qrcryptoamount">
+                            
+                                <div class="input-group-prepend">
+                                    <button id="copyImg" data-original-title="Copy Amount!" data-clipboard-target="#amount" class="input-group-text copyImg" data-toggle="tooltip" data-placement="top"><i class="fas fa-copy"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group mb-5">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="fas fa-wallet"></i></div>
+                                </div>
+                                <input type="text" class="form-control text-center"  id="qrcryptoaddress">
+                                <div class="input-group-prepend">
+                                    <button id="copyWallet" data-original-title="Copy Address!" data-clipboard-target="#wallet" class="copyWallet input-group-text" data-toggle="tooltip" data-placement="top"><i class="fas fa-copy"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group text-center mt-3">
+                            <button class="btn btn-outline-dark" id="qrpaidbutton">Mark as Paid</button> 
+                            <button class="btn btn-outline-dark" id="qrinvalidbutton">Mark as Invalid</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="shadow-none p-3 bg-light rounded">
+                    <p class="text-muted small">Do not send funds from an exchange. </p>
+                    
+                </div>
+                <div class="d-flex bd-highlight mb-3">
+                    <div class="ml-auto pt-2 pr-1 bd-highlight small paymentId" ></div>
+                </div>
+                <!-- Modal -->
+                <div class="modal fade" id="amountModal" tabindex="-1" role="dialog" aria-labelledby="amountModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="amountModalLabel">Amount QR Code</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body text-center">
+                                <div id="invoice-qr-code" class="mb-2"><img :src="invoice.qramount" class="grcode-modal"></div>
+                                <h4>{{ invoice.amount }} {{ invoice.coin }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal -->
+                <div class="modal fade" id="walletModal" tabindex="-1" role="dialog" aria-labelledby="walletModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="walletModalLabel">Address QR Code</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body text-center">
+                                <div id="invoice-qr-code" class="mb-2"><img src="" class="grcode-modal"></div>
+                                <p id="invoiceaddress"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- payment paid and confirmed -->
+            <div class="col-lg-6 col-sm-12 col-md-6 col-md-auto d-none" id="payment-paidandconfirmed">
+                <div class="card shadow-sm">
+                    <h5 class="card-header bg-white p-1">
+                        <div class="d-flex bd-highlight mb-3">
+                            <div class="p-2 bd-highlight font-weight-light h6 order-detail"></div>
+                            <div class="ml-auto p-2 bd-highlight font-weight-light order-amount" ></div>
+                            <div class="p-2 bd-highlight"><img src="" class="icon-sm qrcryptoicon"></div>
+                        </div>
+                    </h5>
+                    <div class="card-body text-center">
+                        <img src="/assets/images/success.png" class="img-70">
+                        <h3 class="payment-paid">Paid and Confirmed</h3>
+                        <div class="form-group text-center mt-4">
+                            <a href="#" class="btn btn-outline-dark">Check Invoice</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex bd-highlight mb-3">
+                    <div class="ml-auto pt-2 pr-1 bd-highlight small paymentId" ></div>
+                </div>
+            </div>
+            <!-- payment expired -->
+            <div class="col-lg-6 col-sm-12 col-md-6 col-md-auto d-none" id="payment-expired">
+                <div class="d-flex bd-highlight">
+                    <div class="p-2 w-100 bd-highlight font-weight-bold divcompanyname"></div>
+                </div>
+                <div class="card shadow-sm">
+                    <h5 class="card-header bg-white p-1">
+                        <div class="d-flex bd-highlight mb-3">
+                            <div class="p-2 bd-highlight font-weight-light h6 order-detail"></div>
+                            <div class="ml-auto p-2 bd-highlight font-weight-light order-amount" ></div>
+                            <div class="p-2 bd-highlight"><img src="" class="icon-sm qrcryptoicon"></div>
+                        </div>
+                    </h5>
+                    <div class="card-body text-center">
+                        <h3>This order has expired</h3>
+                    </div>
+                </div>
+                <div class="d-flex bd-highlight mb-3">
+                    <div class="ml-auto pt-2 pr-1 bd-highlight small paymentId" ></div>
+                </div>
+            </div>
+            <!-- payment invalid -->
+            <div class="col-lg-6 col-sm-12 col-md-6 col-md-auto d-none" id="payment-invalid">
+                <div class="d-flex bd-highlight">
+                    <div class="p-2 w-100 bd-highlight font-weight-bold divcompanyname"></div>
+                   
+                </div>
+                <div class="card shadow-sm">
+                    <h5 class="card-header bg-white p-1">
+                        <div class="d-flex bd-highlight mb-3">
+                            <div class="p-2 bd-highlight font-weight-light h6 order-detail"></div>
+                            <div class="ml-auto p-2 bd-highlight font-weight-light order-amount" ></div>
+                            <div class="p-2 bd-highlight"><img src="" class="icon-sm qrcryptoicon" id="invalidicon"></div>
+                        </div>
+                    </h5>
+                    <div class="card-body text-center">
+                        <h3>This order is invalid</h3>
+                    </div>
+                </div>
+                <div class="d-flex bd-highlight mb-3">
+                    <div class="ml-auto pt-2 pr-1 bd-highlight small paymentId" ></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+      <!--  <script src="/assets/js/bootstrap.min.js"></script>
+<script src="/assets/js/clipboard.min.js"></script>-->
+{% set theJs %}
+    {% include 'payment.js' %}
+{% endset %}
+{% if env.ENVIRONMENT == 'local' %}
+    <script type="text/javascript">{{theJs | safe}}</script>
+{% else %}
+    <script type="text/javascript">{{theJs | jsmin | safe}}</script>
+{% endif %}
+</body>
+
+</html>

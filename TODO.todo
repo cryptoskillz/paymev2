@@ -1,95 +1,21 @@
 GENERAL 
 
- ☐ update the readme 
- ☐ fix the title for tenants / agents
- ☐ create an upstream script to remove non core files
- ☐ add a view button to each index
- ☐ move the reusable crypto functions to app.js
+ ☐ get local env vars workin
+ ☐ test it deploys with the override to workers in place
+ ☐ deploy it and create github repo
 
 
-TABLES
+CRYPTO/PAYMENTS
 
- ✔ Make the table render render hyper links clicable @done (22-12-10 19:33)
+ ☐ require a key to post a record
+ ✔ trap no order ids being added @done (22-12-22 00:19)
 
-ACCOUNT
+CHECK
 
- ☐ refactor forgot password
- ☐ refactor reset password
+  ☐ check btc payment
+  ☐ check eth payment
+  ☐ check bnb payment
 
-SETTINGS
+METAMASK
 
- ☐ add the settings layout.
-
-API
- 
- ☐ port setting to d1 
- ☐ port forgot password to d1
-
-FUNCTIONS API
-
- ☐ does login / settings / regsiter.js stay in the root of api it kind of makes sense to move them to a frontend folder as thats what uses them  
- ☐ check the table is set in api calls
- 
-SECOND LEVEL CREATES (PROPERTY COSTS)
-
-
-
-LOOK UP
-
- ☐ get the main id from the token this would make it more secure
- ✔ make buildform data work with multipile lookups @done (22-12-03 01:08)
-
-GETFORMDATA
-
- ☐ check integer fields has only integers
-
-PROPERTY TOKENS
-
-
-CRYPTO 
-
- ☐ test deploy on live net
- ☐ deploy live factory
- ☐ add eth
- ☐ add matic
- ☐ load the abi from an env var
-
- PROPERTY 
-
-
- TABLE INDEX JS
-
- ☐ add look up to render out the foreign data
-
-
- PAYMENTS AND DISTS
-
- ✔ add paid by and exchange rate to payments and costs table @done (22-12-12 16:31)
- ✔ remove edit from dist @done (22-12-13 02:17)
- ✔ get total cost @done (22-12-14 01:00)
- ✔ get total payments @done (22-12-14 01:00)
- ✔ show a list of owners with how much they are owed and button to send payment @done (22-12-14 01:00)
- ✔ record the above payments in d1 @done (22-12-14 18:34)
- ✔ get the current cyrpto exchange rate so we can populate the field do this as api worker @done (22-12-13 02:17)
- ✔ check the connected account address matches the payment address @done (22-12-12 23:59)
- ✔ add a setting to leave a percentage in the account @done (22-12-14 01:00)
- ✔ add the ability to remove uses from payment (this may confuse things will think about) @done (22-12-14 18:34)
- ✔ remove delete button @done (22-12-14 18:34)
- ✔ send out the payment @done (22-12-14 04:04)
- ✔ showalert for each transacction @done (22-12-14 18:35)
- ✔ make it update on change @done (22-12-14 19:34)
- ✔ add a custom payment amount @done (22-12-14 19:34)
-
-next version
-
-
- ☐ trap the amount if it is too small
-
-
-
-
- 
-
-
-
-
+ ☐ add metamask payment flow

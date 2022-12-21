@@ -20,12 +20,13 @@ wipeOutOldBuild
 npx @11ty/eleventy 
 
 echo "killing rouge wrangler"
-kill -9 `lsof -t -i:8788`
+#pkill -9 esbuild
+#kill -9 `lsof -t -i:8788`
 
 echo "starting wrangler"
 
 
-wrangler pages dev _site --d1=DB --persist --binding SECRET=fdfdf  --kv=kvdata --local --live-reload  &
+wrangler pages dev _site --node-compat --d1=PAYME --persist --binding SECRET=fdfdf  --kv=kvdata --local --live-reload  &
 
 if [[ $ELEVENTY_ENV == 'cypress' ]]
 then
