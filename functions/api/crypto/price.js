@@ -36,8 +36,12 @@ export async function onRequestGet(context) {
         //theResponse = await fetch(theUrl);
         //price = await theResponse.json();
         results = await gatherResponse(theResponse);
+        //note: this is a hack until i can figure out why coingecko is not working it may be limiting me for some reason on production.
         if (results == "error code: 1020")
+        {
             results = {"bitcoin":{"usd":16789.44},"ethereum":{"usd":1209.78}}
+            results = JSON.stringify(results);
+        }
         return new Response(results, { status: 200 });
 
     } catch (error) {
