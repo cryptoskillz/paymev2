@@ -55,7 +55,7 @@ export async function onRequestPut(context) {
        
         //UPDATE users SET name = ?1 WHERE id = ?2
         let theQuery = `UPDATE crypto_payments SET "amount" = '${theData.amount}', "address" = '${theData.address}',"cryptoUsed"='${theData.cryptoUsed}', updatedAt= CURRENT_TIMESTAMP    WHERE orderId='${theData.orderId}';`
-        console.log(theQuery);
+        //console.log(theQuery);
         const info = await context.env.DB.prepare(theQuery).run();
         return new Response(JSON.stringify({ message: `payment updated` }), { status: 200 });
     }

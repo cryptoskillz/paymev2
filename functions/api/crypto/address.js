@@ -1,5 +1,7 @@
 //import swan.
 /*
+
+//note because --node-compat does not work on production I will have to move this to a worker until it has been resolved
 const swan = require('@swan-bitcoin/xpub-lib');
 export async function onRequestGet(context) {
     //build the paramaters
