@@ -25,7 +25,6 @@ export async function onRequestGet(context) {
         const price = await theResponse.json();
         return new Response(JSON.stringify(price), { status: 200 });
     } catch (error) {
-        console.error(error);
         theJson = {"error":`${error}`,"url":`${theUrl}`,"response":`${theResponse}`}
         return new Response(JSON.stringify(theJson), { status: 400 });
     }
