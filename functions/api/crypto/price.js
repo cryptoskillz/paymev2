@@ -17,17 +17,17 @@ export async function onRequestGet(context) {
     } = context;
     try {
         const { searchParams } = new URL(request.url);
-        //get the tables
+        //get the tables cryptocurrencies 
         const cryptocurrencies = searchParams.get('cryptocurrencies');
-        const faitcurrencies = searchParams.get('fiatcurrencies');
+        const fiatcurrencies = searchParams.get('fiatcurrencies');
         //const apimethod = searchParams.get('simpleprice');
         //const currency = "usd";
-        const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${cryptocurrencies}&vs_currencies=${faitcurrencies}`);
+        const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${cryptocurrencies}&vs_currencies=${fiatcurrencies}`);
         const price = await response.json();
         return new Response(JSON.stringify(price), { status: 200 });
     } catch (error) {
         console.error(error);
-        return new Response(JSON.stringify(error), { status: 200 });
+        return new Response(JSON.stringify(error), { status: 400 });
     }
 
 }
