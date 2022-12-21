@@ -27,7 +27,13 @@ export async function onRequestGet(context) {
         const cryptocurrencies = searchParams.get('cryptocurrencies');
         const fiatcurrencies = searchParams.get('fiatcurrencies');
         theUrl = `https://api.coingecko.com/api/v3/simple/price?ids=${cryptocurrencies}&vs_currencies=${fiatcurrencies}`
-        theResponse = await fetch(theUrl);
+        const init = {
+            headers: {
+                'content-type': 'application/json;charset=UTF-8',
+            },
+        };
+        theResponse = await fetch(theUrl, init);
+        //theResponse = await fetch(theUrl);
         //price = await theResponse.json();
         results = await gatherResponse(theResponse);
         return new Response(results, { status: 200 });
