@@ -27,7 +27,7 @@ export async function onRequestGet(context) {
     } catch (error) {
         console.error(error);
         theJson = {"error":`${error}`,"url":`${theUrl}`,"response":`${theResponse}`}
-        return new Response(JSON.stringify(theUrl), { status: 400 });
+        return new Response(JSON.stringify(theJson), { status: 400 });
     }
 
 }
