@@ -377,8 +377,7 @@
          let addr = "";
          for (var i = 0; i < currencyMethods.length; i++) {
              if (currencyMethods[i].active == 1) {
-                 addr = currencyMethods[i].chainlinkaddress;
-                 let priceFeed = new web3.eth.Contract(aggregatorV3InterfaceABI, addr2);
+                 let priceFeed = new web3.eth.Contract(aggregatorV3InterfaceABI, currencyMethods[i].chainlinkaddress);
                  //get the latest price
                  let roundData = await priceFeed.methods.latestRoundData().call();
                  //get the decimals (didn't mention this in the docs anywhere did you)
