@@ -9,14 +9,14 @@ let _YEAR = todaysDate.getFullYear();
 
 module.exports = {
     YEAR: _YEAR,
-    TITLE: "Building block ADMIN",
+    TITLE: "Payme",
     APIURL: process.env.APIURL,
     ADMINURL: process.env.ADMINURL,
     COPYRIGHT: "CRYPTOSKILLZ " + _YEAR,
     ENVIRONMENT: process.env.ELEVENTY_ENV,
     SECRET: process.env.SECRET,
-    LEVEL1NAME: "properties",
-    LEVEL2NAME: "property",
+    LEVEL1NAME: "invoices",
+    LEVEL2NAME: "invoice",
     ITEMSDATAMAIN: "items",
     DASHBOARDSTRAP: "Welcome to the content editor.",
     CANCREATEACCOUNT: process.env.CANCREATEACCOUNT,

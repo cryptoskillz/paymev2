@@ -168,7 +168,9 @@
      //get the paramaters
      const urlParams = new URLSearchParams(queryString);
      //gtt the paramter we are looking 
-     const res = urlParams.get(param)
+     let res = urlParams.get(param)
+
+     console.log(res)
      //check it exists. 
      if (res == null)
          res = "";
@@ -476,11 +478,12 @@
          getPriceFromChainLink();
      }
      //show the spinner
-     document.getElementById("spinner").classList.remove('d-none');
      const orderId = getUrlParamater('orderId')
      if (orderId == "") {
+         document.getElementById('invalidicon').classList.add('d-none')
          document.getElementById('payment-invalid').classList.remove('d-none')
      } else {
+         document.getElementById("spinner").classList.remove('d-none');
          const method = `crypto/payment?orderId=${orderId}`;
          xhrcall(1, apiUrl + method, '', '', '', paymentDone, '', '');
      }

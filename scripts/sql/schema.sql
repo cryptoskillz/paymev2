@@ -5,9 +5,10 @@ DROP TABLE IF EXISTS userAccess;
 
 CREATE TABLE `crypto_payments` (
   "id" INTEGER,
+  "adminId" INTEGER,
   "userId" INTEGER,
   "orderId" TEXT,
-  "productName" TEXT,
+  "name" TEXT,
   "paymentId" TEXT,
   "amountCurrency" TEXT,
   "amount" TEXT,
@@ -22,6 +23,7 @@ CREATE TABLE `crypto_payments` (
   "processed" INTEGER DEFAULT 0,
   "paid" INTEGER DEFAULT 0,
   "expired" INTEGER DEFAULT 0,
+  "markedInvalid" INTEGER DEFAULT 0,
   "isDeleted" INTEGER DEFAULT 0,
   "createdAt" TEXT DEFAULT CURRENT_TIMESTAMP,
   "updatedAt" TEXT,
@@ -30,7 +32,7 @@ CREATE TABLE `crypto_payments` (
   PRIMARY KEY("id" AUTOINCREMENT)
 );
 
-INSERT INTO "crypto_payments" ("userId","orderId","productName","amountUsd","amountCurrency","paymentId") VALUES (1,'0d4e2f3d-1a24-919c-e8ef-915b4e598d7f','rental payment 1','50','$','023424d-1a24-919c-e8ef-915b4e22');
+INSERT INTO "crypto_payments" ("adminId","userId","orderId","name","amountUsd","amountCurrency","paymentId") VALUES (1,1,'0d4e2f3d-1a24-919c-e8ef-915b4e598d7f','rental payment 1','50','$','023424d-1a24-919c-e8ef-915b4e22');
 
 CREATE TABLE "user" (
 	"id"	INTEGER,

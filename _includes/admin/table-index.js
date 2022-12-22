@@ -31,7 +31,7 @@ whenDocumentReady(isReady = () => {
     } else {
         lookUps = JSON.stringify(lookUps);
     }
-    console.log(lookUps);
+    //console.log(lookUps);
 
     let getTableDone = (res) => {
 

@@ -45,5 +45,13 @@ PRICE
 
  ☐ check that the external links are working for each payment type
  ☐ if you click the qr code make it in a big modal
+ ☐ when you click invalid buton make it update the database with maredinvalid field (qrinvalidbutton)
+ ☐ if qrivlaid is marked should we expire this invoice or let it run again
+ ☐ when the timer runs out should we expire the invoice
+ ☐ should we make the timer a toggle so an invoice can run forever. I think we should
+ ☐ when you clicl the qrpaidbutton it should start the check functionality
+
+ADMIN
+
 
 

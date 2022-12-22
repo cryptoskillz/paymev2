@@ -8,7 +8,12 @@
  whenDocumentReady(isReady = () => {
 if (typeof loadMessage != 'undefined') 
     showAlert(loadMessage.message,loadMessage.type,loadMessage.timeout)
-
+    
+     if (typeof lookUps === 'undefined') {
+        var lookUps = "";
+    } else {
+        lookUps = JSON.stringify(lookUps);
+    }
 
      let getTableDone = (res) => {
          //parse the repsonse
