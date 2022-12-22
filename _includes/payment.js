@@ -54,8 +54,6 @@
              document.getElementById('payment-qr-code').classList.remove('d-none');
              //udpate the wallet address
              document.getElementById('qrwallet').href = `${theCode}:${response.data.address}?amount=${theAmountToPay}`
-
-
          }
 
 
@@ -503,11 +501,6 @@
        Note if we are not using strai and have a custom URL we can change it here like wise if we want to use 2 we can check the method to select the correct base url
      */
 
-     //checkElement = document.getElementById("spinner");
-     if (checkElement("spinner") == true) {
-         //if (typeof(checkElement) != 'undefined' && checkElement != null) {
-         document.getElementById("spinner").classList.remove("d-none");
-     }
      let url = method;
      let result = method.includes("http");
      if (result == false)
@@ -556,22 +549,12 @@
      xhr.onerror = function() {
          //console.log(xhr.status)
          //console.log(xhr.response)
-         if (xhr.status == 0)
-             document.getElementById("spinner").classList.add("d-none");
      };
      xhr.onload = function() {
-         if (checkElement("confirmation-modal-delete-button") == true) {
-
-             //checkElement = document.getElementById("confirmation-modal-delete-button");
-             //if (typeof(checkElement) != 'undefined' && checkElement != null) {
-             document.getElementById("spinner").classList.add("d-none");
-         }
          //check if its an error
          let res = xhr.response;
          let status = xhr.status
          let errorMessage = "";
-
-
          //check if it was ok.
          if (xhr.status == 200) {
              //check if a redirecr url as passed.
