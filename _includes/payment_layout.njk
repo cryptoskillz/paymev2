@@ -1,0 +1,40 @@
+
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Checkout Payment!</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link href="/assets/css/fontawesome/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/payment.css">
+</head>
+<body class="multicoin-body">
+<script type="text/javascript">
+    const apiUrl = "{{env.APIURL}}";
+    const rpcUrl = "{{env.RPCURL}}";
+    const chainBtcMain = "{{env.CHAINLINKMAINBTC}}";
+    const chainEthMain = "{{env.CHAINLINKMAINETH}}";
+    const chainBnbMain = "{{env.CHAINLINKMAINBNB}}";
+    const chainBtcTest = "{{env.CHAINLINKTESTBTC}}";
+    const chainEthTest = "{{env.CHAINLINKTESTETH}}";
+    const chainBnbTest = "{{env.CHAINLINKTESTBNB}}";
+</script>
+<div id="root" class="container">
+<div class="spinner-border float-right d-none" role="status" id="spinner">
+    <span class="sr-only">Loading...</span>
+</div>
+     {{ content | safe }}
+</div>
+<script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+{% set theJs %}
+    {% include 'payment.js' %}
+{% endset %}
+{% if env.ENVIRONMENT == 'local' %}
+    <script type="text/javascript">{{theJs | safe}}</script>
+{% else %}
+    <script type="text/javascript">{{theJs | jsmin | safe}}</script>
+{% endif %}
+</body>
+</html>

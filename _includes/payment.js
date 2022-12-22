@@ -321,6 +321,7 @@
  }
 
  let getPriceFromChainLink = async () => {
+     console.log('trying to get current prices from chainlink')
      let web3 = new Web3(Web3.givenProvider || rpcUrl);
 
      const aggregatorV3InterfaceABI = [{
@@ -399,8 +400,8 @@
              document.getElementById('payment-select-currency').classList.remove('d-none');
          } else {
              document.getElementById('payment-select-method').classList.remove('d-none');
-
          }
+         document.getElementById("spinner").classList.add('d-none');
 
 
      } catch (error) {
@@ -433,6 +434,7 @@
                  document.getElementById('payment-select-method').classList.remove('d-none');
 
              }
+             document.getElementById("spinner").classList.add('d-none');
          }
          let cryptocurrencies = "";
          for (var i = 0; i < currencyMethods.length; i++) {
@@ -475,7 +477,8 @@
          //try to get the price using web3
          getPriceFromChainLink();
      }
-
+     //show the spinner
+     document.getElementById("spinner").classList.remove('d-none');
      const orderId = getUrlParamater('orderId')
      if (orderId == "") {
          document.getElementById('payment-invalid').classList.remove('d-none')
