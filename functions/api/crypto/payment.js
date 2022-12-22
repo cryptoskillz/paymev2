@@ -19,7 +19,7 @@ export async function onRequestGet(context) {
     //hold the query
     let query;
 
-    let theSQL = `SELECT orderId,productName,amountUsd,amountCurrency,paid,paymentId from crypto_payments where orderId = '${orderId}'`
+    let theSQL = `SELECT orderId,name,amountUsd,amountCurrency,paid,paymentId from crypto_payments where orderId = '${orderId}'`
     //console.log(theSQL)
     //run it
     query = context.env.DB.prepare(theSQL);
@@ -87,7 +87,7 @@ export async function onRequestPost(context) {
         if (theData.key != theKey) {
             return new Response(JSON.stringify({ message: "record not added, it would be terrible opsec to tell you why it failed so good luck" }), { status: 400 });
         } else {
-            let theQuery = `INSERT INTO "crypto_payments" ("userId","orderId","productName","amountUsd","amountCurrency","paymentId") VALUES (${theData.userId},'${orderId}','${theData.productName}','${theData.amount}','$','${paymentId}');`
+            let theQuery = `INSERT INTO "crypto_payments" ("userId","orderId","name","amountUsd","amountCurrency","paymentId") VALUES (${theData.userId},'${orderId}','${theData.name}','${theData.amount}','$','${paymentId}');`
             const info = await context.env.DB.prepare(theQuery).run();
             return new Response(JSON.stringify({ message: `${theData.table} has been added` }), { status: 200 });
         }

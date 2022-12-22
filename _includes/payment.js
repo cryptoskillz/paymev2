@@ -471,7 +471,7 @@
          }
          //set the payment Id
          setClassHtml('paymentId', `Payment ID ${paymentDetails.paymentId}`);
-         setClassHtml("order-detail", `Order #${paymentDetails.orderId} <br>${paymentDetails.productName}`)
+         setClassHtml("order-detail", `Order #${paymentDetails.orderId} <br>${paymentDetails.name}`)
          setClassHtml("order-amount", `${paymentDetails.amountCurrency}${paymentDetails.amountUsd}`)
          setClassHtml("divcompanyname", companyName)
          //try to get the price using web3
