@@ -405,7 +405,7 @@
 
 
      } catch (error) {
-         //console.log(error)
+         console.log(error)
          console.log('got prices from api')
          //process the xhr call done
          let priceDone = (result2) => {
