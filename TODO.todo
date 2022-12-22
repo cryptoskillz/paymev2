@@ -1,8 +1,6 @@
 GENERAL 
 
- ☐ get local env vars workin
- ☐ test it deploys with the override to workers in place
- ☐ deploy it and create github repo
+ ✔ add bnb png @done (22-12-22 14:00)
 
 
 CRYPTO/PAYMENTS
@@ -19,3 +17,33 @@ CHECK
 METAMASK
 
  ☐ add metamask payment flow
+ ☐ add the eth rpc details
+ ☐ add the bnb rpc details
+ ☐ add chainlink rpc  details
+ ☐ add chainlink ETH details
+ ☐ switch to eth if not on it to get the price
+ ☐ set the rpc and contract address to use based on the connection settings
+
+
+PRICE
+
+ ✔ add the  symbols dynamically @done (22-12-22 13:11)
+
+
+ADDRESS
+
+ ☐ move xpub generation to a worker and pay me
+
+
+PRICE
+
+ ☐ fix the coingecko call on production 
+ ✔ get the prices from chainlink @done (22-12-22 22:55)
+ ☐ check if the repsonse is not json and just not code 1020
+
+ QR
+
+ ☐ check that the external links are working for each payment type
+ ☐ if you click the qr code make it in a big modal
+
+

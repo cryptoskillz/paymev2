@@ -55,19 +55,22 @@ export async function onRequestGet(context) {
     //get the tables
     const id = searchParams.get('id');
     const network = searchParams.get('network');
-    let theResponse ={};
-    if (id == "BTC")
-    {
-        let address =  "bc1qcr8te4kr609gcawutmrza0j4xv80jy8z306fyu"
-        //console.log(address.address)
-        theResponse.address = address;
+    let theResponse = {};
+    if (id == "BTC") {
+        //set the backup address to mainnet or testnet
+        if (context.env.NETWORK == "mainnet")
+        {
+            theResponse.address = context.env.BTCBACKUPADDRESSMAIN
+        }
+        else
+        {
+            theResponse.address = context.env.BTCBACKUPADDRESSTEST
+        }
         theResponse.qrUrl = `https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=${theResponse.address}`
-        theResponse.path = address.path;
+        theResponse.path = "";
         theResponse.network = context.env.NETWORK
         //console.log(theResponse)
-    }
-    else
-    {
+    } else {
         //it is not BTC so just return the address
         theResponse.address = context.env.CRYPTOADDRESS
         theResponse.qrUrl = `https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=${theResponse.address}`

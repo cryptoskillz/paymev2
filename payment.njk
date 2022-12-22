@@ -16,6 +16,16 @@ title : payment
 <body class="multicoin-body">
 <script type="text/javascript">
     const apiUrl = "{{env.APIURL}}";
+    const rpcUrl = "{{env.RPCURL}}";
+    const chainBtcMain = "{{env.CHAINLINKMAINBTC}}";
+    const chainEthMain = "{{env.CHAINLINKMAINETH}}";
+    const chainBnbMain = "{{env.CHAINLINKMAINBNB}}";
+    const chainBtcTest = "{{env.CHAINLINKTESTBTC}}";
+    const chainEthTest = "{{env.CHAINLINKTESTETH}}";
+    const chainBnbTest = "{{env.CHAINLINKTESTBNB}}";
+
+
+
 </script>
     <div id="root" class="container">
         <div class="row justify-content-md-center mt-5">
@@ -93,18 +103,18 @@ title : payment
                                 <input type="text" class="form-control text-center" id="qrcryptoamount">
                             
                                 <div class="input-group-prepend">
-                                    <button id="copyImg" data-original-title="Copy Amount!" data-clipboard-target="#amount" class="input-group-text copyImg" data-toggle="tooltip" data-placement="top"><i class="fas fa-copy"></i></button>
+                                    <button id="copyAmount" data-original-title="Copy Amount!" data-clipboard-target="#amount" class="input-group-text copyImg" data-toggle="tooltip" data-placement="top" ><i class="fas fa-copy"></i></button>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group mb-5">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <div class="input-group-text"><i class="fas fa-wallet"></i></div>
+                                    <div class="input-group-text" ><a href="" id="qrwallet"><i class="fas fa-wallet"></i></a></div>
                                 </div>
                                 <input type="text" class="form-control text-center"  id="qrcryptoaddress">
                                 <div class="input-group-prepend">
-                                    <button id="copyWallet" data-original-title="Copy Address!" data-clipboard-target="#wallet" class="copyWallet input-group-text" data-toggle="tooltip" data-placement="top"><i class="fas fa-copy"></i></button>
+                                    <button id="copyAddress" data-original-title="Copy Address!" data-clipboard-target="#wallet" class="copyWallet input-group-text" data-toggle="tooltip" data-placement="top"><i class="fas fa-copy"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -120,40 +130,6 @@ title : payment
                 </div>
                 <div class="d-flex bd-highlight mb-3">
                     <div class="ml-auto pt-2 pr-1 bd-highlight small paymentId" ></div>
-                </div>
-                <!-- Modal -->
-                <div class="modal fade" id="amountModal" tabindex="-1" role="dialog" aria-labelledby="amountModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-sm">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="amountModalLabel">Amount QR Code</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body text-center">
-                                <div id="invoice-qr-code" class="mb-2"><img :src="invoice.qramount" class="grcode-modal"></div>
-                                <h4>{{ invoice.amount }} {{ invoice.coin }}</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Modal -->
-                <div class="modal fade" id="walletModal" tabindex="-1" role="dialog" aria-labelledby="walletModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="walletModalLabel">Address QR Code</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body text-center">
-                                <div id="invoice-qr-code" class="mb-2"><img src="" class="grcode-modal"></div>
-                                <p id="invoiceaddress"></p>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
             <!-- payment paid and confirmed -->
@@ -226,6 +202,8 @@ title : payment
     </div>
       <!--  <script src="/assets/js/bootstrap.min.js"></script>
 <script src="/assets/js/clipboard.min.js"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+
 {% set theJs %}
     {% include 'payment.js' %}
 {% endset %}
@@ -234,6 +212,7 @@ title : payment
 {% else %}
     <script type="text/javascript">{{theJs | jsmin | safe}}</script>
 {% endif %}
+
 </body>
 
 </html>
