@@ -1,4 +1,5 @@
 //note because --node-compat does not work on production I will have to move this to a worker until it has been resolved
+/*
 const swan = require('@swan-bitcoin/xpub-lib');
 export async function onRequestGet(context) {
     //build the paramaters
@@ -57,9 +58,9 @@ export async function onRequestGet(context) {
     }
 
 }
+*/
 
 
-/*
 export async function onRequestGet(context) {
     //build the paramaters
     const {
@@ -98,4 +99,3 @@ export async function onRequestGet(context) {
     }
     return new Response(JSON.stringify({ "data": theResponse }), { status: 200 });
 }
-*/
