@@ -128,4 +128,4 @@ PUSH IT
 
 git add .
 git commit -a -m 'first'
-git push <origin> master
+git push origin master

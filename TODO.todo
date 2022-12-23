@@ -10,7 +10,7 @@ CRYPTO/PAYMENTS
 
 CHECK
 
-  ☐ check btc payment
+  ✔ check c payment @done (22-12-24 01:37)
   ☐ check eth payment
   ☐ check bnb payment
 
@@ -19,10 +19,10 @@ METAMASK
  ☐ add metamask payment flow
  ☐ add the eth rpc details
  ☐ add the bnb rpc details
- ☐ add chainlink rpc  details
- ☐ add chainlink ETH details
+ ✔ add chainlink rpc  details @done (22-12-24 01:37)
+ ✔ add chainlink ETH details @done (22-12-24 01:37)
  ☐ switch to eth if not on it to get the price
- ☐ set the rpc and contract address to use based on the connection settings
+ ✔ set the rpc and contract address to use based on the connection settings @done (22-12-24 01:37)
 
 
 PRICE
@@ -44,17 +44,18 @@ PRICE
  QR
 
  ☐ check that the external links are working for each payment type
- ☐ if you click the qr code make it in a big modal
- ☐ when you click invalid buton make it update the database with maredinvalid field (qrinvalidbutton)
- ☐ if qrivlaid is marked should we expire this invoice or let it run again
- ☐ when the timer runs out should we expire the invoice
- ☐ should we make the timer a toggle so an invoice can run forever. I think we should
- ☐ when you clicl the qrpaidbutton it should start the check functionality
+ ✔ if you click the qr code make it in a big modal @done (22-12-24 01:38)
+ ✔ when you click invalid buton make it update the database with maredinvalid field (qrinvalidbutton) @done (22-12-24 01:38)
+ ✔ if qrivlaid is marked should we expire this invoice or let it run again @done (22-12-24 01:38)
+ ✔ when the timer runs out should we expire the invoice @done (22-12-24 01:38)
+ ☐ make the timer a toggle so an invoice can run forever
+ ✔ when you clicl the qrpaidbutton it should start the check functionality @done (22-12-24 01:38)
 
 ADMIN
 
  ☐ on edit and new add a generate order id button 
  ☐ add the state of the invoice 
  ☐ have a copy link button 
+ ☐ have a check payment button on 
 
 
