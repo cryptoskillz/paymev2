@@ -75,16 +75,18 @@ export async function onRequestGet(context) {
     const { searchParams } = new URL(request.url);
     //get the tables
     const id = searchParams.get('id');
-    const network = searchParams.get('network');
     let theResponse = {};
     if (id == "BTC") {
         //set the backup address to mainnet or testnet
+        //console.log(context.env)
         if (context.env.NETWORK == "mainnet")
         {
+            //console.log('dd')
             theResponse.address = context.env.BTCBACKUPADDRESSMAIN
         }
         else
         {
+            //console.log('ee')
             theResponse.address = context.env.BTCBACKUPADDRESSTEST
         }
         theResponse.qrUrl = `https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=${theResponse.address}`
@@ -96,6 +98,7 @@ export async function onRequestGet(context) {
         theResponse.address = context.env.CRYPTOADDRESS
         theResponse.qrUrl = `https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=${theResponse.address}`
         theResponse.path = "";
+        theResponse.network = context.env.NETWORK
     }
     return new Response(JSON.stringify({ "data": theResponse }), { status: 200 });
 }

@@ -1,6 +1,6 @@
 var uuid = require('uuid');
 
-    
+
 export async function onRequestGet(context) {
     //build the paramaters
     const {
@@ -36,6 +36,7 @@ export async function onRequestGet(context) {
 
 }
 
+
 export async function onRequestPut(context) {
     //build the paramaters
     const {
@@ -46,18 +47,36 @@ export async function onRequestPut(context) {
         next, // used for middleware or to fetch assets
         data, // arbitrary space for passing data between middlewares
     } = context;
-
+    //decode the token
+    //check they are an admin
     //get the content type
     const contentType = request.headers.get('content-type')
     let theData;
     if (contentType != null) {
         theData = await request.json();
-       
-        //UPDATE users SET name = ?1 WHERE id = ?2
-        let theQuery = `UPDATE crypto_payments SET "amount" = '${theData.amount}', "address" = '${theData.address}',"cryptoUsed"='${theData.cryptoUsed}', updatedAt= CURRENT_TIMESTAMP    WHERE orderId='${theData.orderId}';`
+        //console.log(theData);
+        let theQuery = `UPDATE ${theData.table} SET `
+        let theQueryValues = "updatedAt = CURRENT_TIMESTAMP";
+        let theQueryWhere = "";
+        //loop through the query data
+        //console.log(theData.tableData)
+        for (const key in theData.tableData) {
+            let tdata = theData.tableData;
+            //check it is not the table name
+            //note : we could use a more elegant JSON structure and element this check
+            if ((key != "table") && (key != "id") && (key != "OrderId")) {
+                //build the fields
+                theQueryValues = theQueryValues + `,${key} = '${tdata[key]}' `
+            }
+            //check for ad id and add a put.
+            if ((key == "id") || (key == "orderId"))
+                theQueryWhere = ` where ${key} = '${tdata[key]}'`
+        }
+        //compile the query
+        theQuery = theQuery + theQueryValues + theQueryWhere;
         //console.log(theQuery);
         const info = await context.env.DB.prepare(theQuery).run();
-        return new Response(JSON.stringify({ message: `payment updated` }), { status: 200 });
+        return new Response(JSON.stringify({ message: `${theData.table} has been updated` }), { status: 200 });
     }
     return new Response(JSON.stringify({ error: "server" }), { status: 400 });
 

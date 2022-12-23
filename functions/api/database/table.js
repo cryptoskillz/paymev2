@@ -54,21 +54,18 @@ export async function onRequestPut(context) {
                 let tdata = theData.tableData;
                 //check it is not the table name
                 //note : we could use a more elegant JSON structure and element this check
-                if ((key != "table") && (key != "id")) {
+                if ((key != "table") && (key != "id")  && (key != "OrderId")) {
                     //build the fields
                     theQueryValues = theQueryValues + `,${key} = '${tdata[key]}' `
                 }
                 //check for ad id and add a put.
-                if (key == "id")
-                    theQueryWhere = ` where id = '${tdata[key]}'`
+                if ((key == "id") || (key == "OrderId"))
+                    theQueryWhere = ` where ${key} = '${tdata[key]}'`
             }
             //compile the query
             theQuery = theQuery + theQueryValues + theQueryWhere;
             //console.log(theQuery);
-            const info = await context.env.DB.prepare(theQuery)
-                .run();
-
-
+            const info = await context.env.DB.prepare(theQuery).run();
             return new Response(JSON.stringify({ message: `${theData.table} has been updated` }), { status: 200 });
         }
         return new Response(JSON.stringify({ error: "server" }), { status: 400 });

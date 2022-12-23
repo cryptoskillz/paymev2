@@ -1,85 +1,131 @@
-# BUILDING BLOCKS
+# PAYME
+
+PAYME is the 100% serverless payment gateway.
+
+SETUP
+
+Install wrangler if you have  not already done so. 
+
+get the code
+
+git remote add origin  https://github.com/cryptoskillz/paymev2.git
 
 
-## ABOUT
+update .env & .dev.vars (no idea why cloudflare did not just use env)
 
-BUILDING BLOCKS is open sourced framework to use (any) crypto to manage ownership of a property.
-
-
-## SETUP
+defaults:
 
 
-clone BUILDING BLOCKS into your directory
+Salt for web3 stuff
 
-git clone https://github.com/cryptoskillz/YACEcms.git
+CRYPTOSALT=fdsfhsjdfhsdufysdufyu8ewyfefwefe
 
-run  the following 2 commands
+bnb explorer
 
-`npm install --save-dev @11ty/eleventy`
-`npm install `
+BNBBLOCKEXPLORER=https://testnet.bscscan.com
 
+bnb rpc for web3
 
-### Change variables:
+BNBRPCURL=https://bsc-dataseed.binance.org
 
-open _data/env.js and change the vars to whatever you want.
+eth explorer
 
-### create .env
+ETHBLOCKEXPLORER=https://testnet.bscscan.com
 
-rename _.env to .env to allow dotenv to see the local environment variables 
+eth rpc for web3
 
-API = The API is set to the local host but you should change it to your domain route in most cases
-SECRET = Change the secret to something else, this is the Key that JWT uses. 
-CANCREATEACCOUNT = 1 on 2 off.  This allows you to disable the create account
-
-### Javascript
-
-All the reusable javascript is in /assets/app.js and 
-Each file has its js file in _includes ie dashoard.njk has an accompanying _includes/dashboard.js file 
+ETHRPCURL=https://bsc-dataseed.binance.org
 
 
-## Building 
+btc explorer mainnet 
 
-The build script is a script you can locally to test the CMS before you deploy it.
+BTCBLOCKEXPLORERMAIN=https://blockstream.info/api/
 
-`./build.sh local`   
+btc explorer testnet
 
-`./build.sh prod`
+BTCBLOCKEXPLORERTEST=https://blockstream.info/testnet/api/
 
-`./build.sh cypress`
+net work to use
 
-The first command will build a local version the second command will use production api and the cypress will run the tests
+NETWORK=testnet
 
-## API
+xpub mainnet (to generate BTC addresses)
 
-The API endpoints are all in the functions/API directory
+XPUBMAINNET=xpub67yMUMbr2gAnBgnYvXcbJq8iUBe54Ev2dbUYKGN8jGY21AHJFeR7mnZqhbUNze4UbpRE9S1fWvmFCsFN4EvU1rWdqegW7dzoa7vZmYCLAAy
 
-## DEPLOY TO CLOUDFLARE 
-
-create a repo and push the code to it
-
-`git init`
-
-`git remote add cms <GIT URL>`
-
-* Login into Cloudflare and click on workers and set the domain
-* Click on KV 
-* Click on create namespace give it a name and click add
-* Click on pages from the left menu
-* Click create the project and connect to git
-* Connect your git hub and chose the repo
-* Set the framework to eleventy
-* Click Deploy
-
-Click on setting and then environment variables and add the following
-
-`	API: the root of your project`
-`	SECRET: A secret phrase for JWT`
-`	CANCREATEACCOUNT: 1 on 2 off.  This allows you to disable the create account`
-
-Click on functions and scroll down to the KV datastore
-click add and add the following details
-
-	`kvdata : <namesapce>`
+xpub testnet (to generate BTC addresses)
 
 
-## USING 
+XPUBTESTNET=xpub69hLknP5tX11wPwujsEGF4YYKDtn5sAQoNv337CsWP8CuYMqjVDAEiUAnVRENbRS6ssN6uYtjSm8iVKRorpmmvceqQmK5H5y6y7ficWV2xeAPIKEY=youstupididiot
+
+non btc address eth / bnb
+
+CRYPTOADDRESS=0x960f470cE20Bfb519facA30b770474BBCdF78ef8
+
+back up btc address mainnet (incase xpub fails or you dont want to use it)
+
+BTCBACKUPADDRESSMAIN=bc1qxphczudn8retcx0umz3pf2xuwpaxwmeslwugvm
+
+back up btc address testnet (incase xpub fails or you dont want to use it)
+
+
+BTCBACKUPADDRESSTEST=tb1qtted8h90555x2jd53992kxa6rm5y7u2et2l47x
+
+chainlink contract address for prices
+
+CHAINLINKTESTBTC=0x5741306c21795FdCBb9b265Ea0255F499DFe515C
+CHAINLINKTESTETH=0x143db3CEEfbdfe5631aDD3E50f7614B6ba708BA7
+CHAINLINKTESTBNB=0x2514895c72f50D8bd4B4F9b1110F0D6bD2c97526
+CHAINLINKMAINBTC=0x264990fbd0A4796A3E3d8E37C4d5F87a3aCa5Ebf
+CHAINLINKMAINETH=0x9ef1B8c0E4F7dc8bF5719Ea496883DC6401d5b2e
+CHAINLINKMAINBNB=0x0567F2323251f0Aab15c8dFb1967E4e8A7D42aeE
+
+TERMINAL
+
+from terminal (project root) run the following command
+
+npm install 
+wrangler d1 execute payme --local --file=./scripts/sql/schema.sql
+./build.sh
+
+BROWSE TO 
+
+http://localhost:8788/payment/?orderId=0d4e2f3d-1a24-919c-e8ef-915b4e598d7f
+
+DEPLOY TO CLOUDFLARE
+
+from the cloudflare dashboard
+
+DATABASE 
+
+workers/d1
+create database / dashboard
+call it "payme" and click create
+
+PAGES
+
+create a project
+connect to git
+select your repository
+framework present / Eleventy
+click save and deploy
+
+click settings
+click environment variables
+add the vars from .env
+
+click functions
+d1 database bindings
+for variable name type "DB"
+for variable D1 database select "payme"
+
+
+from terminal run the following command
+
+sudo wrangler d1 execute payme  --file=./scripts/sql/schema.sql
+
+PUSH IT 
+
+git add .
+git commit -a -m 'first'
+git push <origin> master

@@ -9,6 +9,8 @@
 
  let paymentMethods = [{ "name": "Metamask", "image": "metamask.png", "id": 1, "active": 1 }, { "name": "Cyrpto Currency", "image": "cryptocurrencies.png", "id": 2, "active": 1 }, { "name": "Credit Card", "image": "creditcard.png", "id": 3, "active": 1 }]
  let currencyMethods = [{ "name": "Bitcoin", "code": "bitcoin", "image": "btc.png", "symbol": "BTC", "id": 1, "active": 1, "chainlinkaddress": chainBtcTest, "price": "", "amountToPay": "" }, { "name": "Ethereum", "code": "ethereum", "image": "eth.png", "symbol": "ETH", "id": 2, "active": 1, "chainlinkaddress": chainEthTest, "price": "", "amountToPay": "" }, { "name": "Binance Coin", "code": "binancecoin", "image": "bnb.png", "symbol": "BNB", "id": 3, "active": 1, "chainlinkaddress": chainBnbTest, "price": "", "amountToPay": "" }]
+ let paymentAddress = "";
+ let paymentSymbol = "";
  /*
      0 = wallet connected
      1 = crypto currency 
@@ -23,9 +25,11 @@
      let theSymbol = currencyMethods[methodSelected - paymentMethods.length].symbol;
      let theImage = currencyMethods[methodSelected - paymentMethods.length].image
      let theAmountToPay = currencyMethods[methodSelected - paymentMethods.length].amountToPay;
-     let theCode = currencyMethods[methodSelected - paymentMethods.length].code
+     paymentSymbol = currencyMethods[methodSelected - paymentMethods.length].symbol
+
      //process the xhr call done
      let addressDone = (response) => {
+         paymentAddress = response.data.address
          let updatePaymentDone = (response2, status2) => {
              if (status == 400) {
                  document.getElementById('invalidicon').classList.add('d-none')
@@ -39,7 +43,7 @@
              //set the amount to pay
              document.getElementById('qrcryptoamount').value = theAmountToPay;
              //set the address 
-             document.getElementById('qrcryptoaddress').value = response.data.address;
+             document.getElementById('qrcryptoaddress').value = paymentAddress;
              //set the icon
              setClassImgSrc("qrcryptoicon", `/assets/images/${theImage}`)
              //set the qr code
@@ -53,24 +57,28 @@
              //show the QR modal 
              document.getElementById('payment-qr-code').classList.remove('d-none');
              //udpate the wallet address
-             document.getElementById('qrwallet').href = `${theCode}:${response.data.address}?amount=${theAmountToPay}`
+             document.getElementById('qrwallet').href = `${paymentSymbol}:${paymentAddress}?amount=${theAmountToPay}`
          }
 
 
-         let bodyObj = {
+
+
+         let theJson = {
              orderId: orderDetails.orderId,
              amount: theAmountToPay,
              address: response.data.address,
              cryptoUsed: theSymbol
          }
 
+         let bodyObj = {
+             table: "crypto_payments",
+             tableData: theJson,
+         }
          let bodyObjectJson = JSON.stringify(bodyObj);
-         //console.log("bodyObjectJson")
          //check we have valid data to submit
-         //set the api vars
+         //put the record
          let method = `crypto/payment/`
-         //do a xhrcall to get the price 
-         xhrcall(4, `${apiUrl}${method}`, bodyObjectJson, "json", "", updatePaymentDone)
+         xhrcall(4, `${apiUrl}${method}`, bodyObjectJson, "json", "", updatePaymentDone);
 
      }
      //set the api vars
@@ -96,19 +104,93 @@
  });
 
  document.getElementById('qrpaidbutton').addEventListener('click', function() {
+     //update update the payment to paid
      clearInterval();
      setDisabledState("btn-primary", true)
      document.getElementById('payment-qr-code').classList.add('d-none');
      document.getElementById('payment-paidandconfirmed').classList.remove('d-none');
+     checkInvoice();
 
  });
 
+ document.getElementById('checkinvoice').addEventListener('click', function() {
+
+
+
+ })
+
+ let checkInvoice = () => {
+    let checkInterval =  setInterval(function() {
+         console.log('checking')
+         let checkDone = (res) => {
+            let endId = 0;
+             //check if it was an old payment this means it was confirmed but we did not have the txid in the database so we added it but this may not be the actual
+             //payment we are looking for. 
+             if (res.old == true) {
+                 endIt = 1;
+                 document.getElementById('paidandconfirmedtext').innerHTML = "Older payment found and added to the database";
+                 document.getElementById('paidandconfirmed').classList.remove("d-none")
+             } else {
+                 //check if it is confirmed or not
+                 if (res.status.confirmed == true) {
+                     endIt = 1;
+                     document.getElementById('paidandconfirmedtext').innerHTML = "Paid and confirmed";
+
+                 } else {
+                     document.getElementById('paidandconfirmedtext').innerHTML = "Paid but not confirmed";
+                 }
+             }
+             console.log(endIt)
+             if (endIt == 1) {
+                 clearInterval(checkInterval);
+                 document.getElementById('paidandconfirmed').classList.remove("d-none")
+                 document.getElementById("checkinvoice").classList.add('d-none')
+             }
+             //remove the payment div
+             //document.getElementById('paidandconfirmed').classList.remove("d-none")
+         }
+         //do a xhrcall to get the price 
+         let method = `crypto/check/?cryptocurrency=${paymentSymbol}&address=${paymentAddress}&orderId=${orderDetails.orderId}`
+         xhrcall(1, apiUrl + method, '', '', '', checkDone, '', '');
+     }, 10000);
+     //let method = `crypto/check/?cryptocurrency=${paymentSymbol}&address=${paymentAddress}&orderId=${orderDetails.orderId}`
+     //xhrcall(1, apiUrl + method, '', '', '', checkDone, '', '');
+ }
+
 
  document.getElementById('qrinvalidbutton').addEventListener('click', function() {
-     clearInterval();
-     setDisabledState("btn-primary", true)
-     document.getElementById('payment-qr-code').classList.add('d-none');
-     document.getElementById('payment-invalid').classList.remove('d-none');
+     //update update the payment to invalid
+
+     let theTable = "crypto_payments";
+     let theFields = "markedInvalid";
+
+
+     let getTableDone = (res) => {
+         console.log(res.status)
+         clearInterval();
+         setDisabledState("btn-primary", true)
+         document.getElementById('payment-qr-code').classList.add('d-none');
+         document.getElementById('payment-invalid').classList.remove('d-none');
+     }
+
+     let theJson = {
+         orderId: orderDetails.orderId,
+         markedInvalid: 1
+
+     }
+
+     let bodyObj = {
+         table: "crypto_payments",
+         tableData: theJson,
+     }
+     let bodyObjectJson = JSON.stringify(bodyObj);
+     //check we have valid data to submit
+     //put the record
+     let method = `crypto/payment/`
+     xhrcall(4, `${apiUrl}${method}`, bodyObjectJson, "json", "", getTableDone);
+
+
+
  });
 
  document.getElementById('copyAmount').addEventListener('click', function() {
@@ -483,6 +565,7 @@
          document.getElementById('invalidicon').classList.add('d-none')
          document.getElementById('payment-invalid').classList.remove('d-none')
      } else {
+         orderDetails.orderId = orderId;
          document.getElementById("spinner").classList.remove('d-none');
          const method = `crypto/payment?orderId=${orderId}`;
          xhrcall(1, apiUrl + method, '', '', '', paymentDone, '', '');
