@@ -71,7 +71,9 @@ async function processBNB(orderId, address, context) {
         //console.log(theResponse)
         results = await gatherResponse(theResponse);
         paymentResponse.txid = results.result[0].blockHash;
-        //console.log(results.result[0])
+        return new Response(JSON.stringify({ "url":theUrl,"results": results.result[0] }), { status: 400 });
+
+                //console.log(results.result[0])
         if (results.result[0].txreceipt_status == 1)
             paymentResponse.confirmed = true;
         else
