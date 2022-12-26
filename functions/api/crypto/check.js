@@ -66,15 +66,15 @@ async function processBNB(orderId, address, context) {
         },
     };
     try {
-        return theUrl
+        //return theUrl
         //call block stream to check the transaction
         theResponse = await fetch(theUrl, init);
         //console.log(theResponse)
         results = await gatherResponse(theResponse);
         paymentResponse.txid = results.result[0].blockHash;
-        return new Response(JSON.stringify({ "url":theUrl,"results": results.result[0] }), { status: 400 });
+        //return new Response(JSON.stringify({ "url": theUrl, "results": results.result[0] }), { status: 400 });
 
-                //console.log(results.result[0])
+        //console.log(results.result[0])
         if (results.result[0].txreceipt_status == 1)
             paymentResponse.confirmed = true;
         else
@@ -87,7 +87,7 @@ async function processBNB(orderId, address, context) {
     } catch (error) {
         console.log(error);
         //return new Response(JSON.stringify({ "error": error }), { status: 400 });
-        return(error)
+        return (error)
     }
 }
 
