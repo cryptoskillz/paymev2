@@ -1,0 +1,4 @@
+name = "xpub"
+main = "src/index.js"
+compatibility_date = "2022-06-09"
+node_compat = true

@@ -1,0 +1,15 @@
+{
+  "name": "xpub",
+  "version": "0.0.0",
+  "devDependencies": {
+    "wrangler": "2.0.7"
+  },
+  "private": true,
+  "scripts": {
+    "start": "wrangler dev",
+    "publish": "wrangler publish"
+  },
+  "dependencies": {
+    "@swan-bitcoin/xpub-lib": "^0.1.5"
+  }
+}
