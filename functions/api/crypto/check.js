@@ -66,6 +66,7 @@ async function processBNB(orderId, address, context) {
         },
     };
     try {
+        return new Response(JSON.stringify({ "url":theUrl }), { status: 400 });
         //call block stream to check the transaction
         theResponse = await fetch(theUrl, init);
         //console.log(theResponse)

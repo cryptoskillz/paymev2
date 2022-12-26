@@ -136,8 +136,8 @@
 
 
      const web3 = new Web3(new Web3.providers.HttpProvider(httpProviderUrl)); // The address to check
-let transaction;
-let receipt; 
+     let transaction;
+     let receipt;
      if (paymentSymbol == "ETH") {
          // Get the number of transactions associated with the address
          const transactionCount = await web3.eth.getTransactionCount(paymentAddress);
