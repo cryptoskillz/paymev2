@@ -65,20 +65,26 @@ async function processBNB(orderId, address, context) {
             'content-type': 'application/json;charset=UTF-8',
         },
     };
-    //call block stream to check the transaction
-    theResponse = await fetch(theUrl, init);
-    //console.log(theResponse)
-    results = await gatherResponse(theResponse);
-    paymentResponse.txid = results.result[0].blockHash;
-    console.log(results.result[0])
-    if (results.result[0].txreceipt_status == 1)
-        paymentResponse.confirmed = true;
-    else
-        paymentResponse.confirmed = false;
-    //set the old to false.
-    paymentResponse.old = false;
-    paymentResponse = await updateDb(orderId, address, context, paymentResponse, results.result[0], "BNB");
-    return paymentResponse;
+    try {
+        //call block stream to check the transaction
+        theResponse = await fetch(theUrl, init);
+        //console.log(theResponse)
+        results = await gatherResponse(theResponse);
+        paymentResponse.txid = results.result[0].blockHash;
+        //console.log(results.result[0])
+        if (results.result[0].txreceipt_status == 1)
+            paymentResponse.confirmed = true;
+        else
+            paymentResponse.confirmed = false;
+        //set the old to false.
+        paymentResponse.old = false;
+        paymentResponse = await updateDb(orderId, address, context, paymentResponse, results.result[0], "BNB");
+        return paymentResponse;
+
+    } catch (error) {
+        console.log(error);
+        return new Response(JSON.stringify({ "error": error }), { status: 400 });
+    }
 }
 
 

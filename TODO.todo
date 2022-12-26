@@ -1,6 +1,8 @@
 GENERAL 
 
-
+ ☐ do we want to make the chainlink the default payment method as it is slower, maybe we should make it a switch
+ ☐ add the payments types to the build process
+ ☐ add the currency methods to the build process
 
 
 CRYPTO/PAYMENTS
