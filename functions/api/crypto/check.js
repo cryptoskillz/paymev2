@@ -66,7 +66,7 @@ async function processBNB(orderId, address, context) {
         },
     };
     try {
-        return new Response(JSON.stringify({ "url":theUrl }), { status: 400 });
+        return theUrl
         //call block stream to check the transaction
         theResponse = await fetch(theUrl, init);
         //console.log(theResponse)
@@ -86,7 +86,8 @@ async function processBNB(orderId, address, context) {
 
     } catch (error) {
         console.log(error);
-        return new Response(JSON.stringify({ "error": error }), { status: 400 });
+        //return new Response(JSON.stringify({ "error": error }), { status: 400 });
+        return(error)
     }
 }
 
@@ -152,6 +153,7 @@ export async function onRequestGet(context) {
 
         if (cryptocurrency == "BNB") {
             const paymentResponse = await processBNB(orderId, address, context);
+            console.log(paymentResponse)
             return new Response(JSON.stringify(paymentResponse), { status: 200 });
         }
 
