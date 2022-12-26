@@ -1,18 +1,20 @@
 GENERAL 
 
- ✔ add bnb png @done (22-12-22 14:00)
+
 
 
 CRYPTO/PAYMENTS
 
  ☐ require a key to post a record
- ✔ trap no order ids being added @done (22-12-22 00:19)
 
-CHECK
+CHECK API
 
-  ✔ check c payment @done (22-12-24 01:37)
-  ✔ check eth payment @done (22-12-25 02:28)
-  ✔ check bnb payment @done (22-12-26 22:26)
+PRICE API
+
+ ☐ fix the coingecko call on production 
+ ✔ get the prices from chainlink @done (22-12-22 22:55)
+ ☐ check if the repsonse is not json and just not code 1020
+
 
 METAMASK
 
@@ -24,33 +26,15 @@ METAMASK
  ☐ switch to eth if not on it to get the price
  ✔ set the rpc and contract address to use based on the connection settings @done (22-12-24 01:37)
 
-
-PRICE
-
- ✔ add the  symbols dynamically @done (22-12-22 13:11)
-
-
 ADDRESS
 
- ✔ move xpub generation to a worker and pay me @done (22-12-25 02:28)
+  ☐ move the xpub to this code bas
+  ☐ call the new xpub worker
 
 
-PRICE
+QR
 
- ☐ fix the coingecko call on production 
- ✔ get the prices from chainlink @done (22-12-22 22:55)
- ☐ check if the repsonse is not json and just not code 1020
-
- QR
-
- ☐ check that the external links are working for each payment type
- ✔ if you click the qr code make it in a big modal @done (22-12-24 01:38)
- ✔ when you click invalid buton make it update the database with maredinvalid field (qrinvalidbutton) @done (22-12-24 01:38)
- ✔ if qrivlaid is marked should we expire this invoice or let it run again @done (22-12-24 01:38)
- ✔ when the timer runs out should we expire the invoice @done (22-12-24 01:38)
- ✔ make the timer a toggle so an invoice can run forever @done (22-12-24 13:53)
- ✔ when you clicl the qrpaidbutton it should start the check functionality @done (22-12-24 01:38)
- ✔ stop the countdown timer when the qr button is pressed @done (22-12-24 13:41)
+ ☐ check that the external links are working for each payment type?
 
 ADMIN
 
