@@ -136,16 +136,14 @@
 
 
      const web3 = new Web3(new Web3.providers.HttpProvider(httpProviderUrl)); // The address to check
-
-
+let transaction;
+let receipt; 
      if (paymentSymbol == "ETH") {
          // Get the number of transactions associated with the address
          const transactionCount = await web3.eth.getTransactionCount(paymentAddress);
-         console.log(transactionCount)
          // Get the newest transaction by block number and transaction index
-         const transaction = await web3.eth.getTransactionFromBlock("latest", transactionCount - 1);
-         console.log(transaction);
-         const receipt = await web3.eth.getTransactionReceipt(transaction.hash);
+         transaction = await web3.eth.getTransactionFromBlock("latest", transactionCount - 1);
+         receipt = await web3.eth.getTransactionReceipt(transaction.hash);
      }
 
      let checkNonBtcDone = (res) => {
