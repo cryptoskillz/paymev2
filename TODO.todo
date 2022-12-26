@@ -30,9 +30,9 @@ METAMASK
 
 ADDRESS
 
-  ☐ move the xpub to this code bas
-  ☐ call the new xpub worker
-
+  ✔ move the xpub to this code base @done (22-12-27 00:03)
+  ✔ call the new xpub worker @done (22-12-27 00:03)
+ ✔ look at the worker to figure out why testnet is not working @done (22-12-27 00:15)
 
 QR
 
