@@ -7,6 +7,8 @@
  let orderDetails = {};
  let companyName = 'OrbitLabs'
 
+ let checkInterval;
+
  let paymentMethods = [{ "name": "Metamask", "image": "metamask.png", "id": 1, "active": 1 }, { "name": "Cyrpto Currency", "image": "cryptocurrencies.png", "id": 2, "active": 1 }, { "name": "Credit Card", "image": "creditcard.png", "id": 3, "active": 1 }]
  let currencyMethods = [{ "name": "Bitcoin", "code": "bitcoin", "image": "btc.png", "symbol": "BTC", "id": 1, "active": 1, "chainlinkaddress": chainBtcTest, "price": "", "amountToPay": "" }, { "name": "Ethereum", "code": "ethereum", "image": "eth.png", "symbol": "ETH", "id": 2, "active": 1, "chainlinkaddress": chainEthTest, "price": "", "amountToPay": "" }, { "name": "Binance Coin", "code": "binancecoin", "image": "bnb.png", "symbol": "BNB", "id": 3, "active": 1, "chainlinkaddress": chainBnbTest, "price": "", "amountToPay": "" }]
  let paymentAddress = "";
@@ -37,7 +39,9 @@
                  return
              }
              //start the time
-             countDownTimer(15);
+             console.log(paymentDetails)
+             if (paymentDetails.useTimer == 1)
+                 countDownTimer(15);
              //set the symbol
              document.getElementById('qrcryptosymbol').innerHTML = `${theSymbol}`;
              //set the amount to pay
@@ -105,7 +109,7 @@
 
  document.getElementById('qrpaidbutton').addEventListener('click', function() {
      //update update the payment to paid
-     clearInterval();
+     clearInterval(checkInterval);
      setDisabledState("btn-primary", true)
      document.getElementById('payment-qr-code').classList.add('d-none');
      document.getElementById('payment-paidandconfirmed').classList.remove('d-none');
@@ -119,11 +123,84 @@
 
  })
 
+ const checkCryptoLocally = async () => {
+     //try {
+     let httProviderUrl = "";
+     if (paymentSymbol == "ETH") {
+         if (network == "testnet")
+             httpProviderUrl = ethRpcUrlTest;
+         if (network == "mainnet")
+             httpProviderUrl = ethRpcUrlMain;
+     }
+
+
+
+     const web3 = new Web3(new Web3.providers.HttpProvider(httpProviderUrl)); // The address to check
+
+
+     if (paymentSymbol == "ETH") {
+         // Get the number of transactions associated with the address
+         const transactionCount = await web3.eth.getTransactionCount(paymentAddress);
+         console.log(transactionCount)
+         // Get the newest transaction by block number and transaction index
+         const transaction = await web3.eth.getTransactionFromBlock("latest", transactionCount - 1);
+         console.log(transaction);
+         const receipt = await web3.eth.getTransactionReceipt(transaction.hash);
+     }
+
+     let checkNonBtcDone = (res) => {
+         console.log(res);
+         let endId = 0;
+         //check if it was an old payment this means it was confirmed but we did not have the txid in the database so we added it but this may not be the actual
+         //payment we are looking for. 
+         if (res.old == true) {
+             endIt = 1;
+             document.getElementById('paidandconfirmedtext').innerHTML = "Older payment found and added to the database";
+             document.getElementById('paidandconfirmed').classList.remove("d-none")
+         } else {
+             //check if it is confirmed or not
+             if (res.confirmed == true) {
+                 endIt = 1;
+                 document.getElementById('paidandconfirmedtext').innerHTML = "Paid and confirmed";
+
+             } else {
+                 document.getElementById('paidandconfirmedtext').innerHTML = "Paid but not confirmed";
+             }
+         }
+         //console.log(endIt)
+         if (endIt == 1) {
+             clearInterval(checkInterval);
+             document.getElementById('paidandconfirmed').classList.remove("d-none")
+             document.getElementById("checkinvoice").classList.add('d-none')
+         }
+     }
+
+     let theJson = {
+         orderId: orderDetails.orderId,
+         address: paymentAddress,
+         symbol: paymentSymbol,
+         transaction: transaction,
+         receipt: receipt
+     }
+
+     let bodyObj = {
+         table: "crypto_payments",
+         tableData: theJson,
+     }
+     let bodyObjectJson = JSON.stringify(bodyObj);
+     //check we have valid data to submit
+     //put the record
+     let method = `crypto/check/`
+     xhrcall(4, `${apiUrl}${method}`, bodyObjectJson, "json", "", checkNonBtcDone);
+
+ }
+
+
  let checkInvoice = () => {
-    let checkInterval =  setInterval(function() {
-         console.log('checking')
+     checkInterval = setInterval(function() {
+         //console.log('checking')
          let checkDone = (res) => {
-            let endId = 0;
+             let endId = 0;
              //check if it was an old payment this means it was confirmed but we did not have the txid in the database so we added it but this may not be the actual
              //payment we are looking for. 
              if (res.old == true) {
@@ -132,7 +209,7 @@
                  document.getElementById('paidandconfirmed').classList.remove("d-none")
              } else {
                  //check if it is confirmed or not
-                 if (res.status.confirmed == true) {
+                 if (res.confirmed == true) {
                      endIt = 1;
                      document.getElementById('paidandconfirmedtext').innerHTML = "Paid and confirmed";
 
@@ -140,7 +217,7 @@
                      document.getElementById('paidandconfirmedtext').innerHTML = "Paid but not confirmed";
                  }
              }
-             console.log(endIt)
+             //console.log(endIt)
              if (endIt == 1) {
                  clearInterval(checkInterval);
                  document.getElementById('paidandconfirmed').classList.remove("d-none")
@@ -150,11 +227,16 @@
              //document.getElementById('paidandconfirmed').classList.remove("d-none")
          }
          //do a xhrcall to get the price 
-         let method = `crypto/check/?cryptocurrency=${paymentSymbol}&address=${paymentAddress}&orderId=${orderDetails.orderId}`
-         xhrcall(1, apiUrl + method, '', '', '', checkDone, '', '');
+         if ((paymentSymbol == "BTC") || (paymentSymbol == "BNB")) {
+             let method = `crypto/check/?cryptocurrency=${paymentSymbol}&address=${paymentAddress}&orderId=${orderDetails.orderId}`
+             xhrcall(1, apiUrl + method, '', '', '', checkDone, '', '');
+         } else {
+             checkCryptoLocally();
+
+         }
+
      }, 10000);
-     //let method = `crypto/check/?cryptocurrency=${paymentSymbol}&address=${paymentAddress}&orderId=${orderDetails.orderId}`
-     //xhrcall(1, apiUrl + method, '', '', '', checkDone, '', '');
+
  }
 
 
@@ -167,7 +249,7 @@
 
      let getTableDone = (res) => {
          console.log(res.status)
-         clearInterval();
+         clearInterval(checkInterval);
          setDisabledState("btn-primary", true)
          document.getElementById('payment-qr-code').classList.add('d-none');
          document.getElementById('payment-invalid').classList.remove('d-none');
@@ -215,7 +297,7 @@
      const endTime = startTime + countdownDuration * 60 * 1000;
 
      // Update the countdown every 1 second
-     setInterval(function() {
+     checkInterval = setInterval(function() {
          // Get the current time
          const currentTime = new Date().getTime();
 
@@ -235,7 +317,7 @@
 
          // If the countdown is finished, stop the interval and display a message
          if (remainingTime < 0) {
-             clearInterval();
+             clearInterval(checkInterval);
              document.getElementById('payment-qr-code').classList.add('d-none');
              document.getElementById('payment-expired').classList.remove('d-none');
          }

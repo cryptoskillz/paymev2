@@ -19,7 +19,7 @@ export async function onRequestGet(context) {
     //hold the query
     let query;
 
-    let theSQL = `SELECT orderId,name,amountUsd,amountCurrency,paid,paymentId from crypto_payments where orderId = '${orderId}'`
+    let theSQL = `SELECT orderId,name,amountUsd,amountCurrency,paid,paymentId,useTimer from crypto_payments where orderId = '${orderId}'`
     //console.log(theSQL)
     //run it
     query = context.env.DB.prepare(theSQL);

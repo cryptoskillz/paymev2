@@ -11,13 +11,13 @@ CRYPTO/PAYMENTS
 CHECK
 
   ✔ check c payment @done (22-12-24 01:37)
-  ☐ check eth payment
-  ☐ check bnb payment
+  ✔ check eth payment @done (22-12-25 02:28)
+  ✔ check bnb payment @done (22-12-26 22:26)
 
 METAMASK
 
  ☐ add metamask payment flow
- ☐ add the eth rpc details
+ ✔ add the eth rpc details @done (22-12-25 02:40)
  ☐ add the bnb rpc details
  ✔ add chainlink rpc  details @done (22-12-24 01:37)
  ✔ add chainlink ETH details @done (22-12-24 01:37)
@@ -32,7 +32,7 @@ PRICE
 
 ADDRESS
 
- ☐ move xpub generation to a worker and pay me
+ ✔ move xpub generation to a worker and pay me @done (22-12-25 02:28)
 
 
 PRICE
@@ -48,8 +48,9 @@ PRICE
  ✔ when you click invalid buton make it update the database with maredinvalid field (qrinvalidbutton) @done (22-12-24 01:38)
  ✔ if qrivlaid is marked should we expire this invoice or let it run again @done (22-12-24 01:38)
  ✔ when the timer runs out should we expire the invoice @done (22-12-24 01:38)
- ☐ make the timer a toggle so an invoice can run forever
+ ✔ make the timer a toggle so an invoice can run forever @done (22-12-24 13:53)
  ✔ when you clicl the qrpaidbutton it should start the check functionality @done (22-12-24 01:38)
+ ✔ stop the countdown timer when the qr button is pressed @done (22-12-24 13:41)
 
 ADMIN
 
