@@ -128,9 +128,9 @@
              let res = await ethRequestSend(toAddress, currentAccountAddress, theValue);
              //check the satus
              if (res.status == "ok") {
-                //update done function
+                 //update done function
                  let paymentUpdateDone = (res) => {
-                    //set the UX state
+                     //set the UX state
                      document.getElementById('payment-metamask').classList.add('d-none');
                      document.getElementById('paidandconfirmedtext').innerHTML = "Paid and confirmed";
                      document.getElementById('paidandconfirmed').classList.remove("d-none")
@@ -154,11 +154,9 @@
                  //put the record
                  let method = `crypto/payment/`
                  xhrcall(4, `${apiUrl}${method}`, bodyObjectJson, "json", "", paymentUpdateDone);
-             }
-             else
-             {
-                //add better us here
-                alert('error with payment')
+             } else {
+                 //add better us here
+                 alert('error with payment')
              }
 
          }
@@ -218,6 +216,7 @@
      }
 
      //check if its the correct chain id
+     console.log(paymentSymbol);
      console.log(chainId);
      console.log(userChainId)
      if (chainId != userChainId)
