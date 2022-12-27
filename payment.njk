@@ -27,6 +27,45 @@ title : payment
                 </div>
             </div>
         </div>
+        <!-- payment metamask -->
+        <div class="col-lg-6 col-sm-12 col-md-6 col-md-auto d-none" id="payment-metamask">
+            <div class="d-flex bd-highlight">
+                <div class="p-2 w-100 bd-highlight font-weight-bold divcompanyname">Company Name</div>
+            </div>
+            <div class="card shadow-sm">
+                <h5 class="card-header bg-white p-1">
+                    <div class="d-flex bd-highlight mb-3">
+                        <div class="p-2 bd-highlight font-weight-light h6 order-detail"></div>
+                        <div class="ml-auto p-2 bd-highlight font-weight-light order-amount" ></div>
+                        <div class="p-2 bd-highlight"><img src="" class="icon-sm qrcryptoicon"></div>
+                    </div>
+                </h5>
+                <div class="card-body count-holder text-center display-4 t-x2 m-0 p-0" id="countdown">
+                </div>
+                <div class="card-body">
+                    <div class="text-center" id="invoice-qr-code"><img src="" class="grcode-modal d-none" id="qrcryptoimage"></div>
+                    <div class="send-amount mt-3">
+                        <div>Click the pay button below</div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" class="form-control text-center" id="metamaskcryptoamount">
+                        </div>
+                    </div>
+                    <div class="form-group mb-5">
+                        <div class="input-group">
+                            <input type="text" class="form-control text-center"  id="metamaskcryptoaddress">
+                        </div>
+                    </div>
+                    <div class="form-group m-3">
+                        <button class="btn btn-primary btn-block" id="btn-metamask-submit" disabled >PAY</button>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex bd-highlight mb-3">
+                <div class="ml-auto pt-2 pr-1 bd-highlight small paymentId" ></div>
+            </div>
+        </div>        
         <!-- payment currency modal -->
         <div class="col-lg-6 col-sm-12 col-md-6 col-md-auto d-none" id="payment-select-currency">
             <div class="d-flex bd-highlight">

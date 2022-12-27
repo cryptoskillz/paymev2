@@ -25,6 +25,14 @@
     const chainBtcTest = "{{env.CHAINLINKTESTBTC}}";
     const chainEthTest = "{{env.CHAINLINKTESTETH}}";
     const chainBnbTest = "{{env.CHAINLINKTESTBNB}}";
+    let cryptoAddress = "{{env.CRYPTOADDRESS}}";
+    cryptoAddress = cryptoAddress.toLowerCase();
+    const ethChainIdMain = "{{env.ETHCHAINIDMAIN}}";
+    const ethChainIdTest = "{{env.ETHCHAINIDTEST}}";
+    const bnbChainIdMain = "{{env.BNBCHAINIDMAIN}}";
+    const bnbChainIdTest = "{{env.BNBCHAINIDTEST}}";
+
+
 </script>
 <div id="root" class="container">
 <div class="spinner-border float-right d-none ddd" role="status" id="spinner">

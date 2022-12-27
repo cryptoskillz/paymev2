@@ -30,17 +30,22 @@ async function handleRequest(request) {
     const { searchParams } = new URL(request.url);
     const xpub = searchParams.get('xpub');
     const network = searchParams.get('network');
+    //const addresscount = searchParams.get('addresscount');
+    const addresscount =4;
+    console.log("addresscount")
+
+    console.log(addresscount)
+
     /*
     //note implement each of these url paramaters so it has feature parity with the xpubasaservice
     const key = searchParams.get('key');
     const biptype = searchParams.get('biptype');
     const newaddresscheck = searchParams.get('newaddresscheck');
     const startaddress = searchParams.get('startaddress');
-    const numberofaddresses = searchParams.get('numberofaddresses');
     const randomaddress = searchParams.get('randomaddress');
     */
     //call the pubkey method
-    const address = addressFromExtPubKey({ extPubKey: xpub, network: network });
+    const address = addressFromExtPubKey({ extPubKey: xpub, addressCount: addresscount, network: network });
     //console.log(address);
     //build the response
     theResponse.address = address.address

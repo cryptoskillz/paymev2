@@ -1,8 +1,8 @@
 GENERAL 
 
  ☐ do we want to make the chainlink the default payment method as it is slower, maybe we should make it a switch
- ☐ add the payments types to the build process
- ☐ add the currency methods to the build process
+ ☐ add the payments types to the build process (maybe)
+ ☐ add the currency methods to the build process (maybe)
 
 
 CRYPTO/PAYMENTS
@@ -20,23 +20,15 @@ PRICE API
 
 METAMASK
 
- ☐ add metamask payment flow
- ✔ add the eth rpc details @done (22-12-25 02:40)
- ☐ add the bnb rpc details
- ✔ add chainlink rpc  details @done (22-12-24 01:37)
- ✔ add chainlink ETH details @done (22-12-24 01:37)
- ☐ switch to eth if not on it to get the price
- ✔ set the rpc and contract address to use based on the connection settings @done (22-12-24 01:37)
+ ☐ check the account / network change states
+ ☐ trap a reject send
 
 ADDRESS
 
-  ✔ move the xpub to this code base @done (22-12-27 00:03)
-  ✔ call the new xpub worker @done (22-12-27 00:03)
- ✔ look at the worker to figure out why testnet is not working @done (22-12-27 00:15)
 
 QR
 
- ☐ check that the external links are working for each payment type?
+ ☐ check that the external links are working for each payment type (wallets)
 
 ADMIN
 

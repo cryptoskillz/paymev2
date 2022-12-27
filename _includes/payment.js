@@ -9,10 +9,11 @@
 
  let checkInterval;
 
- let paymentMethods = [{ "name": "Metamask", "image": "metamask.png", "id": 1, "active": 1 }, { "name": "Cyrpto Currency", "image": "cryptocurrencies.png", "id": 2, "active": 1 }, { "name": "Credit Card", "image": "creditcard.png", "id": 3, "active": 1 }]
+ let paymentMethods = [{ "name": "Metamask", "image": "metamask.png", "id": 1, "active": 1 }, { "name": "Cyrpto Currency", "image": "cryptocurrencies.png", "id": 2, "active": 1 }, { "name": "Credit Card", "image": "creditcard.png", "id": 3, "active": 0 }]
  let currencyMethods = [{ "name": "Bitcoin", "code": "bitcoin", "image": "btc.png", "symbol": "BTC", "id": 1, "active": 1, "chainlinkaddress": chainBtcTest, "price": "", "amountToPay": "" }, { "name": "Ethereum", "code": "ethereum", "image": "eth.png", "symbol": "ETH", "id": 2, "active": 1, "chainlinkaddress": chainEthTest, "price": "", "amountToPay": "" }, { "name": "Binance Coin", "code": "binancecoin", "image": "bnb.png", "symbol": "BNB", "id": 3, "active": 1, "chainlinkaddress": chainBnbTest, "price": "", "amountToPay": "" }]
  let paymentAddress = "";
  let paymentSymbol = "";
+ let currentAccountAddress = "";
  /*
      0 = wallet connected
      1 = crypto currency 
@@ -94,7 +95,7 @@
  document.getElementById('btn-method-submit').addEventListener('click', function() {
      switch (methodSelected) {
          case 0:
-             alert('to do ');
+             initMetaMask();
              break;
          case 1:
              setDisabledState("btn-primary", true)
@@ -107,6 +108,64 @@
      }
  });
 
+ document.getElementById('btn-metamask-submit').addEventListener('click', async function() {
+     let httpProviderUrl = setNetworkState();
+     //init web3
+     const web3 = new Web3(new Web3.providers.HttpProvider(httpProviderUrl)); // The address to check
+     //loop through the currency methods
+     for (var i = 0; i < currencyMethods.length; i++) {
+         //check if the payment symbols matches
+         if (paymentSymbol == currencyMethods[i].symbol) {
+             //set the vars
+             let toAddress = cryptoAddress;
+             let theValue = currencyMethods[i].amountToPay;
+             //debug
+             //theValue = 0.01
+             //convert the amount
+             theValue = await web3.utils.toWei(String(theValue), 'ether');
+             theValue = await web3.utils.toHex(theValue)
+             //send it
+             let res = await ethRequestSend(toAddress, currentAccountAddress, theValue);
+             //check the satus
+             if (res.status == "ok") {
+                //update done function
+                 let paymentUpdateDone = (res) => {
+                    //set the UX state
+                     document.getElementById('payment-metamask').classList.add('d-none');
+                     document.getElementById('paidandconfirmedtext').innerHTML = "Paid and confirmed";
+                     document.getElementById('paidandconfirmed').classList.remove("d-none")
+                     document.getElementById("checkinvoice").classList.add('d-none')
+                     document.getElementById("payment-paidandconfirmed").classList.remove('d-none')
+
+                 }
+                 //build the JSON
+                 let theJson = {
+                     orderId: orderDetails.orderId,
+                     confirmed: 1,
+                     txId: res.status.hash
+                 }
+
+                 let bodyObj = {
+                     table: "crypto_payments",
+                     tableData: theJson,
+                 }
+                 //turn into a string 
+                 let bodyObjectJson = JSON.stringify(bodyObj);
+                 //put the record
+                 let method = `crypto/payment/`
+                 xhrcall(4, `${apiUrl}${method}`, bodyObjectJson, "json", "", paymentUpdateDone);
+             }
+             else
+             {
+                //add better us here
+                alert('error with payment')
+             }
+
+         }
+     }
+
+ });
+
  document.getElementById('qrpaidbutton').addEventListener('click', function() {
      //update update the payment to paid
      clearInterval(checkInterval);
@@ -117,22 +176,77 @@
 
  });
 
- document.getElementById('checkinvoice').addEventListener('click', function() {
 
 
+ let checkChainId = (userChainId) => {
+     let res = true;
+     let chainId;
+     //set the payment symbol
+     switch (userChainId) {
+         case "0x1":
+             paymentSymbol = 'ETH';
+             break;
+         case "0x5":
+             paymentSymbol = 'ETH';
+             break;
+         case "0x38":
+             paymentSymbol = 'BNB';
+             break;
+         case "0x61":
+             paymentSymbol = 'BNB';
+             break;
+         default:
+             paymentSymbol = 'ETH';
+             break;
+     }
 
- })
+     //check the for eth
+     if (paymentSymbol == "ETH") {
+         //check the network
+         if (network == "testnet")
+             chainId = ethChainIdTest;
+         if (network == "mainnet")
+             chainId = ethChainIdMain;
+     }
+     //check for bnb
+     if (paymentSymbol == "BNB") {
+         //check for the network
+         if (network == "testnet")
+             chainId = bnbChainIdTest;
+         if (network == "mainnet")
+             chainId = bnbChainIdMain;
+     }
 
- const checkCryptoLocally = async () => {
-     //try {
-     let httProviderUrl = "";
+     //check if its the correct chain id
+     console.log(chainId);
+     console.log(userChainId)
+     if (chainId != userChainId)
+         res = false;
+     return (res);
+ }
+
+ let setNetworkState = () => {
+     let httpProviderUrl = "";
      if (paymentSymbol == "ETH") {
          if (network == "testnet")
              httpProviderUrl = ethRpcUrlTest;
          if (network == "mainnet")
              httpProviderUrl = ethRpcUrlMain;
      }
+     if (paymentSymbol == "BNB") {
+         if (network == "testnet")
+             httpProviderUrl = bnbRpcUrlTest;
+         if (network == "mainnet")
+             httpProviderUrl = bnbRpcUrlMain;
 
+     }
+     return (httpProviderUrl)
+ }
+
+ const checkCryptoLocally = async () => {
+     //try {
+
+     let httpProviderUrl = setNetworkState();
 
 
      const web3 = new Web3(new Web3.providers.HttpProvider(httpProviderUrl)); // The address to check
@@ -468,19 +582,6 @@
 
  /* START OF WEB 3 */
 
- const ethRequest = async () => {
-     try {
-         //ask meta mask for the accounts
-         let accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-         //return them 
-         return (accounts[0])
-     } catch (e) {
-         //show the error (usually user hitting the reject button on metamask)
-         //showAlert(e.message, 2);\
-         console.log(e.message);
-     }
-
- }
 
  let getPriceFromChainLink = async () => {
      console.log('trying to get current prices from chainlink')
@@ -614,9 +715,102 @@
 
  }
 
+ const ethRequest = async () => {
+     try {
+         //ask meta mask for the accounts
+         let accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+         //return them 
+         return (accounts[0])
+     } catch (e) {
+         //show the error (usually user hitting the reject button on metamask)
+         //showAlert(e.message, 2);
+     }
+
+ }
+
+
+ const ethRequestSend = async (toAddress, fromAddress, theValue) => {
+     try {
+         const transactionParameters = {
+             from: fromAddress,
+             to: toAddress,
+             value: theValue,
+         };
+
+         // txHash is a hex string
+         // As with any RPC call, it may throw an error
+         const txHash = await ethereum.request({
+             method: 'eth_sendTransaction',
+             params: [transactionParameters],
+         });
+         return { "status": "ok", "hash": `${txHash}` };
+     } catch (e) {
+         //show the error (usually user hitting the reject button on metamask)
+         return { "status": "error", "hash": "" };
+
+     }
+
+ }
+
+ const isConnected = async (disResults) => {
+     //get the chain id
+     let userChainId = await ethereum.request({ method: 'eth_chainId' });
+     //check it
+     let chainRes = checkChainId(userChainId);
+     //console.log(res)
+     //set the network url
+     let httpProviderUrl = setNetworkState();
+     //init web3
+     const web3 = new Web3(new Web3.providers.HttpProvider(httpProviderUrl)); // The address to check
+     //check if metamask is installed
+     if (typeof window.ethereum !== 'undefined') {
+         console.log('MetaMask is installed!');
+     }
+
+     //set conneciton var
+     let conn = false;
+     currentAccountAddress = await ethRequest();
+     currentAccountAddress = currentAccountAddress.toLowerCase();
+     //no accounts
+     if (currentAccountAddress === undefined) {
+         //no accounts show connect account button
+         alert('connect metamask')
+         //showAlert('Please connect Metamask', 1, 0);
+         //set connectiont to false
+         conn = false;
+     } else {
+         //set connection to true
+         //let userChainId = await ethereum.request({ method: 'eth_chainId' });
+
+         if (chainRes == false) {
+             alert(`please connect metamask to ${paymentSymbol} ${network}`)
+         } else {
+             for (var i = 0; i < currencyMethods.length; i++) {
+                 if (paymentSymbol == currencyMethods[i].symbol) {
+                     //console.log(currencyMethods[i]);
+                     document.getElementById('metamaskcryptoamount').value = currencyMethods[i].amountToPay;
+                     document.getElementById('metamaskcryptoaddress').value = cryptoAddress;
+                     setClassImgSrc("qrcryptoicon", `/assets/images/${currencyMethods[i].image}`)
+                 }
+             }
+
+             setDisabledState("btn-metamask-submit", false)
+             document.getElementById('payment-select-method').classList.add('d-none');
+             document.getElementById('payment-metamask').classList.remove('d-none');
+         }
+
+     }
+     return (conn)
+
+ }
+
 
 
  /* END OF WEB 3 */
+
+ let initMetaMask = () => {
+     let conn = isConnected();
+ }
 
  let init = () => {
 
