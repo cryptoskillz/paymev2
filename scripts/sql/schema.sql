@@ -1,6 +1,5 @@
 DROP TABLE IF EXISTS crypto_payments;
 DROP TABLE IF EXISTS user;
-DROP TABLE IF EXISTS userAccess;
 
 
 CREATE TABLE `crypto_payments` (
@@ -34,6 +33,9 @@ CREATE TABLE `crypto_payments` (
   "deletedAt" TEXT,
   PRIMARY KEY("id" AUTOINCREMENT)
 );
+
+
+
 
 INSERT INTO "crypto_payments" ("adminId","userId","orderId","name","amountUsd","amountCurrency","paymentId") VALUES (1,1,'0d4e2f3d-1a24-919c-e8ef-915b4e598d7f','rental payment 1','50','$','023424d-1a24-919c-e8ef-915b4e22');
 
