@@ -74,7 +74,7 @@ export async function onRequestPost(context) {
 
 
                 //prepare the query
-                const query2 = context.env.DB.prepare(`SELECT COUNT(*) as total from crypto_payments where isDeleted = 0 and AdminId = ${user.id}`);
+                const query2 = context.env.DB.prepare(`SELECT COUNT(*) as total from crypto_payments where isDeleted = 0 and adminId = ${user.id}`);
                 const queryResult2 = await query2.first();
                 user.foreignCount = queryResult2.total;
 

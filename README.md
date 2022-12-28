@@ -129,3 +129,18 @@ PUSH IT
 git add .
 git commit -a -m 'first'
 git push origin master
+
+
+USEFUL COMMANDS
+
+sudo wrangler d1 execute payme   --local --command="SELECT isDeleted,isBlocked,name,username,email,phone,id,isAdmin,apiSecret from user where email = 'test@orbitlabs.xyz' and password = 'test'"
+
+sudo wrangler d1 execute payme   --command="SELECT isDeleted,isBlocked,name,username,email,phone,id,isAdmin,apiSecret from user where email = 'test@orbitlabs.xyz' and password = 'test'"
+
+
+sudo wrangler d1 execute payme   --command="SELECT COUNT(*) as total from crypto_payments where isDeleted = 0 and adminId = 1"
+
+
+
+
+
