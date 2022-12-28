@@ -44,7 +44,7 @@ if (typeof loadMessage != 'undefined')
      //get the table results for this level.
      let getTableData = () => {
          //call the data
-         url = adminUrl + `database/table?tablename=${theTable}&fields=${theFields}&getOnlyTableSchema=0&id=${id}`
+         url = apiUrl + `database/table?tablename=${theTable}&fields=${theFields}&getOnlyTableSchema=0&id=${id}`
          xhrcall(1, url, "", "json", "", getTableDone, token);
      }
 
@@ -57,7 +57,7 @@ if (typeof loadMessage != 'undefined')
      if (lookUps != "") {
          lookUps = JSON.stringify(lookUps);
          //call the data
-         url = adminUrl + `database/lookUp?theData=${lookUps}&id=${window.localStorage.currentDataItemId}`
+         url = apiUrl + `database/lookUp?theData=${lookUps}&id=${window.localStorage.currentDataItemId}`
          xhrcall(1, url, "", "json", "", getLookUpDone, token);
      } else {
          getTableData();

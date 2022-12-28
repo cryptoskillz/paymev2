@@ -45,6 +45,6 @@
          //table.columns.adjust();
          document.getElementById('showBody').classList.remove('d-none');
      }
-     url = adminUrl + `database/table?tablename=${theTable}&fields=${theFields}&getOnlyTableSchema=${getOnlyTableSchema}`
+     url = apiUrl + `database/table?tablename=${theTable}&fields=${theFields}&getOnlyTableSchema=${getOnlyTableSchema}`
      xhrcall(1, url, "", "json", "", getTableDone, token)
  });

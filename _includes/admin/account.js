@@ -154,7 +154,7 @@ whenDocumentReady(isReady = () => {
                 //string it
                 var bodyobjectjson = JSON.stringify(bodyobj);
                 //call the login endpoint
-                url = adminUrl + "admin/account"
+                url = apiUrl + "admin/account"
                 xhrcall(0, url, bodyobjectjson, "json", "", loginDone)
             }
         })
@@ -239,7 +239,7 @@ whenDocumentReady(isReady = () => {
                     }
                 }
                 //call the create account endpoint
-                url = adminUrl + "admin/account"
+                url = apiUrl + "admin/account"
                 xhrcall(0, url, bodyobjectjson, "json", "", registerDone)
             }
         });
@@ -290,7 +290,7 @@ whenDocumentReady(isReady = () => {
                     alert.innerHTML = "you will recieve an email (when we code this part)"
                     alert.classList.remove('d-none');
                 }
-                url = adminUrl + "admin/account"
+                url = apiUrl + "admin/account"
                 xhrcall(0, url, bodyobjectjson, "json", "", forgotPasswordDone)
             }
 
