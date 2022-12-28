@@ -73,10 +73,14 @@ export async function onRequestPost(context) {
                     return new Response(JSON.stringify({ error: "user does not exist" }), { status: 400 });
 
 
+                //return new Response(JSON.stringify({ error: "user does not existb" }), { status: 400 });
+
                 //prepare the query
                 const query2 = context.env.DB.prepare(`SELECT COUNT(*) as total from crypto_payments where isDeleted = 0 and adminId = ${user.id}`);
                 const queryResult2 = await query2.first();
                 user.foreignCount = queryResult2.total;
+                    
+                //return new Response(JSON.stringify({ error: "user does not existc" }), { status: 400 });
 
                 //sign the token
                 const token = await jwt.sign({ id: user.id, password: user.password, username: user.username, isAdmin: user.isAdmin }, env.SECRET)
