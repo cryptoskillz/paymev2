@@ -72,7 +72,8 @@
              orderId: orderDetails.orderId,
              amount: theAmountToPay,
              address: response.data.address,
-             paymentType: theSymbol
+             paymentType: theSymbol,
+             confirmed: 1
          }
 
          let bodyObj = {
@@ -855,7 +856,8 @@
 
              let theJson = {
                  orderId: orderDetails.orderId,
-                 paymentType: "USD"
+                 paymentType: "USD",
+                 confirmed:1
              }
 
              let bodyObj = {

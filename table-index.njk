@@ -2,8 +2,8 @@
 layout: layout.njk
 permalink: /{{env.LEVEL1NAME}}/
 crumb : /invoice/
-fields : ["id","name","amountUsd","orderId","createdAt"]
-headerFields : ["id","Name","Amount","order Id",Created At"]
+fields : ["id","name","amountUsd","confirmed","orderId","createdAt"]
+headerFields : ["id","Name","Amount","Paid","order Id",Created At"]
 
 title :
 ---
@@ -17,6 +17,7 @@ title :
     let checkAdmin = 1;
     let getOnlyTableSchema = 0;
     let allowOnlyOne = 0;
+    let customButton = `<a href="{{adminUrl}}/payment/?orderId=[orderid]" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" target="_blank"><i class="fas fa-globe fa-sm text-white-50"></i> View</a>`
 </script>
 {% set theJs %}
     {% include 'admin/table-index.js' %}

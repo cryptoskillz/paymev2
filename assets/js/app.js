@@ -469,7 +469,7 @@ if (checkElement("btn-create") == true) {
             //check we have valid data to submit
 
             //post the record
-            xhrcall(0, `api/database/table/`, bodyObjectJson, "json", "", xhrDone, token)
+            xhrcall(0, `${apiUrl}database/table/`, bodyObjectJson, "json", "", xhrDone, token)
         }
 
     })
@@ -500,7 +500,7 @@ if (checkElement("btn-update") == true) {
             let bodyObjectJson = JSON.stringify(bodyObj);
             //check we have valid data to submit
             //post the record
-            xhrcall(4, `api/database/table/`, bodyObjectJson, "json", "", xhrDone, token)
+            xhrcall(4, `database/table/`, bodyObjectJson, "json", "", xhrDone, token)
         }
 
     })

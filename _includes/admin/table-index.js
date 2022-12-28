@@ -87,20 +87,22 @@ whenDocumentReady(isReady = () => {
             //build the buttons
             deleteButton = "";
             editButton = "";
+            //note : move these to a funtion 
             //parse the custom button
             customButton = customButton.replaceAll("[id]", theData.id);
             customButton = customButton.replaceAll("[name]", theData.name);
             customButton = customButton.replaceAll("[counter]", i);
+            customButton = customButton.replaceAll("[orderid]", theData.orderId);
             //parse the custom select
             customSelect = customSelect.replaceAll("[id]", theData.id);
             customSelect = customSelect.replaceAll("[name]", theData.name);
-            customSelect = customSelect.replaceAll("[counter]", i);
+            customSelect = customSelect.replaceAll("[counter]", theData.orderId);
 
 
             //check if its an admin
             if (user.isAdmin == 1) {
                 editButton = `<a href="${theCrumb}edit?id=${theData.id}" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-edit fa-sm text-white-50"></i> Edit</a>`
-                deleteButton = `<a href="javascript:deleteTableItem(${theData.id},'api/database/table/','${theTable}')" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-trash fa-sm text-white-50"></i> Delete</a>`
+                deleteButton = `<a href="javascript:deleteTableItem(${theData.id},'/database/table/','${theTable}')" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-trash fa-sm text-white-50"></i> Delete</a>`
                 if (hideEdit == 1)
                     editButton = "";
                 if (hideDelete == 1)

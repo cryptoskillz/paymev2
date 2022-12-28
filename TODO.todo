@@ -30,12 +30,12 @@ QR
 
 ADMIN
 
- ✔ on edit and new add a generate order id button @done (22-12-28 21:21)
- ☐ add the state of the invoice 
- ☐ have a copy link button 
- ☐ have a check payment button on 
- ✔ replace admin with api @done (22-12-28 21:06)
  ☐ add user timer to the invoice create 
  ☐ add use timer to the invoice edit
+ ☐ icons on the payment page
+ ☐ check eth invoice from admin
+ ☐ check bnb from admin
+ ☐ check btc from admin 
+
 
 
