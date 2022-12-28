@@ -60,7 +60,7 @@ export async function onRequestPost(context) {
             if (queryResult.results.length > 0) {
                 //set the user
                 let user = queryResult.results[0];
-               
+
                 //check if they are blocked
                 if (user.isBlocked == 1)
                     return new Response(JSON.stringify({ error: "user account is blocked" }), { status: 400 });
@@ -69,14 +69,14 @@ export async function onRequestPost(context) {
                 if (user.isDeleted == 1)
                     return new Response(JSON.stringify({ error: "user does not exist" }), { status: 400 });
 
-                if (user.isAdmin == 1) {
-                    //prepare the query
-                    const query2 = context.env.DB.prepare(`SELECT COUNT(*) as total from crypto_payments where isDeleted = 0`);
-                    const queryResult2 = await query2.first();
-                    user.foreignCount = queryResult2.total;
-                } 
+
+                //prepare the query
+                const query2 = context.env.DB.prepare(`SELECT COUNT(*) as total from crypto_payments where isDeleted = 0 and AdminId = ${user.id}`);
+                const queryResult2 = await query2.first();
+                user.foreignCount = queryResult2.total;
+
                 //sign the token
-                const token = await jwt.sign({ id: user.id,password: user.password, username: user.username, isAdmin: user.isAdmin }, env.SECRET)
+                const token = await jwt.sign({ id: user.id, password: user.password, username: user.username, isAdmin: user.isAdmin }, env.SECRET)
                 // Verifing token
                 const isValid = await jwt.verify(token, env.SECRET)
                 //check it is true
@@ -88,7 +88,7 @@ export async function onRequestPost(context) {
                     return new Response(JSON.stringify({ error: "invalid login" }), { status: 400 });
 
                 }
-                
+
             } else {
                 return new Response(JSON.stringify({ error: "username  / password issue" }), { status: 400 });
             }
