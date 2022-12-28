@@ -118,12 +118,8 @@ async function processXpub(context) {
         }
         return (paymentResponse)
     } catch (error) {
-        paymentResponse.address = context.env.BTCBACKUPADDRESSMAIN;
-        paymentResponse.qrUrl = `https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=${context.env.BTCBACKUPADDRESSMAIN}"`;
-        paymentResponse.path = "";
-        paymentResponse.network = context.env.NETWORK;
-        //set the type so the dev knows
-        paymentResponse.type = "backupadress"
+        console.log(error);
+        return ("error")
     }
 }
 
@@ -144,6 +140,15 @@ export async function onRequestGet(context) {
     let theResponse = {};
     if (id == "BTC") {
         theResponse = await processXpub(context);
+        console.log(theResponse);
+        if (theResponse.address == "error") {
+            paymentResponse.address = context.env.BTCBACKUPADDRESSMAIN;
+            paymentResponse.qrUrl = `https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=${context.env.BTCBACKUPADDRESSMAIN}"`;
+            paymentResponse.path = "";
+            paymentResponse.network = context.env.NETWORK;
+            //set the type so the dev knows
+            paymentResponse.type = "backupadress"
+        }
     } else {
         //it is not BTC so just return the address
         theResponse.address = context.env.CRYPTOADDRESS
