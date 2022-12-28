@@ -6,7 +6,8 @@ GENERAL
 CRYPTO/PAYMENTS
 
  ☐ require a key to post a record
-
+ ☐ move the stipe worker url to a env var
+ 
 CHECK API
 
 PRICE API

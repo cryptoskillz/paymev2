@@ -71,16 +71,10 @@ export async function onRequestPost(context) {
 
                 if (user.isAdmin == 1) {
                     //prepare the query
-                    const query2 = context.env.DB.prepare(`SELECT COUNT(*) as total from property where isDeleted = 0`);
+                    const query2 = context.env.DB.prepare(`SELECT COUNT(*) as total from crypto_payments where isDeleted = 0`);
                     const queryResult2 = await query2.first();
                     user.foreignCount = queryResult2.total;
-                } else {
-
-                    //prepare the query
-                    const query2 = context.env.DB.prepare(`SELECT COUNT(*) as total from property_owner where userId = ${user.id} and isDeleted = 0 `);
-                    const queryResult2 = await query2.first();
-                    user.foreignCount = queryResult2.total;
-                }
+                } 
                 //sign the token
                 const token = await jwt.sign({ id: user.id,password: user.password, username: user.username, isAdmin: user.isAdmin }, env.SECRET)
                 // Verifing token
