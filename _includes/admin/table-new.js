@@ -7,6 +7,9 @@ let lookUpData = [];
 
 whenDocumentReady(isReady = () => {
 
+    if (typeof guidFields === 'undefined')
+        guidFields = "";
+
     if (typeof lookUps === 'undefined') {
         lookUps = {};
     } else {
@@ -21,7 +24,7 @@ whenDocumentReady(isReady = () => {
         let formHtml = "";
         for (var i = 0; i < res.schema.length; ++i) {
             //console.log(res[i].name)
-            formHtml = formHtml + buildFormElement(res.schema[i]);
+            formHtml = formHtml + buildFormElement(res.schema[i],"",guidFields);
         }
         //set table name
         document.getElementById('formTableName').value = theTable;

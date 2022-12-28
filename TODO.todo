@@ -1,8 +1,6 @@
 GENERAL 
 
  ☐ do we want to make the chainlink the default payment method as it is slower, maybe we should make it a switch
- ☐ add the payments types to the build process (maybe)
- ☐ add the currency methods to the build process (maybe)
 
 
 CRYPTO/PAYMENTS
@@ -32,10 +30,12 @@ QR
 
 ADMIN
 
- ☐ on edit and new add a generate order id button 
+ ✔ on edit and new add a generate order id button @done (22-12-28 21:21)
  ☐ add the state of the invoice 
  ☐ have a copy link button 
  ☐ have a check payment button on 
- ☐ replace admin with api 
+ ✔ replace admin with api @done (22-12-28 21:06)
+ ☐ add user timer to the invoice create 
+ ☐ add use timer to the invoice edit
 
 

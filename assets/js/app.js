@@ -132,7 +132,17 @@ let getTodatsDate = () => {
 This funtion handles the building of the form
 */
 
-let buildFormElement = (theData, theValues = "") => {
+let createGUID = () => {
+  // create a byte array (Uint8Array) with 16 elements
+  var array = new Uint8Array(16);
+  // fill the array with cryptographically secure random values
+  window.crypto.getRandomValues(array);
+  // create a string representation of the array in the form of a GUID
+  return array.reduce((s, v) => s + v.toString(16).padStart(2, '0'));
+}
+
+let buildFormElement = (theData, theValues = "",guidFields="") => {
+
     let disabled = "";
     let theType = "text";
     let required = "required"
@@ -294,6 +304,21 @@ let buildFormElement = (theData, theValues = "") => {
             }
         }
     }
+
+    //check if we have to create a GUID for a field
+    if (guidFields != "")
+    {
+        guidFields = guidFields.split(",");
+        for (var i = 0; i < guidFields.length; ++i) {
+            if (guidFields == theData.name)
+            {
+                theValue = createGUID()
+                disabled = "disabled";
+            }
+        }
+    }
+    
+
 
     switch (renderInp) {
         case 1:
