@@ -141,7 +141,7 @@ export async function onRequestGet(context) {
     if (id == "BTC") {
         theResponse = await processXpub(context);
         console.log(theResponse);
-        if (theResponse.address == "error") {
+        if (theResponse == "error") {
             paymentResponse.address = context.env.BTCBACKUPADDRESSMAIN;
             paymentResponse.qrUrl = `https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=${context.env.BTCBACKUPADDRESSMAIN}"`;
             paymentResponse.path = "";
