@@ -103,8 +103,12 @@
              document.getElementById('payment-select-currency').classList.remove('d-none');
              break;
          case 2:
-             let method = `fiat/stripe/?&orderId=${orderDetails.orderId}`
-             location.href = apiUrl + method;
+             let tmpN = "live";
+             if (network == "testnet")
+                 tmpN = "test"
+             let url = `https://stripe.cryptoskillz.workers.dev/?orderId=${orderDetails.orderId}&type=payment&url=${adminUrl}&amount=${paymentDetails.amountUsd}&name=${paymentDetails.name}&network=${tmpN}`
+             //console.log(url)
+             location.href = url;
              break;
      }
  });

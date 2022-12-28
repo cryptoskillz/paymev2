@@ -1,0 +1,8 @@
+name = "stripe"
+main = "src/index.js"
+compatibility_date = "2022-12-28"
+node_compat = true
+
+[vars]
+STRIPEAPIKEYLIVE = "sk_test_51MJjKJBRUe6B3SK4Jv9YIG4ShWqR7E96Ul4NoZdGmldFtVVdCF8vUicPytjjX9y6uZqMkJDq6Di6uBGs6ALwV9KN00MMxKI3GB"
+STRIPEAPIKEYTEST = "sk_test_51MJjKJBRUe6B3SK4Jv9YIG4ShWqR7E96Ul4NoZdGmldFtVVdCF8vUicPytjjX9y6uZqMkJDq6Di6uBGs6ALwV9KN00MMxKI3GB"

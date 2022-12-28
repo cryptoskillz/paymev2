@@ -1,3 +1,7 @@
+/*
+
+  this does not work as cloudflare does not offer node compat = true on production yet so it is in a seperarte work until they do that.
+
 const Stripe = require('stripe')
 
 export async function onRequestGet(context) {
@@ -15,7 +19,7 @@ export async function onRequestGet(context) {
     //get the tables cryptocurrencies 
     const orderId = searchParams.get('orderId');
     let query;
-    let theSQL = `SELECT name,amountUsd,amountCurrency,paid,paymentId,useTimer from crypto_payments where orderId = '${orderId}'`
+    let theSQL = `SELECT name,amountUsd,amountCurrency from crypto_payments where orderId = '${orderId}'`
     //console.log(theSQL)
     //run it
     query = context.env.DB.prepare(theSQL);
@@ -64,3 +68,4 @@ export async function onRequestGet(context) {
 
 
 }
+*/
