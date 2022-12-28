@@ -82,7 +82,7 @@ async function processXpub(context) {
             BTCAddress = context.env.BTCBACKUPADDRESSMAIN
             theUrl = `${context.env.XPUBURL}?network=${context.env.NETWORK}&xpub=${context.env.XPUBMAINNET}`
         } else {
-             //set the btc address and the url
+            //set the btc address and the url
             BTCAddress = context.env.BTCBACKUPADDRESSTEST
             theUrl = `${context.env.XPUBURL}?network=${context.env.NETWORK}&xpub=${context.env.XPUBTESTNET}`
         }
@@ -102,9 +102,9 @@ async function processXpub(context) {
 
         //check if xpub worker threw an error 
         //note : we can make the return better than this.
-        if (results == "error code: 1042") { 
+        if (results == "error code: 1042") {
             //build the payment response from the back up address
-            paymentResponse.address =BTCAddress;
+            paymentResponse.address = BTCAddress;
             paymentResponse.qrUrl = `https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=${BTCAddress}"`;
             paymentResponse.path = "";
             paymentResponse.network = context.env.NETWORK;
@@ -118,8 +118,12 @@ async function processXpub(context) {
         }
         return (paymentResponse)
     } catch (error) {
-        console.log(error);
-        return ("error")
+        paymentResponse.address = context.env.BTCBACKUPADDRESSMAIN;
+        paymentResponse.qrUrl = `https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=${context.env.BTCBACKUPADDRESSMAIN}"`;
+        paymentResponse.path = "";
+        paymentResponse.network = context.env.NETWORK;
+        //set the type so the dev knows
+        paymentResponse.type = "backupadress"
     }
 }
 
@@ -140,8 +144,6 @@ export async function onRequestGet(context) {
     let theResponse = {};
     if (id == "BTC") {
         theResponse = await processXpub(context);
-        console.log(theResponse);
-        //if (theResponse.address == undefined) 
     } else {
         //it is not BTC so just return the address
         theResponse.address = context.env.CRYPTOADDRESS
