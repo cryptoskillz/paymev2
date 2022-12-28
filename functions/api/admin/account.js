@@ -52,7 +52,7 @@ export async function onRequestPost(context) {
 
 
             //prepare the query
-            const query = context.env.DB.prepare(`SELECT user.isDeleted,user.isBlocked,user.name,user.username,user.email,user.phone,user.id,user.isAdmin,userAccess.foreignId,user.apiSecret from user LEFT JOIN userAccess ON user.id = userAccess.userId where user.email = '${registerData.email}' and user.password = '${registerData.password}'`);
+            const query = context.env.DB.prepare(`SELECT user.isDeleted,user.isBlocked,user.name,user.username,user.email,user.phone,user.id,user.isAdmin,user.apiSecret from user where user.email = '${registerData.email}' and user.password = '${registerData.password}'`);
             //get the result
             //note : we could make this return first and not all 
             const queryResult = await query.all();
