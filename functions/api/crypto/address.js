@@ -119,7 +119,7 @@ async function processXpub(context) {
         return (paymentResponse)
     } catch (error) {
         console.log(error);
-        return (error)
+        return ("error")
     }
 }
 
@@ -140,6 +140,8 @@ export async function onRequestGet(context) {
     let theResponse = {};
     if (id == "BTC") {
         theResponse = await processXpub(context);
+        console.log(theResponse);
+        //if (theResponse.address == undefined) 
     } else {
         //it is not BTC so just return the address
         theResponse.address = context.env.CRYPTOADDRESS
