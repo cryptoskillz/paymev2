@@ -9,7 +9,7 @@
 
  let checkInterval;
 
- let paymentMethods = [{ "name": "Metamask", "image": "metamask.png", "id": 1, "active": 1 }, { "name": "Cyrpto Currency", "image": "cryptocurrencies.png", "id": 2, "active": 1 }, { "name": "Credit Card", "image": "creditcard.png", "id": 3, "active": 0 }]
+ let paymentMethods = [{ "name": "Metamask", "image": "metamask.png", "id": 1, "active": 1 }, { "name": "Cyrpto Currency", "image": "cryptocurrencies.png", "id": 2, "active": 1 }, { "name": "Credit Card", "image": "creditcard.png", "id": 3, "active": 1 }]
  let currencyMethods = [{ "name": "Bitcoin", "code": "bitcoin", "image": "btc.png", "symbol": "BTC", "id": 1, "active": 1, "chainlinkaddress": chainBtcTest, "price": "", "amountToPay": "" }, { "name": "Ethereum", "code": "ethereum", "image": "eth.png", "symbol": "ETH", "id": 2, "active": 1, "chainlinkaddress": chainEthTest, "price": "", "amountToPay": "" }, { "name": "Binance Coin", "code": "binancecoin", "image": "bnb.png", "symbol": "BNB", "id": 3, "active": 1, "chainlinkaddress": chainBnbTest, "price": "", "amountToPay": "" }]
  let paymentAddress = "";
  let paymentSymbol = "";
@@ -72,7 +72,7 @@
              orderId: orderDetails.orderId,
              amount: theAmountToPay,
              address: response.data.address,
-             cryptoUsed: theSymbol
+             paymentType: theSymbol
          }
 
          let bodyObj = {
@@ -103,7 +103,8 @@
              document.getElementById('payment-select-currency').classList.remove('d-none');
              break;
          case 2:
-             alert('to do ');
+             let method = `fiat/stripe/?&orderId=${orderDetails.orderId}`
+             location.href = apiUrl + method;
              break;
      }
  });
@@ -813,10 +814,17 @@
 
  let init = () => {
 
-     //set the order info 
-
 
      let paymentDone = (result, status) => {
+         if (payment == "success") {
+             fiatCheck = true;
+         }
+
+         if (payment == "cancel") {
+             alert('payment failed');
+         }
+
+
          //console.log(status);
          paymentDetails = result;
          if (status == 400) {
@@ -829,12 +837,49 @@
          setClassHtml("order-detail", `Order #${paymentDetails.orderId} <br>${paymentDetails.name}`)
          setClassHtml("order-amount", `${paymentDetails.amountCurrency}${paymentDetails.amountUsd}`)
          setClassHtml("divcompanyname", companyName)
-         //try to get the price using web3
-         getPriceFromChainLink();
+         if (fiatCheck == true) {
+             let updateFiatPaymentDone = (res) => {
+                 setClassImgSrc("qrcryptoicon", `/assets/images/creditcard.png`)
+                 document.getElementById('payment-select-method').classList.add('d-none');
+                 document.getElementById('paidandconfirmedtext').innerHTML = "Paid and confirmed";
+                 document.getElementById('paidandconfirmed').classList.remove("d-none")
+                 document.getElementById("checkinvoice").classList.add('d-none')
+                 document.getElementById("payment-paidandconfirmed").classList.remove('d-none')
+                 document.getElementById("spinner").classList.add('d-none');
+             }
+
+
+             let theJson = {
+                 orderId: orderDetails.orderId,
+                 paymentType: "USD"
+             }
+
+             let bodyObj = {
+                 table: "crypto_payments",
+                 tableData: theJson,
+             }
+             let bodyObjectJson = JSON.stringify(bodyObj);
+             //check we have valid data to submit
+             //put the record
+             let method = `crypto/payment/`
+             xhrcall(4, `${apiUrl}${method}`, bodyObjectJson, "json", "", updateFiatPaymentDone);
+
+
+         } else {
+             //try to get the price using web3
+             getPriceFromChainLink();
+         }
      }
+
      //show the spinner
      const orderId = getUrlParamater('orderId')
-     if (orderId == "") {
+     //set the order info 
+
+     let payment = "";
+     let fiatCheck = false;
+     payment = getUrlParamater('payment');
+     //console.log(payment)
+     if ((orderId == "") || (payment == "cancel")) {
          document.getElementById('invalidicon').classList.add('d-none')
          document.getElementById('payment-invalid').classList.remove('d-none')
      } else {

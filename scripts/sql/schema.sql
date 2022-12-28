@@ -12,7 +12,7 @@ CREATE TABLE `crypto_payments` (
   "paymentId" TEXT,
   "amountCurrency" TEXT,
   "amount" TEXT,
-  "cryptoUsed" TEXT,
+  "paymentType" TEXT,
   "confirmed" INTEGER  DEFAULT 0,
   "amountUsd" TEXT,
   "boxType" TEXT,
