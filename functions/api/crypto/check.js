@@ -32,34 +32,19 @@ async function updateDb(orderId, address, context, paymentResponse, transactionJ
     return (paymentResponse)
 }
 
+//process ETH ayment
 async function processETH(theData, context) {
-    //console.log(theData)
-    let paymentResponse = {};
-    paymentResponse.txid = theData.transaction.hash;
-    if (theData.receipt.blockNumber)
-        paymentResponse.confirmed = true;
-    else
-        paymentResponse.confirmed = false;
-    //set the old to false.
-    paymentResponse.old = false;
-    paymentResponse = await updateDb(theData.orderId, theData.address, context, paymentResponse, theData.transaction, "ETH");
-    //console.log(paymentResponse)
-    return paymentResponse;
-}
-
-
-async function processBNB(orderId, address, context) {
     //check whihc netowkr we are on. 
     let blockExplorer;
     let theResponse;
     let results;
     let paymentResponse = {};
     if (context.env.NETWORK == "mainnet")
-        blockExplorer = context.env.BNBAPIMAIN
+        blockExplorer = context.env.ETHBLOCKEXPLORERMAIN
     else
-        blockExplorer = context.env.BNBAPITEST
-    const BNBApiToken = context.env.BNBAPITOKEN
-    const theUrl = `${blockExplorer}?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&page=1&offset=10&sort=asc&apikey=${BNBApiToken}`
+        blockExplorer = context.env.ETHBLOCKEXPLORERTEST
+    //const BNBApiToken = context.env.BNBAPITOKEN
+    const theUrl = `${blockExplorer}api?module=account&action=${address}8&sort=desc`
     const init = {
         headers: {
             'content-type': 'application/json;charset=UTF-8',
@@ -89,9 +74,53 @@ async function processBNB(orderId, address, context) {
         //return new Response(JSON.stringify({ "error": error }), { status: 400 });
         return (error)
     }
+
+    
 }
 
+//process BNB payment
+async function processBNB(orderId, address, context) {
+    //check whihc netowkr we are on. 
+    let blockExplorer;
+    let theResponse;
+    let results;
+    let paymentResponse = {};
+    if (context.env.NETWORK == "mainnet")
+        blockExplorer = context.env.ETHAPIMAIN
+    else
+        blockExplorer = context.env.ETHAPITEST
+    const BNBApiToken = context.env.ETHAPITOKEN
+    const theUrl = `${blockExplorer}?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&page=1&offset=10&sort=asc&apikey=${BNBApiToken}`
+    const init = {
+        headers: {
+            'content-type': 'application/json;charset=UTF-8',
+        },
+    };
+    try {
+        //return theUrl
+        //call block stream to check the transaction
+        theResponse = await fetch(theUrl, init);
+        //console.log(theResponse)
+        results = await gatherResponse(theResponse);
+        paymentResponse.txid = results.result[0].blockHash;
+        console.log(results.result[0])
+        if (results.result[0].blockNumber)
+            paymentResponse.confirmed = true;
+        else
+            paymentResponse.confirmed = false;
+        //set the old to false.
+        paymentResponse.old = false;
+        paymentResponse = await updateDb(orderId, address, context, paymentResponse, results.result[0], "BNB");
+        return paymentResponse;
 
+    } catch (error) {
+        console.log(error);
+        //return new Response(JSON.stringify({ "error": error }), { status: 400 });
+        return (error)
+    }
+}
+
+//process the BTC payment
 async function processBTC(orderId, address, context) {
     //check whihc netowkr we are on. 
     let blockExplorer;
@@ -112,9 +141,6 @@ async function processBTC(orderId, address, context) {
     //call block stream to check the transaction
     theResponse = await fetch(theUrl, init);
     results = await gatherResponse(theResponse);
-    //build a blank payment response
-    //console.log(results[0])
-    //build the payment result
     //note we are making an assumpation that it will be in element 0, we can make this more roboust.
     paymentResponse.txid = results[0].txid;
     paymentResponse.confirmed = results[0].status.confirmed
@@ -140,14 +166,26 @@ export async function onRequestGet(context) {
 
         const { searchParams } = new URL(request.url);
         //get the tables cryptocurrencies 
-        const cryptocurrency = searchParams.get('cryptocurrency');
+        //const cryptocurrency = searchParams.get('cryptocurrency');
         //get the address we want to check
-        const address = searchParams.get('address');
+        //const address = searchParams.get('address');
         //get the order id
         const orderId = searchParams.get('orderId');
+        //get the order information 
+        const sql = `SELECT * from crypto_payments where orderId = '${orderId}'`;
+        const query = context.env.DB.prepare(sql);
+        const queryResult = await query.first();
+        console.log(queryResult)
+        console.log(queryResult.length)
+
         //console.log(cryptocurrency)
         if (cryptocurrency == "BTC") {
             const paymentResponse = await processBTC(orderId, address, context);
+            return new Response(JSON.stringify(paymentResponse), { status: 200 });
+        }
+
+        if (cryptocurrency == "ETH") {
+            const paymentResponse = await processETH(orderId, address, context);
             return new Response(JSON.stringify(paymentResponse), { status: 200 });
         }
 
@@ -166,6 +204,14 @@ export async function onRequestGet(context) {
 
 }
 
+
+/*
+
+most of the payment checking (btc / bnb) is done from the get call in this fuction but ETH is being processed 
+locally in payment js and this is when the put is called which simply updates the database.  We also get it on the get call here 
+this is so admins / cron jobs etc can check for payment.
+ 
+*/
 export async function onRequestPut(context) {
     //build the paramaters
     const {
@@ -178,12 +224,26 @@ export async function onRequestPut(context) {
     } = context;
     const contentType = request.headers.get('content-type')
     let theData;
+    //check we have some content
     if (contentType != null) {
+        //get the data
         theData = await request.json();
-        //if (theData.)
-        //console.log(theData);
+        //check if it is eth
         if (theData.tableData.symbol == "ETH") {
-            const paymentResponse = await processETH(theData.tableData, context);
+            //set a payment response object
+            let paymentResponse = {};
+            //set the transaction hash
+            paymentResponse.txid = theData.tableData.transaction.hash;
+            //check that if its confirmed or not
+            if (theData.tableData.receipt.blockNumber)
+                paymentResponse.confirmed = true;
+            else
+                paymentResponse.confirmed = false;
+            //set the old to false.
+            paymentResponse.old = false;
+            //update the database
+            paymentResponse = await updateDb(theData.orderId, theData.address, context, paymentResponse, theData.transaction, "ETH");
+            //return the repsonse
             return new Response(JSON.stringify(paymentResponse), { status: 200 });
         }
     }

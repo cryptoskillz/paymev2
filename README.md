@@ -122,6 +122,9 @@ for variable D1 database select "payme"
 
 from terminal run the following command
 
+
+sudo wrangler d1 execute payme --local  --file=./scripts/sql/schema.sql
+
 sudo wrangler d1 execute payme  --file=./scripts/sql/schema.sql
 
 PUSH IT 
@@ -135,8 +138,9 @@ USEFUL COMMANDS
 
 sudo wrangler d1 execute payme   --local --command="SELECT isDeleted,isBlocked,name,username,email,phone,id,isAdmin,apiSecret from user where email = 'test@orbitlabs.xyz' and password = 'test'"
 
-sudo wrangler d1 execute payme   --command="SELECT isDeleted,isBlocked,name,username,email,phone,id,isAdmin,apiSecret from user where email = 'test@orbitlabs.xyz' and password = 'test'"
+sudo wrangler d1 --local execute payme   --command="SELECT isDeleted,isBlocked,name,username,email,phone,id,isAdmin,apiSecret from user where email = 'test@orbitlabs.xyz' and password = 'test'"
 
+sudo wrangler d1 execute payme   --command="SELECT isDeleted,isBlocked,name,username,email,phone,id,isAdmin,apiSecret from user where email = 'test@orbitlabs.xyz' and password = 'test'"
 
 sudo wrangler d1 execute payme   --command="SELECT COUNT(*) as total from crypto_payments where isDeleted = 0 and adminId = 1"
 

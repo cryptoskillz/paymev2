@@ -23,6 +23,10 @@ let propertySelectChange = (id, theElement) => {
         window.location.href = theElement.value;
 }
 
+let checkPayment = (url) => {
+    alert(url)
+}
+
 
 whenDocumentReady(isReady = () => {
 
@@ -96,7 +100,11 @@ whenDocumentReady(isReady = () => {
             //parse the custom select
             customSelect = customSelect.replaceAll("[id]", theData.id);
             customSelect = customSelect.replaceAll("[name]", theData.name);
-            customSelect = customSelect.replaceAll("[counter]", theData.orderId);
+            customSelect = customSelect.replaceAll("[counter]", i);
+            customSelect = customSelect.replaceAll("[orderid]", theData.orderId);
+            customSelect = customSelect.replaceAll("[address]", theData.address);
+            customSelect = customSelect.replaceAll("[cryptocurrency]", theData.paymentType);
+
 
 
             //check if its an admin
