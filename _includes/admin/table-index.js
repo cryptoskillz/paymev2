@@ -8,23 +8,31 @@ let whenDocumentReady = (f) => {
     /in/.test(document.readyState) ? setTimeout('whenDocumentReady(' + f + ')', 9) : f()
 }
 
-/*
-This function handles the property select
-*/
-let propertySelectChange = (id, theElement) => {
-    //clear the current element
-    window.localStorage.currentDataItem = "";
-    //store the ID
-    window.localStorage.currentDataItemId = id;
-    //store the table
-    window.localStorage.mainTable = theTable;
-    //load the URL
-    if (theElement.value != 0)
-        window.location.href = theElement.value;
+let customSelectChange = (el) => {
+    switch (el.selectedIndex) {
+        case 1:
+            window.open(el.value, '_blank');
+            break;
+        case 2:
+            checkPayment(el.value);
+            break;
+    }
+
 }
 
+
 let checkPayment = (url) => {
-    alert(url)
+    let checkDone = (res) => {
+        console.log(res)
+        res = JSON.parse(res)
+        if (res.confirmed == true) {
+            showAlert('Payment has been received', 1)
+        } else {
+            showAlert('Payment has not been received', 1)
+        }
+    }
+    //console.log(url)
+    xhrcall(1, url, "", "json", "", checkDone, token);
 }
 
 
@@ -88,24 +96,26 @@ whenDocumentReady(isReady = () => {
         for (var i = 0; i < res.data.length; ++i) {
             //set the data 
             let theData = res.data[i];
+            console.log(theData);
             //build the buttons
             deleteButton = "";
             editButton = "";
             //note : move these to a funtion 
             //parse the custom button
-            customButton = customButton.replaceAll("[id]", theData.id);
-            customButton = customButton.replaceAll("[name]", theData.name);
-            customButton = customButton.replaceAll("[counter]", i);
-            customButton = customButton.replaceAll("[orderid]", theData.orderId);
+            let tmpCb = customButton
+            tmpCb = tmpCb.replaceAll("[id]", theData.id);
+            tmpCb = tmpCb.replaceAll("[name]", theData.name);
+            tmpCb = tmpCb.replaceAll("[counter]", i);
+            tmpCb = tmpCb.replaceAll("[orderid]", theData.orderId);
             //parse the custom select
-            customSelect = customSelect.replaceAll("[id]", theData.id);
-            customSelect = customSelect.replaceAll("[name]", theData.name);
-            customSelect = customSelect.replaceAll("[counter]", i);
-            customSelect = customSelect.replaceAll("[orderid]", theData.orderId);
-            customSelect = customSelect.replaceAll("[address]", theData.address);
-            customSelect = customSelect.replaceAll("[cryptocurrency]", theData.paymentType);
 
-
+            tmpCs = customSelect
+            tmpCs = tmpCs.replaceAll("[id]", theData.id);
+            tmpCs = customSelect.replaceAll("[name]", theData.name);
+            tmpCs = tmpCs.replaceAll("[counter]", i);
+            tmpCs = tmpCs.replaceAll("[orderid]", theData.orderId);
+            tmpCs = tmpCs.replaceAll("[address]", theData.address);
+            tmpCs = tmpCs.replaceAll("[cryptocurrency]", theData.paymentType)
 
             //check if its an admin
             if (user.isAdmin == 1) {
@@ -163,7 +173,7 @@ whenDocumentReady(isReady = () => {
             }
 
             buildColumn = 1;
-            tableRow.push(`${editButton} ${deleteButton} ${customButton} ${customSelect} `);
+            tableRow.push(`${editButton} ${deleteButton} ${tmpCb} ${tmpCs} `);
             //add the table rows
             var rowNode = table
                 .row.add(tableRow)

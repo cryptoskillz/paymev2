@@ -175,22 +175,21 @@ export async function onRequestGet(context) {
         const sql = `SELECT * from crypto_payments where orderId = '${orderId}'`;
         const query = context.env.DB.prepare(sql);
         const queryResult = await query.first();
-        console.log(queryResult)
-        console.log(queryResult.length)
 
-        //console.log(cryptocurrency)
-        if (cryptocurrency == "BTC") {
-            const paymentResponse = await processBTC(orderId, address, context);
+        //console.log(queryResult)
+        //process the payment
+        if (queryResult.paymentType == "BTC") {
+            const paymentResponse = await processBTC(orderId, queryResult.address, context);
             return new Response(JSON.stringify(paymentResponse), { status: 200 });
         }
 
-        if (cryptocurrency == "ETH") {
-            const paymentResponse = await processETH(orderId, address, context);
+        if (queryResult.paymentType == "ETH") {
+            const paymentResponse = await processETH(orderId, queryResult.address, context);
             return new Response(JSON.stringify(paymentResponse), { status: 200 });
         }
 
-        if (cryptocurrency == "BNB") {
-            const paymentResponse = await processBNB(orderId, address, context);
+        if (queryResult.paymentType == "BNB") {
+            const paymentResponse = await processBNB(orderId, queryResult.address, context);
             console.log(paymentResponse)
             return new Response(JSON.stringify(paymentResponse), { status: 200 });
         }

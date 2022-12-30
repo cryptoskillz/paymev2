@@ -33,10 +33,11 @@ ADMIN
 
  ☐ add user timer to the invoice create 
  ☐ add use timer to the invoice edit
- ☐ icons on the payment page
- ☐ check eth invoice from admin
- ☐ check bnb from admin
- ☐ check btc from admin 
+ ✔ icons on the payment page @done (22-12-30 23:56)
+ ✔ check eth invoice from admin @done (22-12-30 23:55)
+ ✔ check bnb from admin @done (22-12-30 23:55)
+ ✔ check btc from admin @done (22-12-30 23:55)
+ ☐ update paid state after the check if it is confirmed
 
 
 
