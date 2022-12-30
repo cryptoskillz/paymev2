@@ -1,0 +1,10 @@
+name = "checkpayment"
+main = "src/index.js"
+compatibility_date = "2022-12-28"
+[[ d1_databases ]]
+binding = "DB" # i.e. available in your Worker on env.DB
+database_name = "payme"
+database_id = "1ab242c2-0019-4311-9be6-e0ed20596d65"
+preview_database_id = "1ab242c2-0019-4311-9be6-e0ed20596d65"
+[triggers]
+crons = [ "1 * * * *" ]
