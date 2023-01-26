@@ -1,21 +1,25 @@
 GENERAL 
 
  ☐ do we want to make the chainlink the default payment method as it is slower, maybe we should make it a switch
+ ☐ check if there is a userid passed up and if not create a new user
+ ☐ add key check to crypto payments
 
 
 CRYPTO/PAYMENTS
 
  ☐ require a key to post a record
  ☐ move the stipe worker url to a env var
+ ☐ in post add the key check
  
 CHECK API
+
+ ☐ make a check timer we can either do this as a worker or as a pages function. 
 
 PRICE API
 
  ☐ fix the coingecko call on production 
- ✔ get the prices from chainlink @done (22-12-22 22:55)
  ☐ check if the repsonse is not json and just not code 1020
-
+ ✔ get the prices from chainlink @done (22-12-22 22:55)
 
 METAMASK
 
@@ -33,11 +37,19 @@ ADMIN
 
  ☐ add user timer to the invoice create 
  ☐ add use timer to the invoice edit
+ ☐ update paid state after the check if it is confirmed
  ✔ icons on the payment page @done (22-12-30 23:56)
  ✔ check eth invoice from admin @done (22-12-30 23:55)
  ✔ check bnb from admin @done (22-12-30 23:55)
  ✔ check btc from admin @done (22-12-30 23:55)
- ☐ update paid state after the check if it is confirmed
+
+CROWDFUND PORTAL
+
+RENTAL PORTAL
+
+
+
+
 
 
 

@@ -50,6 +50,8 @@ export async function onRequestPut(context) {
     //decode the token
     //check they are an admin
     //get the content type
+    console.log('in put')
+
     const contentType = request.headers.get('content-type')
     let theData;
     if (contentType != null) {
@@ -84,6 +86,7 @@ export async function onRequestPut(context) {
 
 
 //note 
+
 export async function onRequestPost(context) {
     //build the paramaters
     const {
@@ -94,25 +97,57 @@ export async function onRequestPost(context) {
         next, // used for middleware or to fetch assets
         data, // arbitrary space for passing data between middlewares
     } = context;
+    //theData = await request.json();
+    //get the urls
+    const { searchParams } = new URL(request.url);
+    //get an order id
+    const orderId = uuid.v4();
+    //get a payment id
+    const paymentId = uuid.v4();
+    //set the user id.
+    const userId = searchParams.get('userId');
+    //set the foreign id
+    const foreignId = searchParams.get('foreignId');
+    //set the amount
+    const amount = searchParams.get('amount');
+    //set the name
+    const name = searchParams.get('name');
 
-    const contentType = request.headers.get('content-type')
-    let theData;
-    if (contentType != null) {
-        //get the data
-        theData = await request.json();
-        const orderId = uuid.v4();
-        const paymentId = uuid.v4();
-        //build the query
-        if (theData.key != theKey) {
-            return new Response(JSON.stringify({ message: "record not added, it would be terrible opsec to tell you why it failed so good luck" }), { status: 400 });
-        } else {
-            let theQuery = `INSERT INTO "crypto_payments" ("userId","orderId","name","amountUsd","amountCurrency","paymentId") VALUES (${theData.userId},'${orderId}','${theData.name}','${theData.amount}','$','${paymentId}');`
-            const info = await context.env.DB.prepare(theQuery).run();
-            return new Response(JSON.stringify({ message: `${theData.table} has been added` }), { status: 200 });
-        }
+    //todo : add the key check
+    //build the query
+    //if (theData.key != theKey) {
+    //    return new Response(JSON.stringify({ message: "record not added, it would be terrible opsec to tell you why it failed so good luck" }), { status: 400 });
+    //} else {
+    //build the query
+    let theQuery = `INSERT INTO "crypto_payments" ("userId","orderId","name","amountUsd","amountCurrency","paymentId") VALUES (${userId},'${orderId}','${name}','${amount}','$','${paymentId}');`
+    //run the query
+    const info = await context.env.DB.prepare(theQuery).run();
+    //get the details of the order
+    const stmt =  await context.env.DB.prepare(`SELECT * FROM crypto_payments where id = ${info.lastRowId}`);
+    const result = await stmt.first();
+    return new Response(JSON.stringify({ orderId: result.orderId }), {
+        status: 200,
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': '*',
+            'Access-Control-Allow-Methods': '*',
+            'Access-Control-Max-Age': '86400',
+        },
+    });
+    //}
 
 
-    }
+    //}
     //general error
-    return new Response(JSON.stringify({ error: "server" }), { status: 400 });
+/*
+    return new Response(JSON.stringify({ error: "server" }), {
+        status: 400,
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': '*',
+            'Access-Control-Allow-Methods': '*',
+            'Access-Control-Max-Age': '86400',
+        },
+    });
+*/
 }

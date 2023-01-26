@@ -1,7 +1,6 @@
 DROP TABLE IF EXISTS crypto_payments;
 DROP TABLE IF EXISTS user;
 
-
 CREATE TABLE `crypto_payments` (
   "id" INTEGER,
   "adminId" INTEGER,
